@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import kr.co.idiots.model.Person;
+import kr.co.idiots.view.POPMainLayoutController;
 import kr.co.idiots.view.PersonEditDialogController;
 
 public class MainApp extends Application {
@@ -106,6 +107,9 @@ public class MainApp extends Application {
 			AnchorPane popMainLayout = (AnchorPane)loader.load();
 			
 			rootLayout.setCenter(popMainLayout);
+			
+			POPMainLayoutController controller = new POPMainLayoutController();
+			controller.setMainApp(this);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
