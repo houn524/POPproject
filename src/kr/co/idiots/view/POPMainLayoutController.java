@@ -17,6 +17,10 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import kr.co.idiots.MainApp;
+import kr.co.idiots.model.POPNode;
+import kr.co.idiots.model.POPScriptArea;
+import kr.co.idiots.model.POPStartNode;
+import kr.co.idiots.model.POPStopNode;
 
 public class POPMainLayoutController {
 	Point2D lastXY = null;
@@ -32,12 +36,16 @@ public class POPMainLayoutController {
 	
 	private Bounds frameBounds;
 	
+	private POPScriptArea scriptArea;
+	
 	public POPMainLayoutController() {
 		
 	}
 	
 	@FXML
 	private void initialize() {
+		scriptArea = new POPScriptArea(emptyFrame);
+		
 		node.setOnMouseDragged(event -> {
 //			frameBounds = frame.getBoundsInParent();
 			System.out.println("Move");
@@ -71,14 +79,14 @@ public class POPMainLayoutController {
 			event.consume();
 		});
 		
-		emptyFrame.setOnDragOver(event -> {
+		scriptArea.getComponent().setOnDragOver(event -> {
 			Dragboard db = event.getDragboard();
 			if(db.hasImage()) {
 				event.acceptTransferModes(TransferMode.COPY);
 			}
 		});
 		
-		emptyFrame.setOnDragDropped(event -> {
+		scriptArea.getComponent().setOnDragDropped(event -> {
 			Dragboard db = event.getDragboard();
 			boolean success = false;
 			if(db.hasImage()) {
@@ -103,6 +111,17 @@ public class POPMainLayoutController {
 		});
 		
 		node.setOnMouseReleased(d -> lastXY = null);
+		
+		/*
+			Start, Stop 노드 생성
+		*/
+		POPNode startNode = new POPStartNode(scriptArea);
+		POPNode stopNode = new POPStopNode(scriptArea);
+		
+		startNode.setNextNode(stopNode);
+		
+		scriptArea.add(startNode);
+		scriptArea.add(stopNode);
 	}
 	
 	public static ClipboardContent makeClipboardContent(MouseEvent event, Node child, String text) {

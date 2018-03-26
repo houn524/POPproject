@@ -52,7 +52,7 @@ public class MainApp extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle("AddressApp");
+		this.primaryStage.setTitle("PoP");
 		
 		initRootLayout();
 		
