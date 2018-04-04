@@ -2,6 +2,7 @@ package kr.co.idiots.controller;
 
 import java.lang.reflect.InvocationTargetException;
 
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
@@ -28,6 +29,15 @@ public class DragManager {
 			content.putImage(node.getImageView().getImage());
 			db.setContent(content);
 			event.consume();
+		});
+	}
+	
+	public static void setOnBlankDrag(Group blank) {
+		blank.setOnDragOver(event -> {
+			Dragboard db = event.getDragboard();
+			if(db.hasImage() && db.getString().equals("Variable")) {
+				event.acceptTransferModes(TransferMode.COPY);
+			}
 		});
 	}
 	

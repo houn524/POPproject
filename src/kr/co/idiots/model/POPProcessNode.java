@@ -2,9 +2,13 @@ package kr.co.idiots.model;
 
 public class POPProcessNode extends POPSymbolNode {
 
+	private POPProcessDataInput dataInput;
+	
 	public POPProcessNode(POPScriptArea scriptArea) {
 		super(scriptArea, POPNodeType.Process);
 		
+//		dataInput = new POPProcessDataInput();
+//		component.getChildren().add(dataInput);
 		//component.setTranslateX(50d);
 		//component.setTranslateY(50d);
 		

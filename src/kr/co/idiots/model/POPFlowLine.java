@@ -217,6 +217,11 @@ public class POPFlowLine extends Group {
     	node.getOutFlowLine().setNextNode(nextNode);
     	setNextNode(node);
     	
+    	POPProcessDataInput dataInput = new POPProcessDataInput();
+    	node.getComponent().getChildren().add(dataInput);
+    	node.setDataInput(dataInput);
+    	dataInput.setNode(node);
+    	
     	System.out.println(node.getScriptArea().getComponent().getBoundsInParent());
     }
     

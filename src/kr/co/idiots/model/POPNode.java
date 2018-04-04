@@ -3,6 +3,7 @@ package kr.co.idiots.model;
 import java.io.InputStream;
 
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import kr.co.idiots.controller.DragManager;
@@ -11,6 +12,8 @@ public abstract class POPNode {
 	
 	protected POPNodeType type;
 	protected ImageView imgView;
+	protected POPDataInput dataInput;
+	protected Label label;
 	protected Group component;
 	protected POPScriptArea scriptArea;
 
@@ -34,7 +37,8 @@ public abstract class POPNode {
 	public Group getComponent() { return this.component; }
 	public ImageView getImageView() { return this.imgView; }
 	public POPScriptArea getScriptArea() { return this.scriptArea; }
-
+	public void setDataInput(POPDataInput dataInput) { this.dataInput = dataInput; }
+	public POPDataInput getDataInput() { return this.dataInput; }
 	public POPNodeType getType() { return type; }
 //	public abstract void setNextNode(POPNode nextNode);
 //	public void setPrevNode(POPNode prevNode) { this.prevNode = prevNode; }
