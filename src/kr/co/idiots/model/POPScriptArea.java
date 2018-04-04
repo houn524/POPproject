@@ -1,19 +1,19 @@
 package kr.co.idiots.model;
 
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.AnchorPane;
 
 public class POPScriptArea {
-	private Pane component;
+	private AnchorPane component;
 	
-	public POPScriptArea(Pane component) {
+	public POPScriptArea(AnchorPane component) {
 		this.component = component;
 	}
 	
-	public Pane getComponent() { return component; }
+	public AnchorPane getComponent() { return component; }
 	
-	public void add(POPNode node) {
+	public void add(POPSymbolNode node) {
 		component.getChildren().add(node.getComponent());
-		if(node.getFlowLine() != null)
-			component.getChildren().add(node.getFlowLine().getComponent());
+		if(node.getOutFlowLine() != null)
+			component.getChildren().add(node.getOutFlowLine());
 	}
 }
