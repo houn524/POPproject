@@ -1,16 +1,20 @@
 package kr.co.idiots.controller;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Map;
 
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import kr.co.idiots.model.POPDataInput;
 import kr.co.idiots.model.POPFlowLine;
 import kr.co.idiots.model.POPNode;
+import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPScriptArea;
 import kr.co.idiots.model.POPSymbolNode;
+import kr.co.idiots.model.POPVariableNode;
 
 public class DragManager {
 	
@@ -27,16 +31,30 @@ public class DragManager {
 			ClipboardContent content = new ClipboardContent();
 			content.putString(node.getType().toString());
 			content.putImage(node.getImageView().getImage());
+			if(node.getType() == POPNodeType.Variable) {
+				POPVariableNode varNode = (POPVariableNode) node;
+				Map<String, Object> map = new HashMap<String, Object>();
+				map.put(varNode.getName(), varNode.getValue());
+				content.putAll(map);
+			}
+				
 			db.setContent(content);
 			event.consume();
 		});
 	}
 	
-	public static void setOnBlankDrag(Group blank) {
+	public static void setOnBlankDrag(POPDataInput blank) {
 		blank.setOnDragOver(event -> {
 			Dragboard db = event.getDragboard();
 			if(db.hasImage() && db.getString().equals("Variable")) {
 				event.acceptTransferModes(TransferMode.COPY);
+			}
+		});
+		
+		blank.setOnDragDropped(event -> {
+			Dragboard db = event.getDragboard();
+			if(db.hasImage() && db.getString().equals("Variable")) {
+				blank.insertInputVariable(variable);
 			}
 		});
 	}

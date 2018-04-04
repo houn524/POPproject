@@ -39,4 +39,5 @@ public class POPVariableNode extends POPNode {
 	}
 
 	public String getName() { return this.name; }
+	public Object getValue() { return this.value; }
 }
