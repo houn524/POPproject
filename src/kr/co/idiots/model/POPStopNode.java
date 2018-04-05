@@ -8,7 +8,6 @@ public class POPStopNode extends POPSymbolNode {
 		component.setTranslateX(50d);
 		component.setTranslateY(400d);
 		
-		setOnBoundChangeListener();
 	}
 
 //	@Override

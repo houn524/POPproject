@@ -56,7 +56,7 @@ public class POPSolvingLayoutController {
 	
 	private Bounds frameBounds;
 	
-	private POPScriptArea scriptArea;
+	public static POPScriptArea scriptArea;
 	
 	public POPSolvingLayoutController() {
 		
@@ -101,7 +101,7 @@ public class POPSolvingLayoutController {
 		variables.addVariable(name, value);
 		
 		System.out.println(name);
-		POPVariableNode varNode = new POPVariableNode(scriptArea, name, value);
+		POPVariableNode varNode = new POPVariableNode(scriptArea, name);
 		variableItems.add(varNode.getComponent());
 	}
 	

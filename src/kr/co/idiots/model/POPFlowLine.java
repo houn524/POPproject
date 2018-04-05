@@ -1,5 +1,7 @@
 package kr.co.idiots.model;
 
+import java.lang.reflect.InvocationTargetException;
+
 import javafx.beans.InvalidationListener;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
@@ -9,10 +11,11 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
+import javafx.scene.input.Dragboard;
+import javafx.scene.input.TransferMode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
-import kr.co.idiots.controller.DragManager;
 
 public class POPFlowLine extends Group {
 
@@ -107,8 +110,51 @@ public class POPFlowLine extends Group {
         endYProperty().addListener(updater);
         updater.invalidated(null);
         
-        DragManager.setOnFlowLineDrag(this);
+        try {
+			setOnFlowLineDrag();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
+    
+    public void setOnFlowLineDrag() throws ClassNotFoundException {
+		setOnDragOver(event -> {
+			Dragboard db = event.getDragboard();
+			if(db.hasImage() && !db.getString().equals("Variable")) {
+				event.acceptTransferModes(TransferMode.COPY);
+			}
+		});
+		
+		setOnDragDropped(event -> {
+			Dragboard db = event.getDragboard();
+			boolean success = false;
+			if(db.hasImage() && !db.getString().equals("Variable")) {
+				System.out.println(db.getString());
+//				Reflections reflections = new Reflections("kr.co.idiots.model");
+				Class<? extends POPSymbolNode> nodeClass = null;
+				POPSymbolNode node = null;
+				try {
+					nodeClass = (Class<? extends POPSymbolNode>) Class.forName("kr.co.idiots.model.POP" + db.getString() + "Node");
+				} catch (ClassNotFoundException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					node = nodeClass.getDeclaredConstructor(POPScriptArea.class).newInstance(getPrevNode().getScriptArea());
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException | SecurityException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				getPrevNode().getScriptArea().add(node);
+				insertNode(node);
+				
+//				flowLine.getPrevNode().setNextNode(node);
+//				node.setNextNode(flowLine.getNextNode());
+			}
+		});
+	}
 
     // start/end properties
 
@@ -217,10 +263,8 @@ public class POPFlowLine extends Group {
     	node.getOutFlowLine().setNextNode(nextNode);
     	setNextNode(node);
     	
-    	POPProcessDataInput dataInput = new POPProcessDataInput();
-    	node.getComponent().getChildren().add(dataInput);
-    	node.setDataInput(dataInput);
-    	dataInput.setNode(node);
+    	node.initialize();
+//    	dataInput.setParentNode(node);
     	
     	System.out.println(node.getScriptArea().getComponent().getBoundsInParent());
     }

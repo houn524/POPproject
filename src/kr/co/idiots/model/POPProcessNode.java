@@ -1,8 +1,6 @@
 package kr.co.idiots.model;
 
 public class POPProcessNode extends POPSymbolNode {
-
-	private POPProcessDataInput dataInput;
 	
 	public POPProcessNode(POPScriptArea scriptArea) {
 		super(scriptArea, POPNodeType.Process);
@@ -15,8 +13,15 @@ public class POPProcessNode extends POPSymbolNode {
 		outFlowLine = new POPFlowLine();
 		outFlowLine.setPrevNode(this);
 		
-		setOnBoundChangeListener();
+//		setOnBoundChangeListener();
 //		flowLine.setPrevNode(this);
+	}
+	
+	@Override
+	public void initialize() {
+		POPProcessDataInput dataInput = new POPProcessDataInput(this);
+    	getComponent().getChildren().add(dataInput);
+    	setDataInput(dataInput);
 	}
 
 //	@Override
