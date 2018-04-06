@@ -1,5 +1,5 @@
 package kr.co.idiots.model;
 
 public enum POPNodeType {
-	Start, Stop, Process, FlowLine, Variable
+	Start, Stop, Process, Document, FlowLine, Variable
 }
