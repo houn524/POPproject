@@ -7,11 +7,13 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
-import javafx.scene.Group;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Control;
+import javafx.scene.layout.FlowPane;
 
-public abstract class POPDataInput extends Group {
-	private Group component;
+public abstract class POPDataInput extends FlowPane {
+	private FlowPane component;
 	private IntegerProperty childrenCount;
 	protected String content;
 	protected POPNode parentNode;
@@ -19,6 +21,12 @@ public abstract class POPDataInput extends Group {
 	public POPDataInput(POPNode node) {
 		this.parentNode = node;
 		component = this;
+		component.setAlignment(Pos.CENTER);
+		component.setPrefSize(Control.USE_COMPUTED_SIZE, Control.USE_COMPUTED_SIZE);
+		component.setPrefWrapLength(0);
+		component.setHgap(5);
+		component.setPrefWrapLength(getParentNode().getImageView().getBoundsInLocal().getWidth());
+		
 		childrenCount = new SimpleIntegerProperty(component.getChildren().toArray().length);
 		content = "";
 //		InputStream stream = getClass().getResourceAsStream("/images/Blank.png");
@@ -27,9 +35,9 @@ public abstract class POPDataInput extends Group {
 		
 //		this.getChildren().add(blank);
 //		DragManager.setOnBlankDrag(this);
-		updateBound();
-		setOnAddListener();
-		setOnBoundChangeListener();
+//		updateBound();
+//		setOnAddListener();
+//		setOnBoundChangeListener();
 	}
 	
 	private void setOnAddListener() {
@@ -56,7 +64,7 @@ public abstract class POPDataInput extends Group {
 				
 				
 //				System.out.println("scale : " + (newBound.getWidth() - oldBound.getWidth()));
-				updateBound();
+//				updateBound();
 //				Bounds parentBound = parentNode.getComponent().getBoundsInParent();
 //				component.setLayoutX(parentBound.getMinX() + (parentBound.getWidth() / 2) - (newBound.getWidth() / 2));
 //				component.setLayoutY(parentBound.getMinY() + (parentBound.getHeight() / 2) - (newBound.getHeight() / 2));
@@ -97,7 +105,8 @@ public abstract class POPDataInput extends Group {
 		Bounds myBound = component.getBoundsInLocal();
 		component.setLayoutX(parentBound.getMinX() + (parentBound.getWidth() / 2) - (myBound.getWidth() / 2));
 		component.setLayoutY(parentBound.getMinY() + (parentBound.getHeight() / 2) - (myBound.getHeight() / 2));
-		
+//		component.maxWidth(getParent().getBoundsInParent().getWidth());
+		System.out.println("--DataInput : " + component.getBoundsInParent());
 	}
 	
 	public void add(int index, Node node) {

@@ -40,7 +40,7 @@ public class POPFlowLine extends Group {
 
     private static final double arrowLength = 20;
     private static final double arrowWidth = 7;
-    private static final double nodeMinGap = 30;
+    public static final double nodeMinGap = 30;
 
     private POPFlowLine(Line line, Line arrow1, Line arrow2, Rectangle area) {
         super(line, arrow1, arrow2, area);
@@ -256,12 +256,20 @@ public class POPFlowLine extends Group {
     
     public void insertNode(POPSymbolNode node) {
 //    	adjustPosition(node);
+    	System.out.println("LayoutX : " + node.getComponent().getLayoutX());
+    	System.out.println("LayoutY : " + node.getComponent().getLayoutY());
+    	
     	node.getComponent().setLayoutX(line.getStartX() - (node.getComponent().getBoundsInParent().getWidth() / 2));
     	node.getComponent().setLayoutY(prevNode.getComponent().getBoundsInParent().getMaxY() + nodeMinGap);
     	
     	node.getOutFlowLine().setPrevNode(node);
     	node.getOutFlowLine().setNextNode(nextNode);
     	setNextNode(node);
+    	
+//    	node.moveCenter();
+    	
+    	System.out.println("LayoutX : " + node.getComponent().getLayoutX());
+    	System.out.println("LayoutY : " + node.getComponent().getLayoutY());
     	
     	node.initialize();
 //    	dataInput.setParentNode(node);

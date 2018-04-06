@@ -1,10 +1,13 @@
 package kr.co.idiots.model;
 
+import javafx.geometry.Pos;
+import javafx.scene.layout.StackPane;
+
 public class POPProcessNode extends POPSymbolNode {
 	
 	public POPProcessNode(POPScriptArea scriptArea) {
 		super(scriptArea, POPNodeType.Process);
-		
+
 //		dataInput = new POPProcessDataInput();
 //		component.getChildren().add(dataInput);
 		//component.setTranslateX(50d);
@@ -20,8 +23,15 @@ public class POPProcessNode extends POPSymbolNode {
 	@Override
 	public void initialize() {
 		POPProcessDataInput dataInput = new POPProcessDataInput(this);
-    	getComponent().getChildren().add(dataInput);
+//    	getComponent().getChildren().add(dataInput);
     	setDataInput(dataInput);
+    	StackPane.setAlignment(dataInput, Pos.CENTER);
+    	component.getChildren().add(dataInput);
+    	
+    	
+    	System.out.println("DataInputX :" + dataInput.getBoundsInLocal());
+//    	System.out.println("DataInputY :" + dataInput.getLayoutY());
+//    	component.setAlignment(dataInput, Pos.CENTER);
 	}
 
 //	@Override

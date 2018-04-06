@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.ListView;
@@ -19,9 +18,9 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import kr.co.idiots.MainApp;
-import kr.co.idiots.controller.VariableController;
 import kr.co.idiots.model.POPProcessNode;
 import kr.co.idiots.model.POPScriptArea;
 import kr.co.idiots.model.POPStartNode;
@@ -47,8 +46,7 @@ public class POPSolvingLayoutController {
 	@FXML
 	private AnchorPane emptyFrame;
 	
-	private VariableController variables;
-	private ObservableList<Group> variableItems;
+	private ObservableList<StackPane> variableItems;
 	
 	private POPProcessNode processSymbol;
 	
@@ -64,7 +62,6 @@ public class POPSolvingLayoutController {
 	
 	@FXML
 	private void initialize() {
-		variables = new VariableController();
 		variableItems = FXCollections.observableArrayList();
 		variableListView.setItems(variableItems);
 		
@@ -98,7 +95,6 @@ public class POPSolvingLayoutController {
 		char ch = (char) ((Math.random() * 26) + 65);
 		String name = String.valueOf(ch);
 		Object value = (int) Math.random() * 100;
-		variables.addVariable(name, value);
 		
 		System.out.println(name);
 		POPVariableNode varNode = new POPVariableNode(scriptArea, name);

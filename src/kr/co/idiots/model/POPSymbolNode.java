@@ -26,6 +26,14 @@ public class POPSymbolNode extends POPNode {
 	public void initialize() {
 		
 	}
+	
+	public void moveCenter() {
+		if(inFlowLine != null) {
+			System.out.println("move center");
+			component.setLayoutX(inFlowLine.getStartX() - (component.getBoundsInParent().getWidth() / 2));
+			component.setLayoutY(inFlowLine.getPrevNode().getComponent().getBoundsInParent().getMaxY() + POPFlowLine.nodeMinGap);
+		}
+	}
 
 	private void setOnBoundChangeListener() {
 		component.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
@@ -33,16 +41,22 @@ public class POPSymbolNode extends POPNode {
 			@Override
 			public void changed(ObservableValue<? extends Bounds> arg0, Bounds oldBound, Bounds newBound) {
 				// TODO Auto-generated method stub
-//				System.out.println("Bound Changed!!");
-//				System.out.println(oldBound + " -> " + newBound);
+				System.out.println("Node Bound Changed!! : " + component);
+				System.out.println(oldBound + " -> " + newBound);
+				
+				
 				if(outFlowLine != null) {
+					System.out.println("out");
+//					outFlowLine.setPrevNode(this);
 					outFlowLine.setStartX(newBound.getMinX() + (newBound.getWidth() / 2));
 					outFlowLine.setStartY(newBound.getMaxY());
+					System.out.println(outFlowLine.getStartX() + " : " + outFlowLine.getStartY());
 				}
 				
 //				startY.set(line.getStartY());
 				
 				if(inFlowLine != null) {
+					System.out.println("in");
 					inFlowLine.setEndX(newBound.getMinX() + (newBound.getWidth() / 2));
 					inFlowLine.setEndY(newBound.getMinY());
 //					prevNode.getInFlowLine().endY.set(getEndY());

@@ -24,7 +24,8 @@ public class POPVariableNode extends POPNode {
 		
 		lbName = new Label(name);
 		
-		this.component.getChildren().add(lbName);
+//		component.setCenter(lbName);
+		component.getChildren().add(lbName);
 		
 		Bounds lbBound  = lbName.getBoundsInParent();
 		Bounds compBound = component.getBoundsInParent();
