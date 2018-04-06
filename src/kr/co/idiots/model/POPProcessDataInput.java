@@ -6,7 +6,6 @@ public class POPProcessDataInput extends POPDataInput {
 		super(parentNode);
 		
 		this.add(new POPEqualSymbol(this));
-		
 //		updateBound();
 //		Label equal = new Label("=");
 //		this.getChildren().add(equal);

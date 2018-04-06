@@ -3,6 +3,7 @@ package kr.co.idiots.model;
 import java.io.IOException;
 
 import javafx.scene.layout.AnchorPane;
+import javafx.*;
 import kr.co.idiots.CodeGenerator;
 
 public class POPScriptArea {
@@ -36,10 +37,22 @@ public class POPScriptArea {
 		generator = new CodeGenerator();
 		generator.createJavaFile();
 		
-		if(nodePointer instanceof POPStartNode) {
-			generator.createStartSource("test");
-		}
+		generateNode(startNode);
 		
 		System.out.println(generator.getSource());
+	}
+	
+	private void generateNode(POPNode node) {
+		
+		if(node instanceof POPStartNode) {
+			generator.createStartSource("text");
+		} else if(node instanceof POPProcessNode) {
+			POPDataInput dataInput = node.getDataInput();
+			int count = dataInput.getChildrenCount();
+			for(int i = 0; i < count; i++) {
+				POPEqualSymbol symbol = (POPEqualSymbol) dataInput.getChildren().get(i);
+				
+			}
+		}
 	}
 }

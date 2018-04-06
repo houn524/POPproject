@@ -12,6 +12,8 @@ public class POPEqualSymbol extends FlowPane {
 	private POPDataInput parentDataInput;
 	private POPBlank leftBlank;
 	private POPBlank rightBlank;
+	private String leftValue;
+	private String rightValue;
 	
 	public POPEqualSymbol(POPDataInput parentDataInput) {
 		this.parentDataInput = parentDataInput;
@@ -32,6 +34,8 @@ public class POPEqualSymbol extends FlowPane {
 		rightBlank = new POPBlank(this);
 		component.getChildren().add(rightBlank);
 	}
+	
+	public void add()
 
 	public FlowPane getComponent() {
 		return component;
