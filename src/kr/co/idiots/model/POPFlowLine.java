@@ -130,7 +130,6 @@ public class POPFlowLine extends Group {
 			Dragboard db = event.getDragboard();
 			boolean success = false;
 			if(db.hasImage() && !db.getString().equals("Variable")) {
-				System.out.println(db.getString());
 //				Reflections reflections = new Reflections("kr.co.idiots.model");
 				Class<? extends POPSymbolNode> nodeClass = null;
 				POPSymbolNode node = null;
@@ -256,8 +255,6 @@ public class POPFlowLine extends Group {
     
     public void insertNode(POPSymbolNode node) {
 //    	adjustPosition(node);
-    	System.out.println("LayoutX : " + node.getComponent().getLayoutX());
-    	System.out.println("LayoutY : " + node.getComponent().getLayoutY());
     	
     	node.getComponent().setLayoutX(line.getStartX() - (node.getComponent().getBoundsInParent().getWidth() / 2));
     	node.getComponent().setLayoutY(prevNode.getComponent().getBoundsInParent().getMaxY() + nodeMinGap);
@@ -268,20 +265,14 @@ public class POPFlowLine extends Group {
     	
 //    	node.moveCenter();
     	
-    	System.out.println("LayoutX : " + node.getComponent().getLayoutX());
-    	System.out.println("LayoutY : " + node.getComponent().getLayoutY());
     	
     	node.initialize();
 //    	dataInput.setParentNode(node);
     	
-    	System.out.println(node.getScriptArea().getComponent().getBoundsInParent());
     }
     
     public void adjustPosition(POPNode node) {
-    	System.out.println("length : " + length.getValue().doubleValue());
-    	System.out.println("node height : " + node.getComponent().getBoundsInParent().getHeight());
     	if(length.getValue().doubleValue() <= node.getComponent().getBoundsInParent().getHeight() + 5) {
-    		System.out.println("Called adjustPosition : " + length.getValue().doubleValue());
     		nextNode.getComponent().setTranslateY(node.getComponent().getBoundsInParent().getHeight() + nodeMinGap);
 //    		if(nextNode.getType() != POPNodeType.Stop)
 //    			nextNode.getOutFlowLine().getNextNode().getOutFlowLine().adjustPosition(nextNode.getFlowLine().getNextNode());

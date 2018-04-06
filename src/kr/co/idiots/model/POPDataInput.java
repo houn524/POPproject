@@ -17,6 +17,7 @@ public abstract class POPDataInput extends FlowPane {
 	private IntegerProperty childrenCount;
 	protected String content;
 	protected POPNode parentNode;
+	protected POPOperationSymbol childSymbol;
 	
 	public POPDataInput(POPNode node) {
 		this.parentNode = node;
@@ -46,7 +47,6 @@ public abstract class POPDataInput extends FlowPane {
 			@Override
 			public void changed(ObservableValue arg0, Object arg1, Object arg2) {
 				// TODO Auto-generated method stub
-				System.out.println("datainput changed");
 				updateBound();
 			}
 			
@@ -106,7 +106,6 @@ public abstract class POPDataInput extends FlowPane {
 		component.setLayoutX(parentBound.getMinX() + (parentBound.getWidth() / 2) - (myBound.getWidth() / 2));
 		component.setLayoutY(parentBound.getMinY() + (parentBound.getHeight() / 2) - (myBound.getHeight() / 2));
 //		component.maxWidth(getParent().getBoundsInParent().getWidth());
-		System.out.println("--DataInput : " + component.getBoundsInParent());
 	}
 	
 	public void add(int index, Node node) {
@@ -116,13 +115,17 @@ public abstract class POPDataInput extends FlowPane {
 	
 	public void add(Node node) {
 		getChildren().add(node);
+		childSymbol = (POPOperationSymbol) node;
 		childrenCount.setValue(childrenCount.getValue() + 1);
 	}
 	
 	public void remove(Node node) {
-		System.out.println("delete : " + node);
 		getChildren().remove(node);
 		childrenCount.setValue(childrenCount.getValue() - 1);
+	}
+	
+	public String toString() {
+		return childSymbol.toString();
 	}
 	
 	public final int getChildrenCount() { return childrenCount.get(); }

@@ -1,16 +1,17 @@
 package kr.co.idiots.model;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextField;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
-import javafx.scene.layout.FlowPane;
 import kr.co.idiots.util.POPNodeDataFormat;
 import kr.co.idiots.view.POPSolvingLayoutController;
 
 public class POPBlank extends TextField {
-	private FlowPane parentSymbol;
+	private POPOperationSymbol parentSymbol;
 	
-	public POPBlank(FlowPane parentSymbol) {
+	public POPBlank(POPOperationSymbol parentSymbol) {
 		this.parentSymbol = parentSymbol;
 		this.setPrefSize(61, 34);
 //		InputStream stream = getClass().getResourceAsStream("/images/Blank.png");
@@ -19,6 +20,23 @@ public class POPBlank extends TextField {
 //		this.setImage(img);
 		
 		setOnBlankDrag();
+		setOnBlankChange();
+	}
+	
+	private void setOnBlankChange() {
+		textProperty().addListener(new ChangeListener() {
+
+			@Override
+			public void changed(ObservableValue arg0, Object oldValue, Object newValue) {
+				// TODO Auto-generated method stub
+				int index = parentSymbol.getChildren().indexOf(this);
+				if(index == 0)
+					parentSymbol.setLeftValue(newValue.toString());
+				else
+					parentSymbol.setRightValue(newValue.toString());
+			}
+			
+		});
 	}
 	
 	private void setOnBlankDrag() {
@@ -31,7 +49,6 @@ public class POPBlank extends TextField {
 		
 		setOnDragDropped(event -> {
 			Dragboard db = event.getDragboard();
-			System.out.println("=================drop=============");
 			if(db.hasImage() && db.getString().equals("Variable")) {
 				POPVariableNode variable = new POPVariableNode(POPSolvingLayoutController.scriptArea, (String)db.getContent(POPNodeDataFormat.variableNameFormat));
 //				this.setText((String)db.getContent(POPNodeDataFormat.variableNameFormat));
@@ -40,23 +57,27 @@ public class POPBlank extends TextField {
 		});
 	}
 	
-	public void insertNode(POPNode node) {
-		System.out.println("????");
+	public void insertNode(POPVariableNode node) {
 //		parentDataInput.add(node.getComponent());
 		int index = parentSymbol.getChildren().indexOf(this);
-		parentSymbol.getChildren().remove(this);
-		parentSymbol.getChildren().add(index, node.getComponent());
+		parentSymbol.remove(this);
+		parentSymbol.add(index, node);
 //		parentDataInput.getParentNode().getImageView().setFitWidth(500);
 //		parentSymbol.getParentNode().moveCenter();
 //		parentDataInput.updateBound();
 //		parentDataInput.updateBound();
 	}
+	
+	public void insertNode(POPOperationSymbol node) {
+		int index = parentSymbol.getChildren().indexOf(this);
+		parentSymbol.getChildren().remove(this);
+	}
 
-	public FlowPane getParentSymbol() {
+	public POPOperationSymbol getParentSymbol() {
 		return parentSymbol;
 	}
 
-	public void setParentNode(FlowPane parentSymbol) {
+	public void setParentSymbol(POPOperationSymbol parentSymbol) {
 		this.parentSymbol = parentSymbol;
 	}
 }

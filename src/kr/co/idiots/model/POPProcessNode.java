@@ -29,7 +29,6 @@ public class POPProcessNode extends POPSymbolNode {
     	component.getChildren().add(dataInput);
     	
     	
-    	System.out.println("DataInputX :" + dataInput.getBoundsInLocal());
 //    	System.out.println("DataInputY :" + dataInput.getLayoutY());
 //    	component.setAlignment(dataInput, Pos.CENTER);
 	}

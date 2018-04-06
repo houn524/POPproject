@@ -63,7 +63,6 @@ public class POPVariableNode extends POPNode {
 			ClipboardContent content = new ClipboardContent();
 			content.putString(getType().toString());
 			content.putImage(getImageView().getImage());
-			System.out.println(name + " " + value);
 			content.put(POPNodeDataFormat.variableNameFormat, this.name);
 //			content.put(POPNodeDataFormat.variableValueFormat, this.value);
 //			Class<? extends POPNode> nodeClass = null;

@@ -1,14 +1,17 @@
 package kr.co.idiots.model;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+
+import javax.tools.JavaCompiler;
+import javax.tools.ToolProvider;
 
 import javafx.scene.layout.AnchorPane;
-import javafx.*;
 import kr.co.idiots.CodeGenerator;
 
 public class POPScriptArea {
 	private AnchorPane component;
-	private POPNode startNode;
+	private POPSymbolNode startNode;
 	private POPNode nodePointer;
 	private CodeGenerator generator;
 	
@@ -28,31 +31,56 @@ public class POPScriptArea {
 		return startNode;
 	}
 
-	public void setStartNode(POPNode startNode) {
+	public void setStartNode(POPSymbolNode startNode) {
 		this.startNode = startNode;
 		nodePointer = startNode;
 	}
 	
-	public void generate() throws IOException {
+	public void generate() throws IOException, NoSuchFieldException {
+		System.setProperty("java.home", "c:\\Program Files\\Java\\jdk1.8.0_144");
+		
+		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		generator = new CodeGenerator();
-		generator.createJavaFile();
 		
 		generateNode(startNode);
 		
 		System.out.println(generator.getSource());
+		
+		
+		String path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+		
+		int result = compiler.run(null, null, null, path + "test.java");
+		
+		String strResult = "";
+		
+		
+		try {
+			strResult = generator.runCode();
+		} catch (IllegalAccessException | InstantiationException | NoSuchMethodException | SecurityException
+				| IllegalArgumentException | InvocationTargetException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("result Output : \n" + strResult);
+//		ps.flush();
+//		outputStream = null;
+//		System.out.flush();
+//		compiler = null;
+//		ps.close();
 	}
 	
-	private void generateNode(POPNode node) {
+	private void generateNode(POPSymbolNode node) throws IOException {
 		
 		if(node instanceof POPStartNode) {
-			generator.createStartSource("text");
-		} else if(node instanceof POPProcessNode) {
-			POPDataInput dataInput = node.getDataInput();
-			int count = dataInput.getChildrenCount();
-			for(int i = 0; i < count; i++) {
-				POPEqualSymbol symbol = (POPEqualSymbol) dataInput.getChildren().get(i);
-				
-			}
+			generator.createStartSource("test");
+			generateNode(node.getOutFlowLine().getNextNode());
+		} else if(node instanceof POPStopNode) {
+			generator.createStopSource();
+			generator.createJavaFile();
+		} else {
+			generator.writeNodeContent(node);
+			generateNode(node.getOutFlowLine().getNextNode());
 		}
 	}
 }

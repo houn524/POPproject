@@ -94,7 +94,7 @@ public class POPSolvingLayoutController {
 				// TODO Auto-generated method stub
 				try {
 					scriptArea.generate();
-				} catch (IOException e) {
+				} catch (IOException | NoSuchFieldException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -126,7 +126,6 @@ public class POPSolvingLayoutController {
 		String name = String.valueOf(ch);
 		Object value = (int) Math.random() * 100;
 		
-		System.out.println(name);
 		POPVariableNode varNode = new POPVariableNode(scriptArea, name);
 		variableItems.add(varNode.getComponent());
 	}
