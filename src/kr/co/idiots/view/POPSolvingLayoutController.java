@@ -15,6 +15,7 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
@@ -23,8 +24,10 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import kr.co.idiots.MainApp;
 import kr.co.idiots.model.POPDocumentNode;
 import kr.co.idiots.model.POPProcessNode;
@@ -52,6 +55,11 @@ public class POPSolvingLayoutController {
 	@FXML
 	private AnchorPane emptyFrame;
 	
+	@FXML
+	private BorderPane consoleFrame;
+	
+	private Label lbConsole;
+	
 	private Button btnStart;
 	
 	private ObservableList<StackPane> variableItems;
@@ -71,6 +79,10 @@ public class POPSolvingLayoutController {
 	
 	@FXML
 	private void initialize() {
+		lbConsole = new Label("출력값 : ");
+		lbConsole.setFont(new Font(20));
+		consoleFrame.setLeft(lbConsole);
+		
 		variableItems = FXCollections.observableArrayList();
 		variableListView.setItems(variableItems);
 		
@@ -93,7 +105,7 @@ public class POPSolvingLayoutController {
 			public void handle(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				try {
-					scriptArea.generate();
+					lbConsole.setText("출력값 : " + scriptArea.generate());
 				} catch (IOException | NoSuchFieldException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

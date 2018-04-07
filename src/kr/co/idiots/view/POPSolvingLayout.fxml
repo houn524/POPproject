@@ -8,8 +8,9 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 
-<AnchorPane prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.POPSolvingLayoutController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1080.0" prefWidth="1920.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.POPSolvingLayoutController">
    <children>
       <SplitPane dividerPositions="0.32957393483709274" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <items>
@@ -44,15 +45,20 @@
                 </Tab>
               </tabs>
             </TabPane>
-            <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true">
-               <content>
-                  <Group>
-                     <children>
-                        <AnchorPane fx:id="emptyFrame" />
-                     </children>
-                  </Group>
-               </content>
-            </ScrollPane>
+            <SplitPane dividerPositions="0.8785140562248996" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0">
+              <items>
+                  <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true">
+                     <content>
+                        <Group>
+                           <children>
+                              <AnchorPane fx:id="emptyFrame" />
+                           </children>
+                        </Group>
+                     </content>
+                  </ScrollPane>
+                  <BorderPane fx:id="consoleFrame" prefHeight="200.0" prefWidth="200.0" />
+              </items>
+            </SplitPane>
          </items>
       </SplitPane>
    </children>

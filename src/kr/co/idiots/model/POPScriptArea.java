@@ -1,5 +1,6 @@
 package kr.co.idiots.model;
 
+import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
@@ -36,8 +37,10 @@ public class POPScriptArea {
 		nodePointer = startNode;
 	}
 	
-	public void generate() throws IOException, NoSuchFieldException {
-		System.setProperty("java.home", "c:\\Program Files\\Java\\jdk1.8.0_144");
+	public String generate() throws IOException, NoSuchFieldException {
+		String jdkPath = new File("").getAbsolutePath() + "\\runtime\\jdk1.8.0_144";
+//		String jdkPath = "C:\\Program Files\\Java\\jdk1.8.0_144";
+		System.setProperty("java.home", jdkPath);
 		
 		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		generator = new CodeGenerator();
@@ -68,6 +71,8 @@ public class POPScriptArea {
 //		System.out.flush();
 //		compiler = null;
 //		ps.close();
+		
+		return strResult;
 	}
 	
 	private void generateNode(POPSymbolNode node) throws IOException {
