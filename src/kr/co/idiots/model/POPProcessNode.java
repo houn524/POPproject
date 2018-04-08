@@ -22,11 +22,18 @@ public class POPProcessNode extends POPSymbolNode {
 	
 	@Override
 	public void initialize() {
+		
 		POPProcessDataInput dataInput = new POPProcessDataInput(this);
 //    	getComponent().getChildren().add(dataInput);
     	setDataInput(dataInput);
     	StackPane.setAlignment(dataInput, Pos.CENTER);
     	component.getChildren().add(dataInput);
+    	
+//    	setOnDataInputBoundChangeListener();
+//		System.out.println("dataInput : " + dataInput.getBoundsInLocal());
+//		imgView.setFitWidth(dataInput.getBoundsInLocal().getWidth() + 0.1);
+//		imgView.setFitHeight(dataInput.getBoundsInLocal().getHeight() + 0.5);
+		this.moveCenter();
     	
     	
 //    	System.out.println("DataInputY :" + dataInput.getLayoutY());

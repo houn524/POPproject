@@ -1,11 +1,10 @@
 public class test {
 
     public static void main(String[] args) {
-        int B = 10;
-        int E = B;
-        int T = 35;
-        System.out.println(B);
-        System.out.println(E);
-        System.out.println(T);
+        Object K = 300;
+        K = 1000;
+        Object N = K;
+        System.out.println(K);
+        System.out.println(N);
     }
 }

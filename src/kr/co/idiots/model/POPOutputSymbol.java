@@ -10,24 +10,24 @@ public class POPOutputSymbol extends POPOperationSymbol {
 		super(parentDataInput);
 		
 		outputBlank = new POPBlank(this);
-		getChildren().add(outputBlank);
+		contents.getChildren().add(outputBlank);
 	}
 	
 	@Override
 	public void add(int index, POPVariableNode node) {
-		getChildren().add(index, node);
+		contents.getChildren().add(index, node);
 		value = node.getName();
 	}
 	
 	@Override
 	public void add(int index, POPOperationSymbol node) {
-		getChildren().add(index, node);
+		contents.getChildren().add(index, node);
 	}
 	
 	@Override
 	public void remove(Node node) {
-		int index = getChildren().indexOf(node);
-		getChildren().remove(node);
+		int index = contents.getChildren().indexOf(node);
+		contents.getChildren().remove(node);
 		value = "";
 	}
 	

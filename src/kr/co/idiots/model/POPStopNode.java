@@ -5,8 +5,10 @@ public class POPStopNode extends POPSymbolNode {
 	public POPStopNode(POPScriptArea scriptArea) {
 		super(scriptArea, POPNodeType.Stop);
 		
-		component.setTranslateX(50d);
-		component.setTranslateY(400d);
+		component.setLayoutX(50d);
+		component.setLayoutY(400d);
+		
+//		moveCenter();
 		
 	}
 

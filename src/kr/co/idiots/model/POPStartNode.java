@@ -5,8 +5,8 @@ public class POPStartNode extends POPSymbolNode {
 	public POPStartNode(POPScriptArea scriptArea) {
 		super(scriptArea, POPNodeType.Start);
 		
-		component.setTranslateX(50d);
-		component.setTranslateY(50d);
+		component.setLayoutX(50d);
+		component.setLayoutY(50d);
 		
 		//flowLine = new POPFlowLine();
 		outFlowLine = new POPFlowLine();

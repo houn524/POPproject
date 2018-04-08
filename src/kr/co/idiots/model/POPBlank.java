@@ -6,6 +6,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import kr.co.idiots.util.POPNodeDataFormat;
+import kr.co.idiots.util.TextUtils;
 import kr.co.idiots.view.POPSolvingLayoutController;
 
 public class POPBlank extends TextField {
@@ -13,18 +14,19 @@ public class POPBlank extends TextField {
 	
 	public POPBlank(POPOperationSymbol parentSymbol) {
 		this.parentSymbol = parentSymbol;
-		this.setPrefSize(61, 34);
+		this.setPrefSize(10, 34);
 //		InputStream stream = getClass().getResourceAsStream("/images/Blank.png");
 //		Image img = new Image(stream);
 //		this.getChildren().add(new ImageView(img));
 //		this.setImage(img);
+//		prefColumnCountProperty().bind(textProperty().length());
 		
 		setOnBlankDrag();
 		setOnBlankChange();
 	}
 	
 	private void setOnBlankChange() {
-		textProperty().addListener(new ChangeListener() {
+		textProperty().addListener(new ChangeListener<Object>() {
 
 			@Override
 			public void changed(ObservableValue arg0, Object oldValue, Object newValue) {
@@ -34,8 +36,16 @@ public class POPBlank extends TextField {
 					parentSymbol.setLeftValue(newValue.toString());
 				else
 					parentSymbol.setRightValue(newValue.toString());
+				
+				if(getText().isEmpty())
+					setPrefWidth(0);
+				else
+					setPrefWidth(TextUtils.computeTextWidth(getFont(), getText(), 0.0D) + 20);
+//				setPrefWidth(getText().length() * 10);
+//				setPrefWidth(Control.USE_COMPUTED_SIZE);
+				
+				parentSymbol.setContentsAutoSize();
 			}
-			
 		});
 	}
 	
@@ -59,7 +69,7 @@ public class POPBlank extends TextField {
 	
 	public void insertNode(POPVariableNode node) {
 //		parentDataInput.add(node.getComponent());
-		int index = parentSymbol.getChildren().indexOf(this);
+		int index = parentSymbol.getContents().getChildren().indexOf(this);
 		parentSymbol.remove(this);
 		parentSymbol.add(index, node);
 //		parentDataInput.getParentNode().getImageView().setFitWidth(500);
@@ -69,8 +79,8 @@ public class POPBlank extends TextField {
 	}
 	
 	public void insertNode(POPOperationSymbol node) {
-		int index = parentSymbol.getChildren().indexOf(this);
-		parentSymbol.getChildren().remove(this);
+		int index = parentSymbol.getContents().getChildren().indexOf(this);
+		parentSymbol.remove(this);
 	}
 
 	public POPOperationSymbol getParentSymbol() {

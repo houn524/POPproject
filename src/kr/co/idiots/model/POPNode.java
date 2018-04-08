@@ -18,6 +18,7 @@ public abstract class POPNode extends StackPane implements Serializable, Cloneab
 	protected Label label;
 	protected StackPane component;
 	protected POPScriptArea scriptArea;
+	protected double initWidth;
 
 //	protected POPNode nextNode;
 //	protected POPNode prevNode;
@@ -30,6 +31,8 @@ public abstract class POPNode extends StackPane implements Serializable, Cloneab
 		Image img = new Image(stream);
 		imgView = new ImageView(img);
 
+		initWidth = imgView.getBoundsInLocal().getWidth();
+		System.out.println("initWidth : " + initWidth);
 		
 		component = this;
 		component.setPrefWidth(Control.USE_COMPUTED_SIZE);
@@ -58,6 +61,10 @@ public abstract class POPNode extends StackPane implements Serializable, Cloneab
 	
 	public void moveCenter() {
 		
+	}
+	
+	public void setNodeAutoSize(double width) {
+		imgView.setFitWidth(Math.max(width + 40, initWidth));
 	}
 
 //	private void setOnNodeDrag() {

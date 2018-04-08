@@ -29,8 +29,32 @@ public class POPSymbolNode extends POPNode {
 	
 	public void moveCenter() {
 		if(inFlowLine != null) {
-			component.setLayoutX(inFlowLine.getStartX() - (component.getBoundsInParent().getWidth() / 2));
-			component.setLayoutY(inFlowLine.getPrevNode().getComponent().getBoundsInParent().getMaxY() + POPFlowLine.nodeMinGap);
+			component.setLayoutX(inFlowLine.getStartX() - (component.getWidth() / 2));
+			System.out.println(inFlowLine.getStartX() - (component.getWidth() / 2));
+			if(this instanceof POPStopNode)
+			{
+				System.out.println("StopStartX : " + inFlowLine.getStartX());
+				System.out.println("Stop : " + (inFlowLine.getStartX() - (component.getWidth() / 2)));
+				System.out.println("move center : " + component.getWidth());
+			}
+			
+			Bounds newBound = component.getBoundsInParent();
+			
+			if(outFlowLine != null) {
+//				outFlowLine.setPrevNode(this);
+				outFlowLine.setStartX(newBound.getMinX() + (newBound.getWidth() / 2));
+				outFlowLine.setStartY(newBound.getMaxY());
+			}
+			
+//			startY.set(line.getStartY());
+			
+			if(inFlowLine != null) {
+				inFlowLine.setEndX(newBound.getMinX() + (newBound.getWidth() / 2));
+				inFlowLine.setEndY(newBound.getMinY());
+//				prevNode.getInFlowLine().endY.set(getEndY());
+			}
+				
+//			component.setLayoutY(inFlowLine.getPrevNode().getComponent().getBoundsInParent().getMaxY() + POPFlowLine.nodeMinGap);
 		}
 	}
 
@@ -55,7 +79,26 @@ public class POPSymbolNode extends POPNode {
 					inFlowLine.setEndY(newBound.getMinY());
 //					prevNode.getInFlowLine().endY.set(getEndY());
 				}
+				
+				moveCenter();
 
+			}
+			
+		});
+		
+		
+	}
+	
+	
+	protected void setOnDataInputBoundChangeListener() {
+		dataInput.boundsInLocalProperty().addListener(new ChangeListener<Bounds>() {
+
+			@Override
+			public void changed(ObservableValue<? extends Bounds> arg0, Bounds oldBound, Bounds newBound) {
+				// TODO Auto-generated method stub
+//				imgView.setFitWidth(newBound.getWidth());
+//				imgView.setFitHeight(newBound.getHeight() + 0.5);
+				moveCenter();
 			}
 			
 		});

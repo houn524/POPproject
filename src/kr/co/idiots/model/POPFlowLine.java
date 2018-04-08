@@ -96,6 +96,7 @@ public class POPFlowLine extends Group {
 				if(newLength.doubleValue() < nodeMinGap && nextNode != null) {
 //					System.out.println("Length is too Short! nextNode : " + nextNode.getType() + " length : " + newLength);
 					nextNode.getComponent().setLayoutY(nextNode.getComponent().getLayoutY() + (nodeMinGap - newLength.doubleValue()));
+					nextNode.moveCenter();
 //					nextNode.getComponent().setTranslateY(nodeMinGap - newLength.doubleValue());
 //					System.out.println("TransY : " + (nodeMinGap - newLength.doubleValue()));
 				}
@@ -274,6 +275,7 @@ public class POPFlowLine extends Group {
     public void adjustPosition(POPNode node) {
     	if(length.getValue().doubleValue() <= node.getComponent().getBoundsInParent().getHeight() + 5) {
     		nextNode.getComponent().setTranslateY(node.getComponent().getBoundsInParent().getHeight() + nodeMinGap);
+    		System.out.println(node.getComponent().getBoundsInParent().getHeight() + nodeMinGap);
 //    		if(nextNode.getType() != POPNodeType.Stop)
 //    			nextNode.getOutFlowLine().getNextNode().getOutFlowLine().adjustPosition(nextNode.getFlowLine().getNextNode());
     	}
