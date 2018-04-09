@@ -11,17 +11,23 @@ public class POPOutputSymbol extends POPOperationSymbol {
 		
 		outputBlank = new POPBlank(this);
 		contents.getChildren().add(outputBlank);
+		
+		setInitWidth();
 	}
 	
 	@Override
 	public void add(int index, POPVariableNode node) {
 		contents.getChildren().add(index, node);
 		value = node.getName();
+		
+		setContentsAutoSize();
 	}
 	
 	@Override
 	public void add(int index, POPOperationSymbol node) {
 		contents.getChildren().add(index, node);
+		
+		setContentsAutoSize();
 	}
 	
 	@Override
@@ -29,6 +35,8 @@ public class POPOutputSymbol extends POPOperationSymbol {
 		int index = contents.getChildren().indexOf(node);
 		contents.getChildren().remove(node);
 		value = "";
+		
+		setContentsAutoSize();
 	}
 	
 	@Override

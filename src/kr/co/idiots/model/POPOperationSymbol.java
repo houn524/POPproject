@@ -84,6 +84,29 @@ public class POPOperationSymbol extends StackPane {
 //		});
 	}
 	
+	public void setInitWidth() {
+		double width = 0;
+		
+		for(int i = 0; i < contents.getChildren().size(); i++) {
+			System.out.println("i : " + contents.getChildren().get(i).getBoundsInLocal().getWidth());
+			if(contents.getChildren().get(i) instanceof POPBlank)
+				width += ((POPBlank) contents.getChildren().get(i)).getPrefWidth();
+			else
+				width += contents.getChildren().get(i).getBoundsInLocal().getWidth();
+			width += contents.getHgap();
+			
+			if(i == contents.getChildren().size())
+				break;
+		}
+		
+		initWidth = width + 40;
+		
+		shape.setFitWidth(initWidth);
+		
+		contents.setPrefWrapLength(initWidth);
+		contents.setMinWidth(initWidth);
+	}
+	
 	public void setContentsAutoSize() {
 		double width = 0;
 		
