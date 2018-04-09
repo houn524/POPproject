@@ -1,10 +1,8 @@
 public class test {
 
     public static void main(String[] args) {
-        Object W = 555;
-        Object C = W;
-        C = 400;
-        System.out.println(W);
-        System.out.println(C);
+        Object B = 23233423;
+        Object Z = B;
+        System.out.println(Z);
     }
 }

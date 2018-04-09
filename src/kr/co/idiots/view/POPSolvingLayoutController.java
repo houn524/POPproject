@@ -18,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.SplitPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.ClipboardContent;
@@ -42,8 +43,8 @@ public class POPSolvingLayoutController {
 	
 	@FXML
 	private ImageView node;
-	@FXML
-	private ScrollPane scrollPane;
+//	@FXML
+//	private ScrollPane scrollPane;
 	@FXML
 	private AnchorPane symbolArea;
 	
@@ -53,7 +54,13 @@ public class POPSolvingLayoutController {
 	private ListView variableListView;
 	
 	@FXML
-	private AnchorPane emptyFrame;
+	private AnchorPane scriptPane;
+	
+	@FXML
+	private ScrollPane scriptScrollPane;
+	
+	@FXML
+	private SplitPane splitPane;
 	
 	@FXML
 	private BorderPane consoleFrame;
@@ -86,17 +93,18 @@ public class POPSolvingLayoutController {
 		variableItems = FXCollections.observableArrayList();
 		variableListView.setItems(variableItems);
 		
-		scriptArea = new POPScriptArea(emptyFrame);
+		scriptArea = new POPScriptArea(scriptPane, scriptScrollPane);
 		
-		scrollPane.viewportBoundsProperty().addListener(new ChangeListener<Bounds>() {
+		scriptScrollPane.viewportBoundsProperty().addListener(new ChangeListener<Bounds>() {
 			@Override
 			public void changed(ObservableValue<? extends Bounds> arg0, Bounds arg1, Bounds arg2) {
 				// TODO Auto-generated method stub
-				Node content = scrollPane.getContent();
-				scrollPane.setFitToWidth(content.prefWidth(-1) < arg2.getWidth());
-				scrollPane.setFitToWidth(content.prefHeight(-1) < arg2.getHeight());
+				Node content = scriptScrollPane.getContent();
+				scriptScrollPane.setFitToWidth(content.prefWidth(-1) < arg2.getWidth());
+				scriptScrollPane.setFitToWidth(content.prefHeight(-1) < arg2.getHeight());
 			}
 		});
+		
 		
 		btnStart = new Button("실행");
 		btnStart.setOnAction(new EventHandler<ActionEvent>() {

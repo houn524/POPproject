@@ -1,12 +1,15 @@
 package kr.co.idiots;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
@@ -20,6 +23,8 @@ public class MainApp extends Application {
 	private Stage primaryStage;
 	private BorderPane rootLayout;
 	
+	public static final Set<KeyCode> pressedKeys = new HashSet<>();
+	
 	/*
 		연락처에 대한 ovservable 리스트
 	*/
@@ -29,16 +34,6 @@ public class MainApp extends Application {
 		생성자
 	*/
 	public MainApp() {
-		// 샘플 데이터를 추가한다.
-		personData.add(new Person("Hans", "Muster"));
-		personData.add(new Person("Ruth", "Mueller"));
-		personData.add(new Person("Heinz", "Kurz"));
-		personData.add(new Person("Cornelia", "Meier"));
-		personData.add(new Person("Werner", "Meyer"));
-		personData.add(new Person("Lydia", "Kunz"));
-		personData.add(new Person("Anna", "Best"));
-		personData.add(new Person("Stefan", "Meier"));
-		personData.add(new Person("Martin", "Mueller"));
 	}
 	
 	/*
@@ -70,33 +65,19 @@ public class MainApp extends Application {
 			
 			// 상위 레이아웃을 포함하는 scene을 보여준다.
 			Scene scene = new Scene(rootLayout);
+			scene.setOnKeyPressed(e -> {
+				pressedKeys.add(e.getCode());
+				System.out.println(e.getCode());
+			});
+			scene.setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
+			
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-	
-//	/*상위 레이아웃 안에 연락처 요약(person overview)을 보여준다.*/
-//	public void showPersonOverview() {
-//		try {
-//			// 연락처 요약을 가져온다.
-//			FXMLLoader loader = new FXMLLoader();
-//			loader.setLocation(MainApp.class.getResource("view/PersonOverview.fxml"));
-//			AnchorPane personOverview = (AnchorPane)loader.load();
-//			
-//			// 연락처 요약을 상위 레이아웃 가운데로 설정한다.
-//			rootLayout.setCenter(personOverview);
-//			
-//			// 메인 애플리케이션이 컨트롤러를 이용할 수 있게 한다.
-//			PersonOverviewController controller = loader.getController();
-//			controller.setMainApp(this);
-//		} catch(IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
-	
+		
 	/*
 		상위 레이아웃 안에 메인화면(기호들을 배치할 수 있는 페이지)을 보여준다.
 	*/
