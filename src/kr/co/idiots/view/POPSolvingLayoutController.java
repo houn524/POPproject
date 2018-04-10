@@ -31,6 +31,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import kr.co.idiots.MainApp;
 import kr.co.idiots.model.POPDocumentNode;
+import kr.co.idiots.model.POPPlusSymbol;
 import kr.co.idiots.model.POPProcessNode;
 import kr.co.idiots.model.POPScriptArea;
 import kr.co.idiots.model.POPStartNode;
@@ -47,6 +48,9 @@ public class POPSolvingLayoutController {
 //	private ScrollPane scrollPane;
 	@FXML
 	private AnchorPane symbolArea;
+	
+	@FXML
+	private AnchorPane operationArea;
 	
 	@FXML
 	private AnchorPane variableArea;
@@ -73,6 +77,7 @@ public class POPSolvingLayoutController {
 	
 	private POPProcessNode processSymbol;
 	private POPDocumentNode documentSymbol;
+	private POPPlusSymbol plusSymbol;
 	
 	private MainApp mainApp;
 	
@@ -127,6 +132,9 @@ public class POPSolvingLayoutController {
 		documentSymbol = new POPDocumentNode(scriptArea);
 		symbolArea.getChildren().add(documentSymbol.getComponent());
 		documentSymbol.getComponent().setLayoutY(100);
+		
+		plusSymbol = new POPPlusSymbol();
+		operationArea.getChildren().add(plusSymbol);
 		
 		POPSymbolNode startNode = new POPStartNode(scriptArea);
 		POPSymbolNode stopNode = new POPStopNode(scriptArea);

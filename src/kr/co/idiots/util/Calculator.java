@@ -9,7 +9,6 @@ public class Calculator {
 	private static ScriptEngine engine = mgr.getEngineByName("JavaScript");
 	
 	public static String eval(String value) throws ScriptException {
-		System.out.println(engine.eval(value));
 		return engine.eval(value).toString();
 	}
 }

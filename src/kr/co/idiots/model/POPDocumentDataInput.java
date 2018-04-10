@@ -5,7 +5,10 @@ public class POPDocumentDataInput extends POPDataInput {
 	public POPDocumentDataInput(POPNode parentNode) {
 		super(parentNode);
 		
-		this.add(new POPOutputSymbol(this));
+		POPOutputSymbol outputSymbol = new POPOutputSymbol();
+		
+		this.add(outputSymbol);
+		outputSymbol.initialize(this);
 	}
 
 }

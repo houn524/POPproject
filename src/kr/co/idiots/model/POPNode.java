@@ -32,7 +32,6 @@ public abstract class POPNode extends StackPane implements Serializable, Cloneab
 		imgView = new ImageView(img);
 
 		initWidth = imgView.getBoundsInLocal().getWidth();
-		System.out.println("initWidth : " + initWidth);
 		
 		component = this;
 		component.setPrefWidth(Control.USE_COMPUTED_SIZE);

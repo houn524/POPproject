@@ -6,8 +6,8 @@ public class POPOutputSymbol extends POPOperationSymbol {
 	private POPBlank outputBlank;
 	private String value;
 	
-	public POPOutputSymbol(POPDataInput parentDataInput) {
-		super(parentDataInput);
+	public POPOutputSymbol() {
+		this.type = POPSymbolType.Output;
 		
 		outputBlank = new POPBlank(this);
 		contents.getChildren().add(outputBlank);

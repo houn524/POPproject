@@ -54,6 +54,8 @@ public class POPBlank extends TextField {
 			Dragboard db = event.getDragboard();
 			if(db.hasImage() && db.getString().equals("Variable")) {
 				event.acceptTransferModes(TransferMode.COPY);
+			} else if(db.hasImage() && db.getString().equals("Plus")) {
+				event.acceptTransferModes(TransferMode.COPY);
 			}
 		});
 		
@@ -63,6 +65,9 @@ public class POPBlank extends TextField {
 				POPVariableNode variable = new POPVariableNode(POPSolvingLayoutController.scriptArea, (String)db.getContent(POPNodeDataFormat.variableNameFormat));
 //				this.setText((String)db.getContent(POPNodeDataFormat.variableNameFormat));
 				insertNode(variable);
+			} else if(db.hasImage() && db.getString().equals("Plus")) {
+				POPPlusSymbol plusSymbol = new POPPlusSymbol();
+				insertNode(plusSymbol);
 			}
 		});
 	}
@@ -80,7 +85,10 @@ public class POPBlank extends TextField {
 	
 	public void insertNode(POPOperationSymbol node) {
 		int index = parentSymbol.getContents().getChildren().indexOf(this);
+		
 		parentSymbol.remove(this);
+		parentSymbol.add(index, node);
+		node.initialize(parentSymbol.getParentDataInput());
 	}
 
 	public POPOperationSymbol getParentSymbol() {

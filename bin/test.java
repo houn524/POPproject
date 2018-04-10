@@ -1,8 +1,8 @@
 public class test {
 
     public static void main(String[] args) {
-        Object K = 12;
-        K = 3.5;
-        System.out.println(K);
+        Object J = 12;
+        Object N = J.value() + 23;
+        System.out.println(J);
     }
 }

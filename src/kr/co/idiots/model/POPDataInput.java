@@ -17,7 +17,7 @@ public abstract class POPDataInput extends FlowPane {
 	private IntegerProperty childrenCount;
 	protected String content;
 	protected POPNode parentNode;
-	protected POPOperationSymbol childSymbol;
+	protected POPOperationSymbol rootSymbol;
 	
 	public POPDataInput(POPNode node) {
 		this.parentNode = node;
@@ -115,8 +115,10 @@ public abstract class POPDataInput extends FlowPane {
 	
 	public void add(Node node) {
 		getChildren().add(node);
-		childSymbol = (POPOperationSymbol) node;
+		rootSymbol = (POPOperationSymbol) node;
 		childrenCount.setValue(childrenCount.getValue() + 1);
+		rootSymbol.setRootSymbol(true);
+		setRootSymbol(rootSymbol);
 	}
 	
 	public void remove(Node node) {
@@ -125,15 +127,21 @@ public abstract class POPDataInput extends FlowPane {
 	}
 	
 	public String getCodeString() {
-		return childSymbol.getCodeString();
+		return rootSymbol.getCodeString();
 	}
 	
 	public final int getChildrenCount() { return childrenCount.get(); }
 	public final void setChildrenCount(int value) { childrenCount.set(value); }
-	public IntegerProperty childrenCountProperty() { return childrenCount; }
-	
-//	public abstract void insertInputVariable(POPVariableNode variable);
-	
+	public IntegerProperty childrenCountProperty() { return childrenCount; }	
 	public void setParentNode(POPNode node) { this.parentNode = node; }
 	public POPNode getParentNode() { return this.parentNode; }
+
+
+	public POPOperationSymbol getRootSymbol() {
+		return rootSymbol;
+	}
+
+	public void setRootSymbol(POPOperationSymbol rootSymbol) {
+		this.rootSymbol = rootSymbol;
+	}
 }

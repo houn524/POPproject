@@ -9,8 +9,8 @@ public class POPEqualSymbol extends POPOperationSymbol {
 	
 	private ImageView equal;
 	
-	public POPEqualSymbol(POPDataInput parentDataInput) {
-		super(parentDataInput);
+	public POPEqualSymbol() {
+		this.type = POPSymbolType.Equal;
 		
 		symbol = " = ";
 		

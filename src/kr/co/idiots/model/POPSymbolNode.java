@@ -30,13 +30,6 @@ public class POPSymbolNode extends POPNode {
 	public void moveCenter() {
 		if(inFlowLine != null) {
 			component.setLayoutX(inFlowLine.getStartX() - (component.getWidth() / 2));
-			System.out.println(inFlowLine.getStartX() - (component.getWidth() / 2));
-			if(this instanceof POPStopNode)
-			{
-				System.out.println("StopStartX : " + inFlowLine.getStartX());
-				System.out.println("Stop : " + (inFlowLine.getStartX() - (component.getWidth() / 2)));
-				System.out.println("move center : " + component.getWidth());
-			}
 			
 			Bounds newBound = component.getBoundsInParent();
 			
