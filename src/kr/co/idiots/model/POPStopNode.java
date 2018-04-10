@@ -7,14 +7,5 @@ public class POPStopNode extends POPSymbolNode {
 		
 		component.setLayoutX(50d);
 		component.setLayoutY(400d);
-		
-//		moveCenter();
-		
 	}
-
-//	@Override
-//	public void setNextNode(POPNode nextNode) {
-//		// TODO Auto-generated method stub
-//		
-//	}
 }

@@ -1,13 +1,17 @@
 package kr.co.idiots.model;
 
 import javafx.scene.Node;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class POPOutputSymbol extends POPOperationSymbol {
 	private POPBlank outputBlank;
 	private String value;
 	
 	public POPOutputSymbol() {
-		this.type = POPSymbolType.Output;
+		this.type = POPNodeType.Output;
 		
 		outputBlank = new POPBlank(this);
 		contents.getChildren().add(outputBlank);
@@ -46,13 +50,5 @@ public class POPOutputSymbol extends POPOperationSymbol {
 		strCode += "System.out.println(";
 		strCode += value;
 		strCode += ");";
-	}
-
-	public POPBlank getBlank() {
-		return outputBlank;
-	}
-
-	public void setBlank(POPBlank blank) {
-		this.outputBlank = blank;
 	}
 }

@@ -11,7 +11,11 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import kr.co.idiots.CodeGenerator;
 import kr.co.idiots.MainApp;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class POPScriptArea {
 	private AnchorPane component;
 	private ScrollPane scrollPane;
@@ -42,17 +46,11 @@ public class POPScriptArea {
 
 		});
 	}
-		
-	public AnchorPane getComponent() { return component; }
-	
+			
 	public void add(POPSymbolNode node) {
 		component.getChildren().add(node.getComponent());
 		if(node.getOutFlowLine() != null)
 			component.getChildren().add(node.getOutFlowLine());
-	}
-
-	public POPNode getStartNode() {
-		return startNode;
 	}
 
 	public void setStartNode(POPSymbolNode startNode) {

@@ -15,15 +15,17 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import kr.co.idiots.POPVariableManager;
 import kr.co.idiots.util.Calculator;
+import kr.co.idiots.util.ClipboardUtil;
 import kr.co.idiots.util.TypeChecker;
+import lombok.Getter;
+import lombok.Setter;
 
-enum POPSymbolType {
-	Equal, Plus, Output
-}
-
+@Getter
+@Setter
 public class POPOperationSymbol extends StackPane {
 	protected POPDataInput parentDataInput;
-	protected ImageView shape;
+	protected POPOperationSymbol parentSymbol;
+	protected ImageView imgShape;
 	protected FlowPane contents;
 	protected POPBlank leftBlank;
 	protected POPBlank rightBlank;
@@ -34,22 +36,17 @@ public class POPOperationSymbol extends StackPane {
 	protected String leftValue = "";
 	protected String rightValue = "";
 	protected String symbol;
-	protected POPSymbolType type;
+	protected POPNodeType type;
 	protected double initWidth;
 	protected boolean isRootSymbol = false;
-//	protected DoubleProperty contentsWidth;
 	
-	public POPOperationSymbol() {
-		
-		
-//		contentsWidth = new SimpleDoubleProperty();
-		
+	public POPOperationSymbol() {		
 		InputStream stream = getClass().getResourceAsStream("/images/Operation.png");
 		Image img = new Image(stream);
-		shape = new ImageView(img);
+		imgShape = new ImageView(img);
 		
-		getChildren().add(shape);
-		StackPane.setAlignment(shape, Pos.CENTER);
+		getChildren().add(imgShape);
+		StackPane.setAlignment(imgShape, Pos.CENTER);
 		
 		contents = new FlowPane();
 		getChildren().add(contents);
@@ -58,41 +55,6 @@ public class POPOperationSymbol extends StackPane {
 		
 		contents.setAlignment(Pos.CENTER);
 		contents.setHgap(5);
-//		contents.setPrefWrapLength(shape.getBoundsInLocal().getWidth());//parentDataInput.getParentNode().getImageView().getBoundsInLocal().getWidth());
-		
-		
-//		contentWidthProperty().addListener(new ChangeListener<Object>() {
-//
-//			@Override
-//			public void changed(ObservableValue arg0, Object oldValue, Object newValue) {
-//				// TODO Auto-generated method stub
-//				if((Double)newValue >= contents.getPrefWrapLength() - 20)
-//					contents.setPrefWrapLength((Double)newValue + 20);
-//				else if((Double)newValue <= contents.getPrefWrapLength() - 20 && contents.getPrefWrapLength() > 150) {
-//					contents.setPrefWrapLength((Double)newValue + 20);
-//				
-//					System.out.println("what?");
-//					System.out.println(contents.getPrefWrapLength());
-//					System.out.println("newVal : " + newValue);
-//					
-//				}
-//				
-//				shape.setFitWidth(contents.getPrefWrapLength());	
-//			}
-//			
-//		});
-		
-		
-//		shape.boundsInLocalProperty().addListener(new ChangeListener<Bounds>() {
-//
-//			@Override
-//			public void changed(ObservableValue<? extends Bounds> arg0, Bounds oldBound, Bounds newBound) {
-//				// TODO Auto-generated method stub
-//				System.out.println("length " + newBound.getWidth());
-//				contents.setPrefWrapLength(newBound.getWidth());
-//			}
-//			
-//		});
 		setOnNodeDrag();
 	}
 	
@@ -113,9 +75,10 @@ public class POPOperationSymbol extends StackPane {
 			Dragboard db = on.startDragAndDrop(TransferMode.COPY);
 			ClipboardContent content = new ClipboardContent();
 			content.putString(getType().toString());
-			content.putImage(shape.getImage());
+			content.putImage(imgShape.getImage());
 				
 			db.setContent(content);
+			db.setContent(ClipboardUtil.makeClipboardContent(event, this));
 			event.consume();
 		});
 	}
@@ -136,15 +99,13 @@ public class POPOperationSymbol extends StackPane {
 		
 		initWidth = width + 40;
 		
-		shape.setFitWidth(initWidth);
+		imgShape.setFitWidth(initWidth);
 		
 		contents.setPrefWrapLength(initWidth);
 		contents.setMinWidth(initWidth);
 	}
 	
 	public void setContentsAutoSize() {
-		
-		
 		double width = 0;
 		
 		for(int i = 0; i < contents.getChildren().size(); i++) {
@@ -165,26 +126,24 @@ public class POPOperationSymbol extends StackPane {
 			contents.setPrefWrapLength(Math.max(width + 20, initWidth));
 		}
 		
-		shape.setFitWidth(Math.max(contents.getPrefWrapLength(), initWidth));
-		if(!isRootSymbol) {
-			this.getParentDataInput().getRootSymbol().setContentsAutoSize();
-			return;
+		imgShape.setFitWidth(Math.max(contents.getPrefWrapLength(), initWidth));
+		if(parentSymbol != null) {
+			parentSymbol.setContentsAutoSize();
+		} else {
+			parentDataInput.getParentNode().setNodeAutoSize(contents.getPrefWrapLength());
 		}
-		parentDataInput.getParentNode().setNodeAutoSize(contents.getPrefWrapLength());
+		
 	}
 	
 	public void add(int index, POPVariableNode node) {
 		contents.getChildren().add(index, node);
-//		if(index == 0)
-//			leftValue = node.getName();
-//		else
-//			rightValue = node.getName();
 		
 		setContentsAutoSize();
 	}
 	
 	public void add(int index, POPOperationSymbol node) {
 		contents.getChildren().add(index, node);
+		node.setParentSymbol(this);
 		
 		setContentsAutoSize();
 	}
@@ -226,9 +185,6 @@ public class POPOperationSymbol extends StackPane {
 		} else if(contents.getChildren().get(0) instanceof POPVariableNode) {
 			POPVariableNode variable = (POPVariableNode) contents.getChildren().get(0);
 			leftCode += variable.getName();
-			if(!this.getType().equals(POPSymbolType.Equal)) {
-				leftCode += ".value()";
-			}
 			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
 				leftValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
 			}
@@ -237,9 +193,7 @@ public class POPOperationSymbol extends StackPane {
 			leftCode += blank.getText();
 			leftValue += blank.getText();
 		}
-		
-//		str = str + symbol;
-		
+				
 		if(contents.getChildren().get(2) instanceof POPOperationSymbol) {
 			POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(2);
 			symbol.generateString();
@@ -247,7 +201,7 @@ public class POPOperationSymbol extends StackPane {
 			rightValue += symbol.getValueString();
 		} else if(contents.getChildren().get(2) instanceof POPVariableNode) {
 			POPVariableNode variable = (POPVariableNode) contents.getChildren().get(2);
-			rightCode += variable.getName() + ".value()";
+			rightCode += variable.getName();
 			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
 				rightValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
 			}
@@ -265,7 +219,7 @@ public class POPOperationSymbol extends StackPane {
 		if(symbol.equals(" = ")) {
 			if(!POPVariableManager.declaredVars.containsKey(leftCode)) {
 				try {
-					strCode = "Object " + strCode;//checkType(Calculator.eval(rightValue)) + strCode;
+					strCode = checkType(Calculator.eval(rightValue)) + strCode;
 					POPVariableManager.declaredVars.put(leftCode, Calculator.eval(rightValue));
 				} catch (ScriptException e) {
 					// TODO Auto-generated catch block
@@ -274,9 +228,6 @@ public class POPOperationSymbol extends StackPane {
 			}
 			strCode = strCode + ";";
 		}
-		
-		
-			
 	}
 	
 	private String checkType(String value) {
@@ -287,72 +238,4 @@ public class POPOperationSymbol extends StackPane {
 		else
 			return "String ";
 	}
-	
-	public POPDataInput getParentDataInput() {
-		return parentDataInput;
-	}
-
-	public void setParentDataInput(POPDataInput parentDataInput) {
-		this.parentDataInput = parentDataInput;
-	}
-
-	public POPBlank getLeftBlank() {
-		return leftBlank;
-	}
-
-	public void setLeftBlank(POPBlank leftBlank) {
-		this.leftBlank = leftBlank;
-	}
-
-	public POPBlank getRightBlank() {
-		return rightBlank;
-	}
-
-	public void setRightBlank(POPBlank rightBlank) {
-		this.rightBlank = rightBlank;
-	}
-
-	public String getLeftValue() {
-		return leftCode;
-	}
-
-	public void setLeftValue(String leftValue) {
-		this.leftCode = leftValue;
-	}
-
-	public String getRightValue() {
-		return rightCode;
-	}
-
-	public void setRightValue(String rightValue) {
-		this.rightCode = rightValue;
-	}
-
-	public FlowPane getContents() {
-		return contents;
-	}
-
-	public void setContents(FlowPane contents) {
-		this.contents = contents;
-	}
-
-	public POPSymbolType getType() {
-		return type;
-	}
-
-	public void setType(POPSymbolType type) {
-		this.type = type;
-	}
-
-	public boolean isRootSymbol() {
-		return isRootSymbol;
-	}
-
-	public void setRootSymbol(boolean isRootSymbol) {
-		this.isRootSymbol = isRootSymbol;
-	}
-	
-//	public double getContentsWidth() { return contentsWidth.get(); }
-//	public void setContentsWidth(double value) { contentsWidth.set(value); }
-//	public DoubleProperty contentWidthProperty() { return contentsWidth; }
 }

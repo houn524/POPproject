@@ -22,10 +22,16 @@ public class CodeGenerator {
 	
 	private StringBuilder javaSource;
 	private StringBuilder cSource;
+	private JavaCompiler compiler;
 	
 	public CodeGenerator() {
 		javaSource = new StringBuilder();
 		cSource = new StringBuilder();
+		
+		String jdkPath = new File("").getAbsolutePath() + "\\runtime\\jdk1.8.0_144";
+		System.setProperty("java.home", jdkPath);
+		
+		compiler = ToolProvider.getSystemJavaCompiler();
 	}
 	
 	public void createJavaFile() throws IOException {
@@ -61,14 +67,11 @@ public class CodeGenerator {
 	}
 	
 	public String generate(POPSymbolNode startNode) throws IOException, NoSuchFieldException {
-		String jdkPath = new File("").getAbsolutePath() + "\\runtime\\jdk1.8.0_144";
-		System.setProperty("java.home", jdkPath);
+		
 		
 		javaSource.setLength(0);
 		
 		POPVariableManager.declaredVars.clear();
-		
-		JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 		
 		generateNode(startNode);
 		

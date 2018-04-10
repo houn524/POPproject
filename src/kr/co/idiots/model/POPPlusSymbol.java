@@ -4,7 +4,11 @@ import java.io.InputStream;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class POPPlusSymbol extends POPOperationSymbol {
 	
 	private ImageView plus;
@@ -14,7 +18,7 @@ public class POPPlusSymbol extends POPOperationSymbol {
 		// TODO Auto-generated constructor stub
 		symbol = " + ";
 		
-		this.type = POPSymbolType.Plus;
+		this.type = POPNodeType.Plus;
 		
 		leftBlank = new POPBlank(this);
 		contents.getChildren().add(leftBlank);

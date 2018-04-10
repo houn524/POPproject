@@ -7,7 +7,11 @@ import javafx.scene.Node;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class POPSymbolNode extends POPNode {
 
 	protected POPFlowLine inFlowLine;
@@ -29,25 +33,21 @@ public class POPSymbolNode extends POPNode {
 	
 	public void moveCenter() {
 		if(inFlowLine != null) {
-			component.setLayoutX(inFlowLine.getStartX() - (component.getWidth() / 2));
+			
 			
 			Bounds newBound = component.getBoundsInParent();
 			
 			if(outFlowLine != null) {
-//				outFlowLine.setPrevNode(this);
 				outFlowLine.setStartX(newBound.getMinX() + (newBound.getWidth() / 2));
 				outFlowLine.setStartY(newBound.getMaxY());
 			}
 			
-//			startY.set(line.getStartY());
-			
 			if(inFlowLine != null) {
 				inFlowLine.setEndX(newBound.getMinX() + (newBound.getWidth() / 2));
 				inFlowLine.setEndY(newBound.getMinY());
-//				prevNode.getInFlowLine().endY.set(getEndY());
 			}
-				
-//			component.setLayoutY(inFlowLine.getPrevNode().getComponent().getBoundsInParent().getMaxY() + POPFlowLine.nodeMinGap);
+			
+			component.setLayoutX(inFlowLine.getStartX() - (component.getWidth() / 2));
 		}
 	}
 
@@ -58,42 +58,31 @@ public class POPSymbolNode extends POPNode {
 			public void changed(ObservableValue<? extends Bounds> arg0, Bounds oldBound, Bounds newBound) {
 				// TODO Auto-generated method stub
 				
+				if(newBound.getHeight() > imgView.getBoundsInLocal().getHeight())
+					return;
 				
 				if(outFlowLine != null) {
-//					outFlowLine.setPrevNode(this);
 					outFlowLine.setStartX(newBound.getMinX() + (newBound.getWidth() / 2));
 					outFlowLine.setStartY(newBound.getMaxY());
 				}
 				
-//				startY.set(line.getStartY());
-				
 				if(inFlowLine != null) {
 					inFlowLine.setEndX(newBound.getMinX() + (newBound.getWidth() / 2));
 					inFlowLine.setEndY(newBound.getMinY());
-//					prevNode.getInFlowLine().endY.set(getEndY());
 				}
-				
 				moveCenter();
-
 			}
-			
 		});
-		
-		
 	}
 	
 	
 	protected void setOnDataInputBoundChangeListener() {
 		dataInput.boundsInLocalProperty().addListener(new ChangeListener<Bounds>() {
-
 			@Override
 			public void changed(ObservableValue<? extends Bounds> arg0, Bounds oldBound, Bounds newBound) {
 				// TODO Auto-generated method stub
-//				imgView.setFitWidth(newBound.getWidth());
-//				imgView.setFitHeight(newBound.getHeight() + 0.5);
 				moveCenter();
 			}
-			
 		});
 	}
 	
@@ -109,46 +98,10 @@ public class POPSymbolNode extends POPNode {
 			Dragboard db = on.startDragAndDrop(TransferMode.COPY);
 			ClipboardContent content = new ClipboardContent();
 			content.putString(getType().toString());
-			content.putImage(getImageView().getImage());
-//			Class<? extends POPNode> nodeClass = null;
-//			Class[] paramTypes = { POPNode.class };
-//			try {
-//				nodeClass = (Class<? extends POPNode>) Class.forName("kr.co.idiots.model.POP" + getType().toString() + "Node");
-//			} catch (ClassNotFoundException e1) {
-//				// TODO Auto-generated catch block
-//				e1.printStackTrace();
-//			}
-//			POPNode node = null;
-//			try {
-//				node = nodeClass.getConstructor(paramTypes).newInstance(this);
-//			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-//					| InvocationTargetException | NoSuchMethodException | SecurityException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
-//			
-//			if(node instanceof POPSymbolNode)
-//				DragManager.draggedSymbolNode = (POPSymbolNode) node;
-//			else if(node instanceof POPVariableNode)
-//				DragManager.draggedVariableNode = (POPVariableNode) node;
-			
-			
-//			content.put(POPNodeDataFormat.nodeFormat, this);
-			if(getType() == POPNodeType.Variable) {
-//				POPVariableNode varNode = (POPVariableNode) node;
-//				Map<String, Object> map = new HashMap<String, Object>();
-//				map.put(varNode.getName(), varNode.getValue());
-//				content.putAll(map);
-			}
+			content.putImage(getImgView().getImage());
 				
 			db.setContent(content);
 			event.consume();
 		});
-	}
-	
-	public POPFlowLine getOutFlowLine() { return outFlowLine; }
-	public POPFlowLine getInFlowLine() { return inFlowLine; }
-	public void setInFlowLine(POPFlowLine flowLine) {
-		this.inFlowLine = flowLine;
 	}
 }
