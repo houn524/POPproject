@@ -1,7 +1,8 @@
 package kr.co.idiots;
 
-import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class POPVariableManager {
-	public static ArrayList<String> declaredVars = new ArrayList<String>();
+	public static Map<String, String> declaredVars = new HashMap<>();
 }

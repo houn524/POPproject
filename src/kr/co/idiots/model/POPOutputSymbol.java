@@ -40,14 +40,12 @@ public class POPOutputSymbol extends POPOperationSymbol {
 	}
 	
 	@Override
-	public String toString() {
-		String str = "";
+	public void generateString() {
+		strCode = "";
 		
-		str = str + "System.out.println(";
-		str = str + value;
-		str = str + ");";
-		
-		return str;
+		strCode += "System.out.println(";
+		strCode += value;
+		strCode += ");";
 	}
 
 	public POPBlank getBlank() {

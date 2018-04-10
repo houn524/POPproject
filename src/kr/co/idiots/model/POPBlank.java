@@ -31,11 +31,11 @@ public class POPBlank extends TextField {
 			@Override
 			public void changed(ObservableValue arg0, Object oldValue, Object newValue) {
 				// TODO Auto-generated method stub
-				int index = parentSymbol.getChildren().indexOf(this);
-				if(index == 0)
-					parentSymbol.setLeftValue(newValue.toString());
-				else
-					parentSymbol.setRightValue(newValue.toString());
+//				int index = parentSymbol.getChildren().indexOf(this);
+//				if(index == 0)
+//					parentSymbol.setLeftValue(newValue.toString());
+//				else
+//					parentSymbol.setRightValue(newValue.toString());
 				
 				if(getText().isEmpty())
 					setPrefWidth(0);

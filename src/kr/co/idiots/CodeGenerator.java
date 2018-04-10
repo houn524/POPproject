@@ -20,10 +20,12 @@ import kr.co.idiots.util.POPClassLoader;
 public class CodeGenerator {
 	public static int test = 1;
 	
-	private StringBuilder source;
+	private StringBuilder javaSource;
+	private StringBuilder cSource;
 	
 	public CodeGenerator() {
-		source = new StringBuilder();
+		javaSource = new StringBuilder();
+		cSource = new StringBuilder();
 	}
 	
 	public void createJavaFile() throws IOException {
@@ -32,11 +34,12 @@ public class CodeGenerator {
         
         // Source를 만들고 Java파일 생성
         File sourceFile = new File(path + "test.java"); 
-        new FileWriter(sourceFile).append(source).close();
+        new FileWriter(sourceFile).append(javaSource).close();
 	}
 	
 	public void createStartSource(String className) {
-		source.append("public class " + className + " {");
+		javaSource.append("public class " + className + " {");
+		cSource.append("#include <stdio.h>");
 		nextLine();
 		nextLine();
 		writeIndent(1);
@@ -48,21 +51,20 @@ public class CodeGenerator {
 		writeIndent(1);
 		writeMainStop();
 		nextLine();
-		source.append("}");
+		javaSource.append("}");
 	}
 	
 	public void writeNodeContent(POPNode node) {
 		writeIndent(2);
-		writeString(node.getDataInput().toString());
+		writeString(node.getDataInput().getCodeString());
 		nextLine();
 	}
 	
 	public String generate(POPSymbolNode startNode) throws IOException, NoSuchFieldException {
 		String jdkPath = new File("").getAbsolutePath() + "\\runtime\\jdk1.8.0_144";
-//		String jdkPath = "C:\\Program Files\\Java\\jdk1.8.0_144";
 		System.setProperty("java.home", jdkPath);
 		
-		source.setLength(0);
+		javaSource.setLength(0);
 		
 		POPVariableManager.declaredVars.clear();
 		
@@ -70,7 +72,8 @@ public class CodeGenerator {
 		
 		generateNode(startNode);
 		
-		System.out.println(getSource());
+		System.out.println(getJavaSource());
+//		System.out.println(getCSource());
 		
 		
 		String path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
@@ -89,14 +92,43 @@ public class CodeGenerator {
 		}
 		
 		System.out.println("result Output : \n" + strResult);
-//		ps.flush();
-//		outputStream = null;
-//		System.out.flush();
-//		compiler = null;
-//		ps.close();
 		
 		return strResult;
+		
 	}
+	
+//	private String inputCommand(String cmd) {
+//		StringBuilder buffer = new StringBuilder();
+//		
+//		buffer.append("cmd.exe ");
+//		buffer.append("/c ");
+//		buffer.append(cmd);
+//		
+//		return buffer.toString();
+//	}
+//	
+//	private String execCommand(String cmd) {
+//		try {
+//			Process process = Runtime.getRuntime().exec(cmd);
+//			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+//			
+//			String line = null;
+//			StringBuilder readBuffer = new StringBuilder();
+//			
+//			while((line = bufferedReader.readLine()) != null) {
+//				readBuffer.append(line);
+//				readBuffer.append("\n");
+//			}
+//			
+//			return readBuffer.toString();
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//			System.exit(1);
+//		}
+//		
+//		return null;
+//	}
 	
 	private void generateNode(POPSymbolNode node) throws IOException {
 		
@@ -119,19 +151,7 @@ public class CodeGenerator {
 		POPClassLoader classLoader = new POPClassLoader(parentClassLoader);
 		Class thisClass = classLoader.loadClass("test");
 		
-//		File file = new File(path + "test.class");
-//		
-//		@SuppressWarnings("deprecation")
-//		URL url = file.toURL();
-//		URL[] urls = new URL[] { url };
-//		
-//		ClassLoader loader = new URLClassLoader(urls);
-//		
-//		Class thisClass = loader.loadClass("test", true);
-		
-//		Class params[] = {};
 		Object paramsObj[] = {};
-//		Object instance = thisClass.newInstance();
 		Method thisMethod = thisClass.getMethod("main", String[].class);
 		String[] params = null;	
 		
@@ -152,26 +172,36 @@ public class CodeGenerator {
 	}
 	
 	private void nextLine() {
-		source.append(System.lineSeparator());
+		javaSource.append(System.lineSeparator());
+		cSource.append(System.lineSeparator());
 	}
 	
 	private void writeString(String str) {
-		source.append(str);
+		javaSource.append(str);
+		cSource.append(str);
 	}
 	
 	private void writeMainStart() {
-		source.append("public static void main(String[] args) {");
+		javaSource.append("public static void main(String[] args) {");
+		cSource.append("int main(void) {");
 	}
 	
 	private void writeMainStop() {
-		source.append("}");
+		javaSource.append("}");
+		cSource.append("}");
 	}
 	
 	private void writeIndent(int n) {
-		source.append(String.format("%" + n*4 + "s", ""));
+		javaSource.append(String.format("%" + n*4 + "s", ""));
+		if((n - 1) * 4 > 0)
+			cSource.append(String.format("%" + ((n - 1) * 4) + "s", ""));
 	}
 	
-	public String getSource() {
-		return source.toString();
+	public String getJavaSource() {
+		return javaSource.toString();
+	}
+	
+	public String getCSource() {
+		return cSource.toString();
 	}
 }

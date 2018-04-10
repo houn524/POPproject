@@ -124,8 +124,8 @@ public abstract class POPDataInput extends FlowPane {
 		childrenCount.setValue(childrenCount.getValue() - 1);
 	}
 	
-	public String toString() {
-		return childSymbol.toString();
+	public String getCodeString() {
+		return childSymbol.getCodeString();
 	}
 	
 	public final int getChildrenCount() { return childrenCount.get(); }

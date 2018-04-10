@@ -2,6 +2,8 @@ package kr.co.idiots.model;
 
 import java.io.InputStream;
 
+import javax.script.ScriptException;
+
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -9,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import kr.co.idiots.POPVariableManager;
+import kr.co.idiots.util.Calculator;
 import kr.co.idiots.util.TypeChecker;
 
 enum POPSymbolState {
@@ -21,8 +24,12 @@ public class POPOperationSymbol extends StackPane {
 	protected FlowPane contents;
 	protected POPBlank leftBlank;
 	protected POPBlank rightBlank;
-	protected String leftValue;
-	protected String rightValue;
+	protected String strCode = "";
+	protected String leftCode = "";
+	protected String rightCode = "";
+	protected String strValue = "";
+	protected String leftValue = "";
+	protected String rightValue = "";
 	protected String symbol;
 	protected POPSymbolState state;
 	protected double initWidth;
@@ -134,10 +141,10 @@ public class POPOperationSymbol extends StackPane {
 	
 	public void add(int index, POPVariableNode node) {
 		contents.getChildren().add(index, node);
-		if(index == 0)
-			leftValue = node.getName();
-		else
-			rightValue = node.getName();
+//		if(index == 0)
+//			leftValue = node.getName();
+//		else
+//			rightValue = node.getName();
 		
 		setContentsAutoSize();
 	}
@@ -152,40 +159,89 @@ public class POPOperationSymbol extends StackPane {
 		int index = contents.getChildren().indexOf(node);
 		contents.getChildren().remove(node);
 		if(index == 0)
-			leftValue = "";
+			leftCode = "";
 		else
-			rightValue = "";
+			rightCode = "";
 		
 		setContentsAutoSize();
 	}
 	
-	public String toString() {
-		String str = "";
+	public String getCodeString() {
+		generateString();
+		return strCode; 
+	}
+	
+	public String getValueString() {
+		generateString();
+		return strValue;
+	}
+	
+	public void generateString() {
+		strCode = "";
+		leftCode = "";
+		rightCode = "";
+		strValue = "";
+		leftValue = "";
+		rightValue = "";
+		
 		if(contents.getChildren().get(0) instanceof POPOperationSymbol) {
 			POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(0);
-			str = str + symbol.toString();
+			symbol.generateString();
+			leftCode += symbol.getCodeString();
+			leftValue += symbol.getValueString();
+		} else if(contents.getChildren().get(0) instanceof POPVariableNode) {
+			POPVariableNode variable = (POPVariableNode) contents.getChildren().get(0);
+			leftCode += variable.getName();
+			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
+				leftValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
+			}
+		} else {
+			POPBlank blank = (POPBlank) contents.getChildren().get(0);
+			leftCode += blank.getText();
+			leftValue += blank.getText();
 		}
-		else
-			str = str + leftValue;
 		
-		str = str + symbol;
+//		str = str + symbol;
+		System.out.println("******" + contents.getChildren().get(2));
 		
 		if(contents.getChildren().get(2) instanceof POPOperationSymbol) {
 			POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(2);
-			str = str + symbol.toString();
-		} else
-			str = str + rightValue;
+			symbol.generateString();
+			rightCode += symbol.getCodeString();
+			rightValue += symbol.getValueString();
+		} else if(contents.getChildren().get(2) instanceof POPVariableNode) {
+			POPVariableNode variable = (POPVariableNode) contents.getChildren().get(2);
+			rightCode += variable.getName();
+			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
+				rightValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
+			}
+		} else {
+			POPBlank blank = (POPBlank) contents.getChildren().get(2);
+			rightCode += blank.getText();
+			
+			rightValue += blank.getText();
+		}
+		
+		strCode = leftCode + symbol + rightCode;
+		strValue = leftValue + symbol + rightValue;
+		System.out.println(strValue);
+		
 		
 		if(symbol.equals(" = ")) {
-			if(!POPVariableManager.declaredVars.contains(leftValue)) {
-				str = "Object " + str;//checkType(Calculator.eval(rightValue)) + str;
-				POPVariableManager.declaredVars.add(leftValue);
+			if(!POPVariableManager.declaredVars.containsKey(leftCode)) {
+				try {
+					strCode = "Object " + strCode;//checkType(Calculator.eval(rightValue)) + strCode;
+					POPVariableManager.declaredVars.put(leftCode, Calculator.eval(rightValue));
+				} catch (ScriptException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
 			}
 			
-			str = str + ";";
+			strCode = strCode + ";";
 		}
 			
-		return str;
 	}
 	
 	private String checkType(String value) {
@@ -222,19 +278,19 @@ public class POPOperationSymbol extends StackPane {
 	}
 
 	public String getLeftValue() {
-		return leftValue;
+		return leftCode;
 	}
 
 	public void setLeftValue(String leftValue) {
-		this.leftValue = leftValue;
+		this.leftCode = leftValue;
 	}
 
 	public String getRightValue() {
-		return rightValue;
+		return rightCode;
 	}
 
 	public void setRightValue(String rightValue) {
-		this.rightValue = rightValue;
+		this.rightCode = rightValue;
 	}
 
 	public POPSymbolState getState() {
