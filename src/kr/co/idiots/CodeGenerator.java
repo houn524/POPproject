@@ -11,10 +11,9 @@ import java.lang.reflect.Method;
 import javax.tools.JavaCompiler;
 import javax.tools.ToolProvider;
 
-import kr.co.idiots.model.POPNode;
-import kr.co.idiots.model.POPStartNode;
-import kr.co.idiots.model.POPStopNode;
-import kr.co.idiots.model.POPSymbolNode;
+import kr.co.idiots.model.symbol.POPStartNode;
+import kr.co.idiots.model.symbol.POPStopNode;
+import kr.co.idiots.model.symbol.POPSymbolNode;
 import kr.co.idiots.util.POPClassLoader;
 
 public class CodeGenerator {
@@ -24,6 +23,8 @@ public class CodeGenerator {
 	private StringBuilder cSource;
 	private JavaCompiler compiler;
 	
+	private final String path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath().substring(1);
+	
 	public CodeGenerator() {
 		javaSource = new StringBuilder();
 		cSource = new StringBuilder();
@@ -32,11 +33,11 @@ public class CodeGenerator {
 		System.setProperty("java.home", jdkPath);
 		
 		compiler = ToolProvider.getSystemJavaCompiler();
+		compiler.run(null, null, null, path + "test.java");
+		
 	}
 	
 	public void createJavaFile() throws IOException {
-		// 프로젝트 Home Directory 경로 조회
-        String path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
         
         // Source를 만들고 Java파일 생성
         File sourceFile = new File(path + "test.java"); 
@@ -60,9 +61,9 @@ public class CodeGenerator {
 		javaSource.append("}");
 	}
 	
-	public void writeNodeContent(POPNode node) {
+	public void writeNodeContent(POPSymbolNode node) {
 		writeIndent(2);
-		writeString(node.getDataInput().getCodeString());
+		writeString(node.getRootSymbol().getCodeString());
 		nextLine();
 	}
 	
@@ -78,13 +79,9 @@ public class CodeGenerator {
 		System.out.println(getJavaSource());
 //		System.out.println(getCSource());
 		
-		
-		String path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-		
 		int result = compiler.run(null, null, null, path + "test.java");
 		
 		String strResult = "";
-		
 		
 		try {
 			strResult = runCode();
@@ -148,13 +145,11 @@ public class CodeGenerator {
 	}
 	
 	public String runCode() throws IllegalAccessException, InstantiationException, NoSuchMethodException, SecurityException, IllegalArgumentException, InvocationTargetException, ClassNotFoundException, IOException, NoSuchFieldException {
-		String path = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
 		
 		ClassLoader parentClassLoader = POPClassLoader.class.getClassLoader();
 		POPClassLoader classLoader = new POPClassLoader(parentClassLoader);
 		Class thisClass = classLoader.loadClass("test");
 		
-		Object paramsObj[] = {};
 		Method thisMethod = thisClass.getMethod("main", String[].class);
 		String[] params = null;	
 		

@@ -5,6 +5,8 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextField;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import kr.co.idiots.model.operation.POPOperationSymbol;
+import kr.co.idiots.util.DragManager;
 import kr.co.idiots.util.POPNodeDataFormat;
 import kr.co.idiots.util.TextUtils;
 import kr.co.idiots.view.POPSolvingLayoutController;
@@ -20,6 +22,7 @@ public class POPBlank extends TextField {
 	public POPBlank(POPOperationSymbol parentSymbol) {
 		this.parentSymbol = parentSymbol;
 		this.setPrefSize(10, 34);
+		this.setEditable(false);
 		
 		setOnBlankDrag();
 		setOnBlankChange();
@@ -45,36 +48,91 @@ public class POPBlank extends TextField {
 	private void setOnBlankDrag() {
 		setOnDragOver(event -> {
 			Dragboard db = event.getDragboard();
-			if(db.hasImage() && db.getString().equals("Variable")) {
-				event.acceptTransferModes(TransferMode.COPY);
-			} else if(db.hasImage() && db.getString().equals("Plus")) {
-				event.acceptTransferModes(TransferMode.COPY);
+			if(db.hasImage() && POPNodeType.variableGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
+				event.acceptTransferModes(TransferMode.MOVE);
+			} else if(db.hasImage() && POPNodeType.operationGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
+				event.acceptTransferModes(TransferMode.MOVE);
 			}
+			
+			if(this.isEditable())
+				this.setFocused(true);
+			
+			event.consume();
+		});
+		
+		setOnDragExited(event -> {
+			if(this.isEditable())
+				this.setFocused(false);
+			
+			event.consume();
 		});
 		
 		setOnDragDropped(event -> {
 			Dragboard db = event.getDragboard();
-			if(db.hasImage() && db.getString().equals("Variable")) {
-				POPVariableNode variable = new POPVariableNode(POPSolvingLayoutController.scriptArea, (String)db.getContent(POPNodeDataFormat.variableNameFormat));
+			boolean success = false;
+			if(POPNodeType.variableGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
+				if(DragManager.dragMoving) {
+					insertNode((POPVariableNode) DragManager.draggedNode);
+					DragManager.dragMoving = false;
+					DragManager.draggedNode = null;
+					success = true;
+					event.setDropCompleted(success);
+					event.consume();
+					return;
+				}
+				POPVariableNode variable = new POPVariableNode(POPSolvingLayoutController.scriptArea, 
+						(String) db.getContent(POPNodeDataFormat.variableNameFormat),
+						(Enum.valueOf(POPNodeType.class, (String) db.getContent(POPNodeDataFormat.variableTypeFormat))));
 				insertNode(variable);
-			} else if(db.hasImage() && db.getString().equals("Plus")) {
-				POPPlusSymbol plusSymbol = new POPPlusSymbol();
-				insertNode(plusSymbol);
+				success = true;
+			} else if(db.hasImage() && POPNodeType.operationGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
+				if(DragManager.dragMoving) {
+					insertNode((POPOperationSymbol) DragManager.draggedNode);
+					DragManager.dragMoving = false;
+					DragManager.draggedNode = null;
+					success = true;
+					event.setDropCompleted(success);
+					event.consume();
+					return;
+				}
+				Class<? extends POPOperationSymbol> symbolClass = null;
+				POPOperationSymbol symbol = null;
+				try {
+					symbolClass = (Class<? extends POPOperationSymbol>) Class.forName("kr.co.idiots.model.operation.POP" + db.getString() + "Symbol");
+					symbol = symbolClass.newInstance();
+				} catch(ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+					e.printStackTrace();
+				}
+				insertNode(symbol);
+				success = true;
+//				POPPlusSymbol plusSymbol = new POPPlusSymbol();
+//				insertNode(plusSymbol);
 			}
+			
+			event.setDropCompleted(success);
+			event.consume();
 		});
 	}
 	
 	public void insertNode(POPVariableNode node) {
+		if(!parentSymbol.isInitialized())
+			return;
+		
 		int index = parentSymbol.getContents().getChildren().indexOf(this);
 		parentSymbol.remove(this);
 		parentSymbol.add(index, node);
+		node.initialize(parentSymbol);
 	}
 	
 	public void insertNode(POPOperationSymbol node) {
+		if(!parentSymbol.isInitialized())
+			return;
+		
 		int index = parentSymbol.getContents().getChildren().indexOf(this);
 		
 		parentSymbol.remove(this);
 		parentSymbol.add(index, node);
-		node.initialize(parentSymbol.getParentDataInput());
+		
+		node.initialize(parentSymbol.getParentNode());
 	}
 }

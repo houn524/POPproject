@@ -4,21 +4,21 @@ import java.io.IOException;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.ClipboardContent;
@@ -26,19 +26,31 @@ import javafx.scene.input.DataFormat;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import kr.co.idiots.MainApp;
-import kr.co.idiots.model.POPDocumentNode;
-import kr.co.idiots.model.POPPlusSymbol;
-import kr.co.idiots.model.POPProcessNode;
+import kr.co.idiots.POPFlowchartPlayer;
+import kr.co.idiots.POPVariableManager;
+import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPScriptArea;
-import kr.co.idiots.model.POPStartNode;
-import kr.co.idiots.model.POPStopNode;
-import kr.co.idiots.model.POPSymbolNode;
 import kr.co.idiots.model.POPVariableNode;
+import kr.co.idiots.model.operation.POPDivideSymbol;
+import kr.co.idiots.model.operation.POPMinusSymbol;
+import kr.co.idiots.model.operation.POPMultiplySymbol;
+import kr.co.idiots.model.operation.POPPlusSymbol;
+import kr.co.idiots.model.symbol.POPDocumentNode;
+import kr.co.idiots.model.symbol.POPProcessNode;
+import kr.co.idiots.model.symbol.POPStartNode;
+import kr.co.idiots.model.symbol.POPStopNode;
+import kr.co.idiots.model.symbol.POPSymbolNode;
+import kr.co.idiots.util.DragManager;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class POPSolvingLayoutController {
 	Point2D lastXY = null;
 	
@@ -53,9 +65,14 @@ public class POPSolvingLayoutController {
 	private AnchorPane operationArea;
 	
 	@FXML
-	private AnchorPane variableArea;
+	private GridPane variableArea;
+//	@FXML
+//	private ListView variableListView;
 	@FXML
-	private ListView variableListView;
+	public AnchorPane rootPane;
+	
+	@FXML
+	private TabPane tabPane;
 	
 	@FXML
 	private AnchorPane scriptPane;
@@ -69,15 +86,25 @@ public class POPSolvingLayoutController {
 	@FXML
 	private BorderPane consoleFrame;
 	
+	@FXML
+	private Button btnCreateVariable;
+	
+	private POPFlowchartPlayer flowchartPlayer;
+	
 	private Label lbConsole;
 	
 	private Button btnStart;
 	
-	private ObservableList<StackPane> variableItems;
+//	private ObservableList<StackPane> variableItems;
 	
 	private POPProcessNode processSymbol;
 	private POPDocumentNode documentSymbol;
 	private POPPlusSymbol plusSymbol;
+	private POPMinusSymbol minusSymbol;
+	private POPMultiplySymbol multiplySymbol;
+	private POPDivideSymbol divideSymbol;
+	
+	private Stage popup;
 	
 	private MainApp mainApp;
 	
@@ -85,18 +112,24 @@ public class POPSolvingLayoutController {
 	
 	public static POPScriptArea scriptArea;
 	
+	private RootLayoutController rootController;
+	
+	private POPCreateVariableLayoutController createVariableController;
+	
 	public POPSolvingLayoutController() {
 		
 	}
 	
 	@FXML
 	private void initialize() {
+		flowchartPlayer = new POPFlowchartPlayer();
+		
 		lbConsole = new Label("출력값 : ");
 		lbConsole.setFont(new Font(20));
 		consoleFrame.setLeft(lbConsole);
 		
-		variableItems = FXCollections.observableArrayList();
-		variableListView.setItems(variableItems);
+//		variableItems = FXCollections.observableArrayList();
+//		variableListView.setItems(variableItems);
 		
 		scriptArea = new POPScriptArea(scriptPane, scriptScrollPane);
 		
@@ -113,19 +146,26 @@ public class POPSolvingLayoutController {
 		
 		btnStart = new Button("실행");
 		btnStart.setOnAction(new EventHandler<ActionEvent>() {
-
+			
 			@Override
 			public void handle(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				try {
-					lbConsole.setText("출력값 : " + scriptArea.generate());
-				} catch (IOException | NoSuchFieldException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				lbConsole.setText(scriptArea.play());
+//				try {
+//					lbConsole.setText("출력값 : " + scriptArea.generate());
+//				} catch (IOException | NoSuchFieldException e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//				}
 			}
 			
 		});
+		
+		btnCreateVariable.setOnAction(event-> {
+			showCreateVariablePopup();
+		});
+		
+		
 		
 		processSymbol = new POPProcessNode(scriptArea);
 		symbolArea.getChildren().add(processSymbol.getComponent());
@@ -135,27 +175,57 @@ public class POPSolvingLayoutController {
 		
 		plusSymbol = new POPPlusSymbol();
 		operationArea.getChildren().add(plusSymbol);
+		minusSymbol = new POPMinusSymbol();
+		operationArea.getChildren().add(minusSymbol);
+		minusSymbol.setTranslateY(50);
+		multiplySymbol = new POPMultiplySymbol();
+		operationArea.getChildren().add(multiplySymbol);
+		multiplySymbol.setTranslateY(100);
+		divideSymbol = new POPDivideSymbol();
+		operationArea.getChildren().add(divideSymbol);
+		divideSymbol.setTranslateY(150);
 		
 		POPSymbolNode startNode = new POPStartNode(scriptArea);
 		POPSymbolNode stopNode = new POPStopNode(scriptArea);
 		
 		startNode.getOutFlowLine().setNextNode(stopNode);
-		stopNode.setInFlowLine(startNode.getOutFlowLine());
 		
 		scriptArea.setStartNode(startNode);
 		scriptArea.add(startNode);
 		scriptArea.add(stopNode);
 		scriptArea.getComponent().getChildren().add(btnStart);
+		
+		DragManager.dragRootPane = rootPane;
+		DragManager.tabPane = tabPane;
+	}
+	
+	public void showCreateVariablePopup() {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/POPCreateVariableLayout.fxml"));
+			AnchorPane createVariablePopup = (AnchorPane)loader.load();
+			
+			popup = new Stage();
+			popup.setScene(new Scene(createVariablePopup));
+			popup.show();
+			
+			createVariableController = loader.getController();
+			createVariableController.setController(this);
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void addVariable(String name, POPNodeType type) {
+		POPVariableNode varNode = new POPVariableNode(scriptArea, name, type);
+		variableArea.add(varNode, POPVariableManager.createdVars.size() % 3, POPVariableManager.createdVars.size() / 3);
+		POPVariableManager.createdVars.add(varNode.getName());
+		popup.close();
 	}
 	
 	@FXML
-	private void createVariable() {
-		char ch = (char) ((Math.random() * 26) + 65);
-		String name = String.valueOf(ch);
-		Object value = (int) Math.random() * 100;
-		
-		POPVariableNode varNode = new POPVariableNode(scriptArea, name);
-		variableItems.add(varNode.getComponent());
+	private void showVariablePopup() {
+		showCreateVariablePopup();
 	}
 	
 	public static ClipboardContent makeClipboardContent(MouseEvent event, Node child, String text) {

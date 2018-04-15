@@ -15,13 +15,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import kr.co.idiots.model.Person;
-import kr.co.idiots.view.POPSolvingLayoutController;
 import kr.co.idiots.view.PersonEditDialogController;
+import kr.co.idiots.view.RootLayoutController;
 
 public class MainApp extends Application {
 
 	private Stage primaryStage;
-	private BorderPane rootLayout;
+	private Stage popup;
 	
 	public static final Set<KeyCode> pressedKeys = new HashSet<>();
 	
@@ -52,7 +52,6 @@ public class MainApp extends Application {
 		initRootLayout();
 		
 //		showPersonOverview();
-		showPOPMainLayout();
 	}
 
 	/*상위 레이아웃을 초기화한다.*/
@@ -61,15 +60,19 @@ public class MainApp extends Application {
 			// fxml 파일에서 상위 레이아웃을 가져온다.
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/RootLayout.fxml"));
-			rootLayout = (BorderPane)loader.load();
+			BorderPane rootLayout = (BorderPane)loader.load();
+			
+			RootLayoutController controller = new RootLayoutController(rootLayout);
+			loader.setController(controller);
 			
 			// 상위 레이아웃을 포함하는 scene을 보여준다.
 			Scene scene = new Scene(rootLayout);
 			scene.setOnKeyPressed(e -> {
 				pressedKeys.add(e.getCode());
-				System.out.println(e.getCode());
 			});
 			scene.setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
+			
+			controller.showPOPMainLayout();
 			
 			primaryStage.setScene(scene);
 			primaryStage.show();
@@ -78,23 +81,11 @@ public class MainApp extends Application {
 		}
 	}
 		
-	/*
-		상위 레이아웃 안에 메인화면(기호들을 배치할 수 있는 페이지)을 보여준다.
-	*/
-	public void showPOPMainLayout() {
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("view/POPSolvingLayout.fxml"));
-			AnchorPane popMainLayout = (AnchorPane)loader.load();
-			
-			rootLayout.setCenter(popMainLayout);
-			
-			POPSolvingLayoutController controller = new POPSolvingLayoutController();
-			controller.setMainApp(this);
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-	}
+	
+	
+	
+	
+	
 	
 	/*
 		person의 자세한 정보를 변경하기 위해 다이얼로그를 연다.
