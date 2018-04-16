@@ -55,9 +55,7 @@ public class POPFlowLine extends Group {
         super(line, arrow1, arrow2, area);
         this.line = line;
         this.area = area;
-                
-//        length = Bindings.subtract(line.endYProperty(), line.startYProperty());
-        
+                        
         line.setStrokeWidth(5.0f);
         arrow1.setStrokeWidth(5.0f);
         arrow2.setStrokeWidth(5.0f);
@@ -157,7 +155,7 @@ public class POPFlowLine extends Group {
 			public void changed(ObservableValue<? extends Number> arg0, Number oldLength, Number newLength) {
 				// TODO Auto-generated method stub
 				newLength = endY.getValue() - startY.getValue();
-				if((newLength.doubleValue() < nodeMinGap || newLength.doubleValue() > nodeMinGap) && nextNode != null) {
+				if((newLength.doubleValue() < nodeMinGap || newLength.doubleValue() > nodeMinGap) && nextNode != null && !DragManager.isSynchronized) {
 					nextNode.getComponent().setLayoutY(nextNode.getComponent().getLayoutY() + (nodeMinGap - newLength.doubleValue()));
 //					Bounds nextNodeBound = nextNode.getComponent().getBoundsInParent();
 //					setEndX(nextNodeBound.getMinX() + (nextNodeBound.getWidth() / 2));

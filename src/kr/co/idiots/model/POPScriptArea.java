@@ -77,6 +77,7 @@ public class POPScriptArea {
 		});
 		
 		scrollPane.setOnDragDropped(event -> {
+			DragManager.isSynchronized = true;
 			Dragboard db = event.getDragboard();
 			Node node = null;
 			
@@ -91,6 +92,7 @@ public class POPScriptArea {
 				}
 				node.setLayoutX((event.getX() - (node.getBoundsInLocal().getWidth() / 2)) / component.getScaleX());
 				node.setLayoutY((event.getY() - (node.getBoundsInLocal().getHeight() / 2)) / component.getScaleY());
+				
 				if(DragManager.draggedNode instanceof POPOperationSymbol) {
 					((POPOperationSymbol) DragManager.draggedNode).setParentNode(null);
 					((POPOperationSymbol) DragManager.draggedNode).setParentSymbol(null);

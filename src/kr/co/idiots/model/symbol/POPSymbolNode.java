@@ -229,6 +229,7 @@ public class POPSymbolNode extends POPNode {
 			DragManager.dragMoving = false;
 			DragManager.draggedNode = null;
 			DragManager.isAllocatedNode = false;
+			DragManager.isSynchronized = false;
 		});
 		
 		getComponent().setOnDragDetected(event -> {
