@@ -3,6 +3,7 @@ package kr.co.idiots.model;
 import java.lang.reflect.InvocationTargetException;
 
 import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.NumberBinding;
 import javafx.beans.property.DoubleProperty;
@@ -49,58 +50,114 @@ public class POPFlowLine extends Group {
     private static final double arrowLength = 20;
     private static final double arrowWidth = 7;
     public static final double nodeMinGap = 30;
-
+    
     private POPFlowLine(Line line, Line arrow1, Line arrow2, Rectangle area) {
         super(line, arrow1, arrow2, area);
         this.line = line;
         this.area = area;
+                
+//        length = Bindings.subtract(line.endYProperty(), line.startYProperty());
         
         line.setStrokeWidth(5.0f);
         arrow1.setStrokeWidth(5.0f);
         arrow2.setStrokeWidth(5.0f);
         area.setFill(Color.rgb(0,  0,  0, 0));
         
-        InvalidationListener updater = o -> {
-            double ex = getEndX();
-            double ey = getEndY();
-            double sx = getStartX();
-            double sy = getStartY();
+        InvalidationListener updater = new InvalidationListener() {
 
-            arrow1.setEndX(ex);
-            arrow1.setEndY(ey);
-            arrow2.setEndX(ex);
-            arrow2.setEndY(ey);
+			@Override
+			public void invalidated(Observable arg0) {
+				// TODO Auto-generated method stub
 
-            if (ex == sx && ey == sy) {
-                // arrow parts of length 0
-                arrow1.setStartX(ex);
-                arrow1.setStartY(ey);
-                arrow2.setStartX(ex);
-                arrow2.setStartY(ey);
-            } else {
-                double factor = arrowLength / Math.hypot(sx-ex, sy-ey);
-                double factorO = arrowWidth / Math.hypot(sx-ex, sy-ey);
+				double ex = getEndX();
+				double ey = getEndY();
+				
+				if(nextNode != null) {
+					Bounds nextNodeBound = nextNode.getBoundsInParent();
+					ex = nextNodeBound.getMinX() + (nextNodeBound.getWidth() / 2);//getEndX();
+		            ey = nextNodeBound.getMinY();//getEndY();
+		            line.setEndX(ex);
+		            line.setEndY(ey);
+				}
+				
+	            double sx = getStartX();
+	            double sy = getStartY();
+	            
+	            arrow1.setEndX(ex);
+	            arrow1.setEndY(ey);
+	            arrow2.setEndX(ex);
+	            arrow2.setEndY(ey);
 
-                // part in direction of main line
-                double dx = (sx - ex) * factor;
-                double dy = (sy - ey) * factor;
+	            if (ex == sx && ey == sy) {
+	                // arrow parts of length 0
+	                arrow1.setStartX(ex);
+	                arrow1.setStartY(ey);
+	                arrow2.setStartX(ex);
+	                arrow2.setStartY(ey);
+	            } else {
+	                double factor = arrowLength / Math.hypot(sx-ex, sy-ey);
+	                double factorO = arrowWidth / Math.hypot(sx-ex, sy-ey);
 
-                // part ortogonal to main line
-                double ox = (sx - ex) * factorO;
-                double oy = (sy - ey) * factorO;
+	                // part in direction of main line
+	                double dx = (sx - ex) * factor;
+	                double dy = (sy - ey) * factor;
+	                
+	                // part ortogonal to main line
+	                double ox = (sx - ex) * factorO;
+	                double oy = (sy - ey) * factorO;
 
-                arrow1.setStartX(ex + dx - oy);
-                arrow1.setStartY(ey + dy + ox);
-                arrow2.setStartX(ex + dx + oy);
-                arrow2.setStartY(ey + dy - ox);
-            }
+	                arrow1.setStartX(ex + dx - oy);
+	                arrow1.setStartY(ey + dy + ox);
+	                arrow2.setStartX(ex + dx + oy);
+	                arrow2.setStartY(ey + dy - ox);
+	            }
+			}
+        	
         };
+        
+//        InvalidationListener updater = o -> {
+//        	
+//            double ex = getEndX();
+//            double ey = getEndY();
+//            double sx = getStartX();
+//            double sy = getStartY();
+//
+//            arrow1.setEndX(ex);
+//            arrow1.setEndY(ey);
+//            arrow2.setEndX(ex);
+//            arrow2.setEndY(ey);
+//
+//            if (ex == sx && ey == sy) {
+//                // arrow parts of length 0
+//                arrow1.setStartX(ex);
+//                arrow1.setStartY(ey);
+//                arrow2.setStartX(ex);
+//                arrow2.setStartY(ey);
+//            } else {
+//                double factor = arrowLength / Math.hypot(sx-ex, sy-ey);
+//                double factorO = arrowWidth / Math.hypot(sx-ex, sy-ey);
+//
+//                // part in direction of main line
+//                double dx = (sx - ex) * factor;
+//                double dy = (sy - ey) * factor;
+//
+//                // part ortogonal to main line
+//                double ox = (sx - ex) * factorO;
+//                double oy = (sy - ey) * factorO;
+//
+//                arrow1.setStartX(ex + dx - oy);
+//                arrow1.setStartY(ey + dy + ox);
+//                arrow2.setStartX(ex + dx + oy);
+//                arrow2.setStartY(ey + dy - ox);
+//            }
+//        };
         
         length.addListener(new ChangeListener<Number>() {
 			@Override
 			public void changed(ObservableValue<? extends Number> arg0, Number oldLength, Number newLength) {
 				// TODO Auto-generated method stub
-				if(/*newLength.doubleValue() < nodeMinGap && */nextNode != null) {
+				newLength = endY.getValue() - startY.getValue();
+				if((newLength.doubleValue() < nodeMinGap || newLength.doubleValue() > nodeMinGap) && nextNode != null) {
 					nextNode.getComponent().setLayoutY(nextNode.getComponent().getLayoutY() + (nodeMinGap - newLength.doubleValue()));
 //					Bounds nextNodeBound = nextNode.getComponent().getBoundsInParent();
 //					setEndX(nextNodeBound.getMinX() + (nextNodeBound.getWidth() / 2));
@@ -241,6 +298,7 @@ public class POPFlowLine extends Group {
 
     public final void setEndX(double value) {
         line.setEndX(value);
+//        endY.set(value);
         updateDragArea();
     }
 
@@ -288,12 +346,11 @@ public class POPFlowLine extends Group {
 //		startYProperty().bind(prevNode.bottomYProperty());
     }
         
-    public void setNextNode(POPSymbolNode nextNode) {
+    synchronized public void setNextNode(POPSymbolNode nextNode) {
     	this.nextNode = nextNode;
     	
     	nextNode.setInFlowLine(this);
 		Bounds nextNodeBound = nextNode.getComponent().getBoundsInParent();
-		
 		setEndX(nextNodeBound.getMinX() + (nextNodeBound.getWidth() / 2));
 		setEndY(nextNodeBound.getMinY());
 		endY.set(getEndY());
