@@ -35,20 +35,32 @@ public abstract class POPNode extends StackPane implements Serializable, Cloneab
 		this.scriptArea = scriptArea;
 		this.type = type;
 		
-		InputStream stream = getClass().getResourceAsStream("/images/" + type.toString() + ".png");
-		Image img = new Image(stream);
-		imgView = new ImageView(img);
-
-		initWidth = imgView.getBoundsInLocal().getWidth();
-		
 		component = this;
 		component.setPrefWidth(Control.USE_COMPUTED_SIZE);
 		component.setPrefHeight(Control.USE_COMPUTED_SIZE);
 		component.setAlignment(Pos.CENTER);
 		
-		component.getChildren().add(imgView);
-		StackPane.setAlignment(imgView, Pos.CENTER);
-		component.setMaxHeight(imgView.getBoundsInLocal().getHeight());
+		if(type != POPNodeType.DecisionSub) {
+			InputStream stream = getClass().getResourceAsStream("/images/" + type.toString() + ".png");
+			Image img = new Image(stream);
+			imgView = new ImageView(img);
+			
+			initWidth = imgView.getBoundsInLocal().getWidth();
+			
+			component.getChildren().add(imgView);
+			StackPane.setAlignment(imgView, Pos.CENTER);
+			component.setMaxHeight(imgView.getBoundsInLocal().getHeight());
+		}
+		
+//		if(this instanceof POPDecisionNode) {
+//			imgView.setPreserveRatio(true);
+//		}
+		
+		
+		
+		
+		
+		
 		
 	}
 	

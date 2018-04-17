@@ -15,6 +15,7 @@ import kr.co.idiots.POPVariableManager;
 import kr.co.idiots.model.POPBlank;
 import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPVariableNode;
+import kr.co.idiots.model.symbol.POPDecisionNode;
 import kr.co.idiots.model.symbol.POPSymbolNode;
 import kr.co.idiots.util.ClipboardUtil;
 import kr.co.idiots.util.DragManager;
@@ -194,7 +195,12 @@ public class POPOperationSymbol extends StackPane {
 		if(parentSymbol != null) {
 			parentSymbol.setContentsAutoSize();
 		} else if(parentNode != null) {
-			parentNode.setNodeAutoSize(contents.getPrefWrapLength());
+			if(parentNode instanceof POPDecisionNode) {
+				parentNode.setNodeAutoSize(contents.getPrefWrapLength() + 100);
+			} else {
+				parentNode.setNodeAutoSize(contents.getPrefWrapLength());
+			}
+			
 		}
 	}
 	

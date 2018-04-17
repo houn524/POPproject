@@ -8,6 +8,7 @@ public class POPStartNode extends POPSymbolNode {
 	
 	public POPStartNode(POPScriptArea scriptArea) {
 		super(scriptArea, POPNodeType.Start);
+		setOnBoundChangeListener();
 		
 		component.setLayoutX(50d);
 		component.setLayoutY(50d);

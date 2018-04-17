@@ -12,6 +12,8 @@ public class POPProcessNode extends POPSymbolNode {
 	public POPProcessNode(POPScriptArea scriptArea) {
 		super(scriptArea, POPNodeType.Process);
 
+		setOnBoundChangeListener();
+		
 		outFlowLine = new POPFlowLine();
 		outFlowLine.setPrevNode(this);
 	}

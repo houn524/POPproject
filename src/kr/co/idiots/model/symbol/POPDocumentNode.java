@@ -12,6 +12,8 @@ public class POPDocumentNode extends POPSymbolNode {
 	public POPDocumentNode(POPScriptArea scriptArea) {
 		super(scriptArea, POPNodeType.Document);
 		
+		setOnBoundChangeListener();
+		
 		outFlowLine = new POPFlowLine();
 		outFlowLine.setPrevNode(this);
 	}

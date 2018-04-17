@@ -51,9 +51,9 @@ public class POPSymbolNode extends POPNode {
 	public POPSymbolNode(POPScriptArea scriptArea, POPNodeType type) {
 		super(scriptArea, type);
 		
-		setOnBoundChangeListener();
+//		setOnBoundChangeListener();
 		
-		if(type != POPNodeType.Start && type != POPNodeType.Stop)
+		if(type != POPNodeType.Start && type != POPNodeType.Stop && type != POPNodeType.DecisionSub)
 			setOnNodeDrag();
 		// TODO Auto-generated constructor stub
 	}
@@ -65,8 +65,21 @@ public class POPSymbolNode extends POPNode {
 	public void moveCenter() {
 		if(inFlowLine != null && isAllocated) {
 			
-			Bounds newBound = component.getBoundsInParent();
-			Bounds prevBound = inFlowLine.getPrevNode().getBoundsInParent();
+			Bounds newBound = null;
+			Bounds prevBound = null;
+			
+			if(this instanceof POPDecisionNode) {
+				newBound = ((POPDecisionNode) this).getContents().getBoundsInParent();
+			} else {
+				newBound = component.getBoundsInParent();
+			}
+			
+			if(inFlowLine.getPrevNode() instanceof POPDecisionNode) {
+				prevBound = ((POPDecisionNode)inFlowLine.getPrevNode()).getContents().getBoundsInParent();
+			} else {
+				prevBound = inFlowLine.getPrevNode().getBoundsInParent();
+			}
+			
 		
 			if(outFlowLine != null) {
 				outFlowLine.setStartX(newBound.getMinX() + (newBound.getWidth() / 2));
@@ -78,11 +91,16 @@ public class POPSymbolNode extends POPNode {
 				inFlowLine.setEndY(newBound.getMinY());
 			}
 			
-			component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2));
+			if(this instanceof POPDecisionNode) {
+				((POPDecisionNode) this).getContents().setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2));
+			} else {
+				component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2));
+			}
+			
 		}
 	}
 
-	private void setOnBoundChangeListener() {
+	protected void setOnBoundChangeListener() {
 		component.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
 
 			@Override
@@ -230,6 +248,7 @@ public class POPSymbolNode extends POPNode {
 			DragManager.draggedNode = null;
 			DragManager.isAllocatedNode = false;
 			DragManager.isSynchronized = false;
+						
 		});
 		
 		getComponent().setOnDragDetected(event -> {
@@ -273,7 +292,12 @@ public class POPSymbolNode extends POPNode {
 				this.outFlowLine.setPrevNode(this);
 				isAllocated = false;
 			} else if(isInitialized) {
-				DragManager.draggedNode = this;
+//				if(this instanceof POPDecisionNode) {
+//					DragManager.draggedNode = ((POPDecisionNode) this).getContents();
+//				} else {
+					DragManager.draggedNode = this;
+//				}
+				
 				DragManager.dragMoving = true;
 				this.getScriptArea().remove(this);
 			}

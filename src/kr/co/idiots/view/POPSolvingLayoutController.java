@@ -40,6 +40,7 @@ import kr.co.idiots.model.operation.POPDivideSymbol;
 import kr.co.idiots.model.operation.POPMinusSymbol;
 import kr.co.idiots.model.operation.POPMultiplySymbol;
 import kr.co.idiots.model.operation.POPPlusSymbol;
+import kr.co.idiots.model.symbol.POPDecisionNode;
 import kr.co.idiots.model.symbol.POPDocumentNode;
 import kr.co.idiots.model.symbol.POPProcessNode;
 import kr.co.idiots.model.symbol.POPStartNode;
@@ -99,6 +100,7 @@ public class POPSolvingLayoutController {
 	
 	private POPProcessNode processSymbol;
 	private POPDocumentNode documentSymbol;
+	private POPDecisionNode decisionSymbol;
 	private POPPlusSymbol plusSymbol;
 	private POPMinusSymbol minusSymbol;
 	private POPMultiplySymbol multiplySymbol;
@@ -172,6 +174,9 @@ public class POPSolvingLayoutController {
 		documentSymbol = new POPDocumentNode(scriptArea);
 		symbolArea.getChildren().add(documentSymbol.getComponent());
 		documentSymbol.getComponent().setLayoutY(100);
+		decisionSymbol = new POPDecisionNode(scriptArea);
+		symbolArea.getChildren().add(decisionSymbol.getComponent());
+		decisionSymbol.getComponent().setLayoutY(200);
 		
 		plusSymbol = new POPPlusSymbol();
 		operationArea.getChildren().add(plusSymbol);
