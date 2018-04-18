@@ -1,11 +1,13 @@
 package kr.co.idiots.model.symbol;
 
+import java.util.ArrayList;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import kr.co.idiots.model.POPFlowLine;
@@ -20,8 +22,9 @@ import lombok.Setter;
 @Getter
 @Setter
 public class POPDecisionNode extends POPSymbolNode {
-	private Group contents;
+//	private Group contents;
 	private Rectangle boundChecker;
+	private ArrayList<Node> subNodes;
 	
 	private POPSideFlowLine leftFlowLine;
 	private POPSideFlowLine rightFlowLine;
@@ -33,8 +36,10 @@ public class POPDecisionNode extends POPSymbolNode {
 		super(scriptArea, POPNodeType.Decision);
 		// TODO Auto-generated constructor stub
 		
-		contents = new Group();
-		contents.getChildren().add(component);
+//		contents = new Group();
+//		contents.getChildren().add(component);
+		
+		subNodes = new ArrayList<>();
 		
 		Bounds bound = imgView.getBoundsInParent();
 		Point2D pos = Point2D.ZERO;
@@ -58,8 +63,21 @@ public class POPDecisionNode extends POPSymbolNode {
 		outFlowLine = new POPFlowLine();
 		outFlowLine.setPrevNode(this);
 		
-		boundChecker = new Rectangle(contents.getBoundsInParent().getMinX(), contents.getBoundsInParent().getMinY(),
-				contents.getBoundsInParent().getWidth(), contents.getBoundsInParent().getHeight());
+//		component.parentProperty().addListener(new ChangeListener<Parent>() {
+//
+//			@Override
+//			public void changed(ObservableValue<? extends Parent> arg0, Parent oldParent, Parent newParent) {
+//				// TODO Auto-generated method stub
+//				if(oldParent != null && newParent == null) {
+//					((Group) oldParent).getChildren().remove(leftFlowLine);
+//					((Group) oldParent).getChildren().remove(rightFlowLine);
+//				}
+//			}
+//			
+//		});
+		
+//		boundChecker = new Rectangle(contents.getBoundsInParent().getMinX(), contents.getBoundsInParent().getMinY(),
+//				contents.getBoundsInParent().getWidth(), contents.getBoundsInParent().getHeight());
 		
 		setOnBoundChangeListener();
 	}
@@ -70,15 +88,15 @@ public class POPDecisionNode extends POPSymbolNode {
 		Point2D pos = Point2D.ZERO;
 		
 		if(leftFlowLine != null) {
-			pos = POPBoundManager.getLeftCenter(imgBound);
-			leftFlowLine.setStartPos(0, pos.getY());
-			leftFlowLine.setEndPos(-10, pos.getY());
+			pos = POPBoundManager.getLeftCenter(bound);
+			leftFlowLine.setStartPos(pos.getX(), pos.getY());
+			leftFlowLine.setEndPos(pos.getX() - 10, pos.getY());
 //			leftSubNode.setLayoutX(leftFlowLine.getEndX());
 //			leftSubNode.setLayoutY(leftFlowLine.getEndY());
 		}
 		
 		if(rightFlowLine != null) {
-			pos = POPBoundManager.getRightCenter(imgBound);
+			pos = POPBoundManager.getRightCenter(bound);
 			rightFlowLine.setStartPos(pos.getX(), pos.getY());
 			rightFlowLine.setEndPos(pos.getX() + 10, pos.getY());
 //			rightFlowLine.setStartPos(imgBound.getWidth(), pos.getY());
@@ -102,12 +120,17 @@ public class POPDecisionNode extends POPSymbolNode {
 		symbol.setRootSymbol(true);
 		this.setRootSymbol(symbol);
 		
-		contents.getChildren().add(leftFlowLine);
-		contents.getChildren().add(rightFlowLine);
+		scriptArea.getComponent().getChildren().add(leftFlowLine);
+		scriptArea.getComponent().getChildren().add(rightFlowLine);
+		
+		subNodes.add(leftFlowLine);
+		subNodes.add(rightFlowLine);
+//		contents.getChildren().add(leftFlowLine);
+//		contents.getChildren().add(rightFlowLine);
 //		contents.getChildren().add(leftSubNode);
 //		contents.getChildren().add(rightSubNode);
 //		contents.getChildren().add(boundChecker);
-		scriptArea.getComponent().getChildren().add(boundChecker);
+//		scriptArea.getComponent().getChildren().add(boundChecker);
 		
 //		Bounds bound = component.getBoundsInParent();
 //		Bounds imgBound = imgView.getBoundsInLocal();
@@ -127,13 +150,13 @@ public class POPDecisionNode extends POPSymbolNode {
 	
 	@Override
 	protected void setOnBoundChangeListener() {
-		contents.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
+		component.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
 
 			@Override
 			public void changed(ObservableValue<? extends Bounds> arg0, Bounds oldBound, Bounds newBound) {
 				// TODO Auto-generated method stub
 				
-//				adjustPosition();
+				adjustPosition();
 //				if(newBound.getHeight() > imgView.getBoundsInLocal().getHeight()) {
 //					System.out.println("Gg");
 //					return;
@@ -154,10 +177,10 @@ public class POPDecisionNode extends POPSymbolNode {
 					inFlowLine.setEndY(newBound.getMinY());
 				}
 				
-				boundChecker.setX(newBound.getMinX());
-				boundChecker.setY(newBound.getMinY());
-				boundChecker.setWidth(newBound.getWidth());
-				boundChecker.setHeight(newBound.getHeight());
+//				boundChecker.setX(newBound.getMinX());
+//				boundChecker.setY(newBound.getMinY());
+//				boundChecker.setWidth(newBound.getWidth());
+//				boundChecker.setHeight(newBound.getHeight());
 //				
 //				if(leftFlowLine != null) {
 //					pos = POPBoundManager.getLeftCenter(bound);

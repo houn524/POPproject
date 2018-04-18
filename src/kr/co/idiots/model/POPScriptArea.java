@@ -159,28 +159,36 @@ public class POPScriptArea {
 					DragManager.isAllocatedNode = false;
 				}
 				
+//				if(node instanceof POPDecisionNode) {
+//					component.getChildren().add(((POPDecisionNode) node).getContents());
+//					
+//					Group contents;
+//					contents = ((POPDecisionNode) node).getContents();
+//					
+//					if((event.getX() - ((contents.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0) {
+//						contents.setLayoutX(0);
+//					} else {
+//						contents.setLayoutX((event.getX() - ((contents.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() - (centerXOfStartNode - 50));
+//					}
+//					contents.setLayoutY((event.getY() - ((contents.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY());
+//				} else {
+				
 				if(node instanceof POPDecisionNode) {
-					component.getChildren().add(((POPDecisionNode) node).getContents());
-					
-					Group contents;
-					contents = ((POPDecisionNode) node).getContents();
-					
-					if((event.getX() - ((contents.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0) {
-						contents.setLayoutX(0);
-					} else {
-						contents.setLayoutX((event.getX() - ((contents.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() - (centerXOfStartNode - 50));
+					component.getChildren().add(node);
+					for(Node subNode : ((POPDecisionNode) node).getSubNodes()) {
+						component.getChildren().add(subNode);
 					}
-					contents.setLayoutY((event.getY() - ((contents.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY());
 				} else {
 					component.getChildren().add(node);
-					
-					if((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0) {
-						node.setLayoutX(0);
-					} else {
-						node.setLayoutX((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() - (centerXOfStartNode - 50));
-					}
-					node.setLayoutY((event.getY() - ((node.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY());
 				}
+				
+				if((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0) {
+					node.setLayoutX(0);
+				} else {
+					node.setLayoutX((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() - (centerXOfStartNode - 50));
+				}
+				node.setLayoutY((event.getY() - ((node.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY());
+//				}
 				
 				if(DragManager.draggedNode instanceof POPOperationSymbol) {
 					((POPOperationSymbol) DragManager.draggedNode).setParentNode(null);
@@ -212,35 +220,35 @@ public class POPScriptArea {
 					e.printStackTrace();
 				}
 				
-				if(node instanceof POPDecisionNode) {
-					Group contents;
-					contents = ((POPDecisionNode) node).getContents();
-					
-					if((event.getX() - ((contents.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0) {
-						contents.setLayoutX(0);
-					} else {
-						contents.setLayoutX((event.getX() - ((contents.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() - (centerXOfStartNode - 50));
-					}
-					contents.setLayoutY((event.getY() - ((contents.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY());
-				} else {
+//				if(node instanceof POPDecisionNode) {
+//					Group contents;
+//					contents = ((POPDecisionNode) node).getContents();
+//					
+//					if((event.getX() - ((contents.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0) {
+//						contents.setLayoutX(0);
+//					} else {
+//						contents.setLayoutX((event.getX() - ((contents.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() - (centerXOfStartNode - 50));
+//					}
+//					contents.setLayoutY((event.getY() - ((contents.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY());
+//				} else {
 					if((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0) {
 						node.setLayoutX(0);
 					} else {
 						node.setLayoutX((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() - (centerXOfStartNode - 50));
 					}
 					node.setLayoutY((event.getY() - ((node.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY());
-				}
+//				}
 				
 				
 				
 				((POPSymbolNode) node).initialize();
 				
 				
-				if(node instanceof POPDecisionNode) {
-					component.getChildren().add(((POPDecisionNode) node).getContents());
-				} else {
+//				if(node instanceof POPDecisionNode) {
+//					component.getChildren().add(((POPDecisionNode) node).getContents());
+//				} else {
 					component.getChildren().add(node);
-				}
+//				}
 				
 				
 //				if(node instanceof POPDecisionNode) {
@@ -296,11 +304,14 @@ public class POPScriptArea {
 	}
 			
 	public void add(POPSymbolNode node) {
-		if(node instanceof POPDecisionNode) {
-			component.getChildren().add(((POPDecisionNode) node).getContents());
-		} else {
-			component.getChildren().add(node.getComponent());
-		}
+//		if(node instanceof POPDecisionNode) {
+//			component.getChildren().add(node);
+//			for(Node subNode : ((POPDecisionNode) node).getSubNodes()) {
+//				component.getChildren().add(subNode);
+//			}
+//		} else {
+			component.getChildren().add(node);
+//		}
 		
 		if(node.getOutFlowLine() != null)
 			component.getChildren().add(node.getOutFlowLine());
@@ -309,7 +320,10 @@ public class POPScriptArea {
 	
 	public void remove(POPSymbolNode node) {
 		if(node instanceof POPDecisionNode) {
-			component.getChildren().remove(((POPDecisionNode) node).getContents());
+			component.getChildren().remove(node);
+			for(Node subNode : ((POPDecisionNode) node).getSubNodes()) {
+				component.getChildren().remove(subNode);
+			}
 		} else {
 			component.getChildren().remove(node);
 		}

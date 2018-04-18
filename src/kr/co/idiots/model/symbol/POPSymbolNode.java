@@ -68,17 +68,17 @@ public class POPSymbolNode extends POPNode {
 			Bounds newBound = null;
 			Bounds prevBound = null;
 			
-			if(this instanceof POPDecisionNode) {
-				newBound = ((POPDecisionNode) this).getContents().getBoundsInParent();
-			} else {
+//			if(this instanceof POPDecisionNode) {
+//				newBound = ((POPDecisionNode) this).getContents().getBoundsInParent();
+//			} else {
 				newBound = component.getBoundsInParent();
-			}
+//			}
 			
-			if(inFlowLine.getPrevNode() instanceof POPDecisionNode) {
-				prevBound = ((POPDecisionNode)inFlowLine.getPrevNode()).getContents().getBoundsInParent();
-			} else {
+//			if(inFlowLine.getPrevNode() instanceof POPDecisionNode) {
+//				prevBound = ((POPDecisionNode)inFlowLine.getPrevNode()).getContents().getBoundsInParent();
+//			} else {
 				prevBound = inFlowLine.getPrevNode().getBoundsInParent();
-			}
+//			}
 			
 		
 			if(outFlowLine != null) {
@@ -91,11 +91,11 @@ public class POPSymbolNode extends POPNode {
 				inFlowLine.setEndY(newBound.getMinY());
 			}
 			
-			if(this instanceof POPDecisionNode) {
-				((POPDecisionNode) this).getContents().setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2));
-			} else {
+//			if(this instanceof POPDecisionNode) {
+//				((POPDecisionNode) this).getContents().setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2));
+//			} else {
 				component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2));
-			}
+//			}
 			
 		}
 	}
