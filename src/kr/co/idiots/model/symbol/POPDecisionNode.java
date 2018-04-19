@@ -29,15 +29,15 @@ public class POPDecisionNode extends POPSymbolNode {
 	private POPSideFlowLine leftFlowLine;
 	private POPSideFlowLine rightFlowLine;
 	
-	private POPDecisionSubNode leftSubNode;
-	private POPDecisionSubNode rightSubNode;
+	private POPDecisionStartNode leftStartNode;
+	private POPDecisionStartNode rightStartNode;
+	
+	private POPDecisionEndNode leftEndNode;
+	private POPDecisionEndNode rightEndNode;
 	
 	public POPDecisionNode(POPScriptArea scriptArea) {
 		super(scriptArea, POPNodeType.Decision);
 		// TODO Auto-generated constructor stub
-		
-//		contents = new Group();
-//		contents.getChildren().add(component);
 		
 		subNodes = new ArrayList<>();
 		
@@ -48,37 +48,21 @@ public class POPDecisionNode extends POPSymbolNode {
 		pos = POPBoundManager.getLeftCenter(bound);
 		leftFlowLine.setStartPos(pos.getX(), pos.getY());
 		leftFlowLine.setEndPos(pos.getX() - 10, pos.getY());
-//		System.out.println(bound);
-//		component.getChildren().add(leftFlowLine);
 		
 		rightFlowLine = new POPSideFlowLine(this);
 		pos = POPBoundManager.getRightCenter(bound);
 		rightFlowLine.setStartPos(pos.getX(), pos.getY());
 		rightFlowLine.setEndPos(pos.getX() + 10, pos.getY());
-//		component.getChildren().add(rightFlowLine);
 		
-		leftSubNode = new POPDecisionSubNode(scriptArea);
-		rightSubNode = new POPDecisionSubNode(scriptArea);
+		leftStartNode = new POPDecisionStartNode(scriptArea);
+		rightStartNode = new POPDecisionStartNode(scriptArea);
+		
+		leftEndNode = new POPDecisionEndNode(scriptArea);
+		rightEndNode = new POPDecisionEndNode(scriptArea);
 		
 		outFlowLine = new POPFlowLine();
 		outFlowLine.setPrevNode(this);
-		
-//		component.parentProperty().addListener(new ChangeListener<Parent>() {
-//
-//			@Override
-//			public void changed(ObservableValue<? extends Parent> arg0, Parent oldParent, Parent newParent) {
-//				// TODO Auto-generated method stub
-//				if(oldParent != null && newParent == null) {
-//					((Group) oldParent).getChildren().remove(leftFlowLine);
-//					((Group) oldParent).getChildren().remove(rightFlowLine);
-//				}
-//			}
-//			
-//		});
-		
-//		boundChecker = new Rectangle(contents.getBoundsInParent().getMinX(), contents.getBoundsInParent().getMinY(),
-//				contents.getBoundsInParent().getWidth(), contents.getBoundsInParent().getHeight());
-		
+				
 		setOnBoundChangeListener();
 	}
 	
@@ -91,19 +75,30 @@ public class POPDecisionNode extends POPSymbolNode {
 			pos = POPBoundManager.getLeftCenter(bound);
 			leftFlowLine.setStartPos(pos.getX(), pos.getY());
 			leftFlowLine.setEndPos(pos.getX() - 10, pos.getY());
-//			leftSubNode.setLayoutX(leftFlowLine.getEndX());
-//			leftSubNode.setLayoutY(leftFlowLine.getEndY());
 		}
 		
 		if(rightFlowLine != null) {
 			pos = POPBoundManager.getRightCenter(bound);
 			rightFlowLine.setStartPos(pos.getX(), pos.getY());
 			rightFlowLine.setEndPos(pos.getX() + 10, pos.getY());
-//			rightFlowLine.setStartPos(imgBound.getWidth(), pos.getY());
-//			rightFlowLine.setEndPos(imgBound.getWidth() + 10, pos.getY());
-//			rightSubNode.setLayoutX(rightFlowLine.getEndX());
-//			rightSubNode.setLayoutY(rightFlowLine.getEndY());
 		}
+		
+		if(leftStartNode != null) {
+			leftStartNode.setLayoutX(leftFlowLine.getEndX());
+			leftStartNode.setLayoutY(leftFlowLine.getEndY());
+		}
+		
+		if(rightStartNode != null) {
+			rightStartNode.setLayoutX(rightFlowLine.getEndX());
+			rightStartNode.setLayoutY(rightFlowLine.getEndY());
+		}
+		
+		leftStartNode.getOutFlowLine().setNextNode(leftEndNode);
+		leftEndNode.setInFlowLine(leftStartNode.getOutFlowLine());
+		leftEndNode.moveCenter();
+		rightStartNode.getOutFlowLine().setNextNode(rightEndNode);
+		rightEndNode.setInFlowLine(rightStartNode.getOutFlowLine());
+		rightEndNode.moveCenter();
 		
 //		moveCenter();
 	}
@@ -120,11 +115,17 @@ public class POPDecisionNode extends POPSymbolNode {
 		symbol.setRootSymbol(true);
 		this.setRootSymbol(symbol);
 		
-		scriptArea.getComponent().getChildren().add(leftFlowLine);
-		scriptArea.getComponent().getChildren().add(rightFlowLine);
-		
 		subNodes.add(leftFlowLine);
 		subNodes.add(rightFlowLine);
+		subNodes.add(leftStartNode);
+		subNodes.add(rightStartNode);
+		
+//		scriptArea.getComponent().getChildren().add(leftFlowLine);
+//		scriptArea.getComponent().getChildren().add(rightFlowLine);
+//		scriptArea.getComponent().getChildren().add(leftSubNode);
+//		scriptArea.getComponent().getChildren().add(rightSubNode);
+		
+		
 //		contents.getChildren().add(leftFlowLine);
 //		contents.getChildren().add(rightFlowLine);
 //		contents.getChildren().add(leftSubNode);

@@ -14,4 +14,6 @@ public class DragManager {
 	public static boolean isSynchronized = false;
 	public static AnchorPane dragRootPane;
 	public static TabPane tabPane;
+	
+	public static double lastCenterXOfStartNode;
 }

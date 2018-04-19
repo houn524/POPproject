@@ -46,6 +46,8 @@ public class POPVariableNode extends POPNode {
 		setOnVariableNodeDrag();
 	}
 	
+	
+	
 	public void initialize(POPOperationSymbol parentSymbol) {
 		isInitialized = true;
 		this.parentSymbol = parentSymbol;

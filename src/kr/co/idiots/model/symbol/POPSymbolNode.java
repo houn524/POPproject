@@ -50,9 +50,7 @@ public class POPSymbolNode extends POPNode {
 	
 	public POPSymbolNode(POPScriptArea scriptArea, POPNodeType type) {
 		super(scriptArea, type);
-		
-//		setOnBoundChangeListener();
-		
+				
 		if(type != POPNodeType.Start && type != POPNodeType.Stop && type != POPNodeType.DecisionSub)
 			setOnNodeDrag();
 		// TODO Auto-generated constructor stub
@@ -63,7 +61,7 @@ public class POPSymbolNode extends POPNode {
 	}
 	
 	public void moveCenter() {
-		if(inFlowLine != null && isAllocated) {
+		if(inFlowLine != null && (isAllocated || this instanceof POPDecisionEndNode)) {
 			
 			Bounds newBound = null;
 			Bounds prevBound = null;
@@ -107,7 +105,7 @@ public class POPSymbolNode extends POPNode {
 			public void changed(ObservableValue<? extends Bounds> arg0, Bounds oldBound, Bounds newBound) {
 				// TODO Auto-generated method stub
 				
-				if(newBound.getHeight() > imgView.getBoundsInLocal().getHeight())
+				if(imgView != null && newBound.getHeight() > imgView.getBoundsInLocal().getHeight())
 					return;
 				
 //				topCenterXProperty().set(newBound.getMinX() + (newBound.getWidth() / 2));
@@ -125,7 +123,11 @@ public class POPSymbolNode extends POPNode {
 					inFlowLine.setEndX(newBound.getMinX() + (newBound.getWidth() / 2));
 					inFlowLine.setEndY(newBound.getMinY());
 				}
+				
 				moveCenter();
+				if(outFlowLine != null && outFlowLine.getNextNode() != null) {
+					outFlowLine.getNextNode().moveCenter();
+				}
 			}
 		});
 	}
@@ -238,9 +240,14 @@ public class POPSymbolNode extends POPNode {
 			
 			if (DragManager.isAllocatedNode && event.getTransferMode() != TransferMode.MOVE) {
 				POPSolvingLayoutController.scriptArea.add(this);
+				
+				if(outFlowLine != null) {
+					POPSolvingLayoutController.scriptArea.getComponent().getChildren().add(getOutFlowLine());
+				}
+				
 				this.inFlowLine.insertNode(this);
 			} else if(DragManager.dragMoving && event.getTransferMode() != TransferMode.MOVE) {
-				POPSolvingLayoutController.scriptArea.getComponent().getChildren().add(this);
+				POPSolvingLayoutController.scriptArea.add(this);
 			}
 			
 			
@@ -302,6 +309,7 @@ public class POPSymbolNode extends POPNode {
 				this.getScriptArea().remove(this);
 			}
 			
+//			scriptArea.locateNodeMousePos(this);
 			event.consume();
 			
 		});
