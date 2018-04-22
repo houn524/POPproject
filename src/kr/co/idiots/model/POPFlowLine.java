@@ -19,7 +19,9 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
+import kr.co.idiots.model.symbol.POPDecisionEndNode;
 import kr.co.idiots.model.symbol.POPDecisionNode;
+import kr.co.idiots.model.symbol.POPDecisionStartNode;
 import kr.co.idiots.model.symbol.POPSymbolNode;
 import kr.co.idiots.util.DragManager;
 import lombok.Getter;
@@ -31,12 +33,13 @@ public class POPFlowLine extends Group {
 
     private Line line;
     private Rectangle area;
-    private POPSymbolNode prevNode;
-    private POPSymbolNode nextNode;
+    protected POPSymbolNode prevNode;
+    protected POPSymbolNode nextNode;
+    protected POPDecisionNode decisionNode = null;
     
-    private DoubleProperty startY = new SimpleDoubleProperty(0);
-    private DoubleProperty endY = new SimpleDoubleProperty(0);
-    private NumberBinding length = Bindings.subtract(endY, startY);
+    protected DoubleProperty startY = new SimpleDoubleProperty(0);
+    protected DoubleProperty endY = new SimpleDoubleProperty(0);
+    protected NumberBinding length = Bindings.subtract(endY, startY);
 
     public POPFlowLine() {
     	this(new Line(), new Line(), new Line(), new Rectangle());
@@ -52,6 +55,7 @@ public class POPFlowLine extends Group {
     private static final double arrowLength = 20;
     private static final double arrowWidth = 7;
     public static final double nodeMinGap = 30;
+    private double decisionGap = 60;
     
     private POPFlowLine(Line line, Line arrow1, Line arrow2, Rectangle area) {
         super(line, arrow1, arrow2, area);
@@ -152,33 +156,7 @@ public class POPFlowLine extends Group {
 //            }
 //        };
         
-        length.addListener(new ChangeListener<Number>() {
-			@Override
-			public void changed(ObservableValue<? extends Number> arg0, Number oldLength, Number newLength) {
-				// TODO Auto-generated method stub
-				newLength = endY.getValue() - startY.getValue();
-				
-				if((newLength.doubleValue() < nodeMinGap || newLength.doubleValue() > nodeMinGap) && nextNode != null && !DragManager.isSynchronized) {
-					
-//					if(nextNode instanceof POPDecisionNode) {
-//						((POPDecisionNode) nextNode).getContents().setLayoutY(((POPDecisionNode) nextNode).getContents().getLayoutY() + (nodeMinGap - newLength.doubleValue()));
-//					} else {						
-					
-
-						nextNode.getComponent().setLayoutY(nextNode.getComponent().getLayoutY() + (nodeMinGap - newLength.doubleValue()));
-//					}
-//					Bounds nextNodeBound = nextNode.getComponent().getBoundsInParent();
-//					setEndX(nextNodeBound.getMinX() + (nextNodeBound.getWidth() / 2));
-//					setEndY(nextNodeBound.getMinY());
-//					endY.set(getEndY());
-//					System.out.println(getStartY() + " : " + getEndY());
-//					System.out.println(delta);
-//					System.out.println(nextNode + " : " + nextNode.getBoundsInParent());
-					nextNode.moveCenter();
-//					DragManager.isSynchronized = false;
-				}
-			}
-        });
+        setOnLengthChange();
 
         startXProperty().addListener(updater);
         startYProperty().addListener(updater);
@@ -194,35 +172,33 @@ public class POPFlowLine extends Group {
 		}
     }
     
+    protected void setOnLengthChange() {
+    	length.addListener(new ChangeListener<Number>() {
+			@Override
+			public void changed(ObservableValue<? extends Number> arg0, Number oldLength, Number newLength) {
+				// TODO Auto-generated method stub
+				newLength = endY.getValue() - startY.getValue();
+				
+				if((newLength.doubleValue() != nodeMinGap) && nextNode != null && !DragManager.isSynchronized) {
+					
+					if(nextNode instanceof POPDecisionEndNode) {
+						if(decisionNode != null)
+							decisionNode.calMaxLength();
+						nextNode.getComponent().setLayoutY(((POPDecisionEndNode) nextNode).getDecisionNode().getLayoutY() + ((POPDecisionEndNode) nextNode).getDecisionNode().getMaxLength());
+					} else if(prevNode instanceof POPDecisionStartNode) {
+						nextNode.getComponent().setLayoutY(nextNode.getComponent().getLayoutY() + (nodeMinGap + 30) - newLength.doubleValue());
+					}
+					else 
+						nextNode.getComponent().setLayoutY(nextNode.getComponent().getLayoutY() + (nodeMinGap - newLength.doubleValue()));
+						
+					nextNode.moveCenter();
+				}
+			}
+        });
+    }
+    
     public void setOnFlowLineDrag() throws ClassNotFoundException {
     	
-//    	area.addEventFilter(Event.ANY, event -> {
-//    		
-//    		if(event.getEventType().toString().equals("MOUSE_ENTERED")) {
-//    			System.out.println(event.getEventType());
-//    		}
-//    	});
-//    	this.setOn
-    	
-//    	setOnMouseMoved(event -> {
-//    		System.out.println("Move");
-//    	});
-//    	
-//    	setOnMouseDragEntered(event -> {
-//    		System.out.println("enter");
-//    		if(DragManager.dragMoving) {// && DragManager.draggedNode instanceof POPSymbolNode) {
-//    			DropShadow dropShadow = new DropShadow();
-//        		dropShadow.setRadius(5.0);
-//        		dropShadow.setOffsetX(3.0);
-//        		dropShadow.setOffsetY(3.0);
-//        		dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
-//        		this.setEffect(dropShadow);
-//    		}
-//    	});
-//    	
-//    	setOnMouseExited(event -> {
-//    		
-//    	});
     	
 		setOnDragOver(event -> {
 			Dragboard db = event.getDragboard();
@@ -253,7 +229,7 @@ public class POPFlowLine extends Group {
 				DragManager.dragMoving = false;
 				DragManager.draggedNode = null;
 //				if(DragManager.isAllocatedNode) {
-					getPrevNode().getScriptArea().add((POPSymbolNode) node);
+					getPrevNode().getScriptArea().addWithOutFlowLine((POPSymbolNode) node);
 //					if(((POPSymbolNode) node).getOutFlowLine() != null) {
 //						POPSolvingLayoutController.scriptArea.getComponent().getChildren().add(((POPSymbolNode) node).getOutFlowLine());
 //					}
@@ -277,7 +253,8 @@ public class POPFlowLine extends Group {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				getPrevNode().getScriptArea().add(node);
+				node.initialize();
+				getPrevNode().getScriptArea().addWithOutFlowLine(node);
 				insertNode(node);
 			}
 			event.consume();
@@ -359,7 +336,38 @@ public class POPFlowLine extends Group {
 //    	}
     	
     	setStartX(nodeBound.getMinX() + (nodeBound.getWidth() / 2));
-		setStartY(nodeBound.getMaxY());
+    	
+    	if(prevNode instanceof POPDecisionNode) {
+    		setStartY(((POPDecisionNode) prevNode).getLeftEndNode().getLayoutY());
+    	} else {
+    		setStartY(nodeBound.getMaxY());
+    	}
+		
+		startY.set(line.getStartY());
+		
+//		startXProperty().bind(prevNode.bottomCenterXProperty());
+//		startYProperty().bind(prevNode.bottomYProperty());
+    }
+    
+    public void setPrevNode(POPDecisionNode prevNode) {
+    	this.prevNode = prevNode;
+    	
+    	Bounds nodeBound = null;
+//    	if(prevNode instanceof POPDecisionNode) {
+//    		nodeBound = ((POPDecisionNode) prevNode).getContents().getBoundsInParent();
+//    	} else {
+    		nodeBound = prevNode.getComponent().getBoundsInParent();
+//    	}
+    	
+    	if(nextNode instanceof POPDecisionNode) {
+        	setStartX(nodeBound.getMinX() + (nodeBound.getWidth() / 2));
+        	setStartY(((POPDecisionNode) nextNode).getLeftEndNode().getLayoutY());
+        } else {
+        	setStartX(nodeBound.getMinX() + (nodeBound.getWidth() / 2));
+    		setStartY(prevNode.getLeftEndNode().getLayoutY());
+        }
+    		
+    	
 		startY.set(line.getStartY());
 		
 //		startXProperty().bind(prevNode.bottomCenterXProperty());
@@ -378,11 +386,9 @@ public class POPFlowLine extends Group {
     		nextNodeBound = nextNode.getComponent().getBoundsInParent();
 //    	}
 //		Bounds nextNodeBound = nextNode.getComponent().getBoundsInParent();
+    		
 		setEndX(nextNodeBound.getMinX() + (nextNodeBound.getWidth() / 2));
 		setEndY(nextNodeBound.getMinY());
-		if(nextNode instanceof POPDecisionNode) {
-			
-		}
 			
 //		endY.set(getEndY());
 		
@@ -412,11 +418,41 @@ public class POPFlowLine extends Group {
     public void insertNode(POPSymbolNode node) {    
     	
     	node.getComponent().setLayoutX(line.getStartX() - (node.getComponent().getBoundsInParent().getWidth() / 2));
-        node.getComponent().setLayoutY(prevNode.getComponent().getBoundsInParent().getMaxY() + nodeMinGap);
+    	
+    	if(prevNode instanceof POPDecisionStartNode) {
+    		node.getComponent().setLayoutY(prevNode.getComponent().getBoundsInParent().getMaxY() + nodeMinGap + 30);
+    	} else {
+    		node.getComponent().setLayoutY(prevNode.getComponent().getBoundsInParent().getMaxY() + nodeMinGap);
+    	}
+        
     	
     	node.getOutFlowLine().setPrevNode(node);
     	node.getOutFlowLine().setNextNode(nextNode);
+    	if(decisionNode != null) {
+    		node.getOutFlowLine().setDecisionNode(decisionNode);
+    		
+    		decisionNode.getSubNodes().add(node);
+    		if(decisionNode.getLeftEndNode().getInFlowLine().length.doubleValue() < nodeMinGap || decisionNode.getRightEndNode().getInFlowLine().length.doubleValue() < nodeMinGap) {//((POPDecisionEndNode) nextNode).getInFlowLine().length.doubleValue() < 0) {
+        		
+    			if(node instanceof POPDecisionNode) {
+    				((POPDecisionNode) node).setParentDecisionNode(decisionNode);
+    			}
+    			
+//    			if(node instanceof POPDecisionNode) {
+//    				decisionNode.setMaxLength(decisionNode.getMaxLength() + ((POPDecisionNode) node).getMaxHeight() + nodeMinGap + 30);
+//    				((POPDecisionNode) node).setParentDecisionNode(decisionNode);
+//    			} else {
+//    				decisionNode.setMaxLength(decisionNode.getMaxLength() + node.getComponent().getBoundsInParent().getHeight() + nodeMinGap);
+//    			}
+    			decisionNode.calMaxLength();
+    			
+        		nextNode.getComponent().setLayoutY(decisionNode.getLayoutY() + decisionNode.getMaxLength());
+        		
+    		}
+    	}
+    			
     	setNextNode(node); 
+    	
     	
     	if(!node.isInitialized) {
     		node.initialize();
@@ -427,6 +463,41 @@ public class POPFlowLine extends Group {
 //    	}
     	
     	node.setAllocated(true);    	
+//    	if(nextNode instanceof POPDecisionEndNode) {
+//    		((POPDecisionEndNode) nextNode).getDecisionNode().adjustPosition();
+//    
+//    	}
+    }
+    
+    public void removeNodeOfDecision() {
+    	if(decisionNode != null) {
+			decisionNode.getSubNodes().remove(prevNode);
+			if(decisionNode.getLeftEndNode().getInFlowLine().length.doubleValue() > nodeMinGap
+					&& decisionNode.getRightEndNode().getInFlowLine().length.doubleValue() > nodeMinGap) {
+//				System.out.println(decisionNode.getMaxHeight() - (decisionNode.getRightEndNode().getInFlowLine().length.doubleValue() - nodeMinGap));
+//				decisionNode.setMaxHeight(Math.max(decisionNode.getMaxHeight() - (decisionNode.getLeftEndNode().getInFlowLine().length.doubleValue() - nodeMinGap),
+//						decisionNode.getMaxHeight() - (decisionNode.getRightEndNode().getInFlowLine().length.doubleValue() - nodeMinGap)));
+//				decisionNode.calMaxLength();
+				
+//				if(prevNode instanceof POPDecisionNode) {
+//					decisionNode.setMaxLength(decisionNode.getMaxLength() - (((POPDecisionNode) prevNode).getMaxHeight() + POPFlowLine.nodeMinGap + 30));
+//				} else {
+//					decisionNode.setMaxLength(decisionNode.getMaxLength() - (prevNode.getBoundsInParent().getHeight() + POPFlowLine.nodeMinGap));
+//					
+//				}
+			}
+			
+			decisionNode.getLeftEndNode().setLayoutY(decisionNode.getLayoutY() + decisionNode.getMaxLength());
+			decisionNode.adjustPosition();
+			
+			if(decisionNode.getParentDecisionNode() != null) {
+				if(prevNode == decisionNode) {
+					decisionNode.setParentDecisionNode(null);
+				}
+//				decisionNode.calMaxLength();
+			}
+		}
+    	
     }
         
     public void removeNode(POPSymbolNode node) {

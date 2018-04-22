@@ -12,6 +12,7 @@ public class DragManager {
 	public static boolean isAllocatedNode = false;
 	public static boolean isInitializing = false;
 	public static boolean isSynchronized = false;
+	public static boolean isDecisionSync = false;
 	public static AnchorPane dragRootPane;
 	public static TabPane tabPane;
 	

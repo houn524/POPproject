@@ -21,6 +21,7 @@ import kr.co.idiots.CodeGenerator;
 import kr.co.idiots.MainApp;
 import kr.co.idiots.POPFlowchartPlayer;
 import kr.co.idiots.model.operation.POPOperationSymbol;
+import kr.co.idiots.model.symbol.POPDecisionEndNode;
 import kr.co.idiots.model.symbol.POPDecisionNode;
 import kr.co.idiots.model.symbol.POPSymbolNode;
 import kr.co.idiots.util.DragManager;
@@ -127,7 +128,6 @@ public class POPScriptArea {
 				scrollPane.setHvalue(scrollPane.getHvalue() + 0.03);
 			}
 			DragManager.lastCenterXOfStartNode = centerXOfStartNode;
-//			System.out.println(DragManager.lastCenterXOfStartNode);
 			event.consume();
 		});
 		
@@ -150,33 +150,7 @@ public class POPScriptArea {
 					DragManager.isAllocatedNode = false;
 				}
 				
-//				if(node instanceof POPDecisionNode) {
-//					component.getChildren().add(((POPDecisionNode) node).getContents());
-//					
-//					Group contents;
-//					contents = ((POPDecisionNode) node).getContents();
-//					
-//					if((event.getX() - ((contents.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0) {
-//						contents.setLayoutX(0);
-//					} else {
-//						contents.setLayoutX((event.getX() - ((contents.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() - (centerXOfStartNode - 50));
-//					}
-//					contents.setLayoutY((event.getY() - ((contents.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY());
-//				} else {
-				
-				if(node instanceof POPDecisionNode) {
-					component.getChildren().add(node);
-					for(Node subNode : ((POPDecisionNode) node).getSubNodes()) {
-						component.getChildren().add(subNode);
-						if(subNode instanceof POPSymbolNode) {
-							component.getChildren().add(((POPSymbolNode) subNode).getOutFlowLine());
-						}
-					}
-				} else {
-					component.getChildren().add(node);
-				}
-				
-				
+				add(node);
 				
 				if((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0) {
 					node.setLayoutX(0);
@@ -196,9 +170,6 @@ public class POPScriptArea {
 					((POPVariableNode) DragManager.draggedNode).setParentSymbol(null);
 				}
 				
-//				if(DragManager.draggedNode instanceof POPDecisionNode) {
-//					((POPDecisionNode) node).adjustPosition();
-//				}
 				
 				DragManager.dragMoving = false;
 				DragManager.draggedNode = null;
@@ -217,43 +188,18 @@ public class POPScriptArea {
 					e.printStackTrace();
 				}
 				
-//				if(node instanceof POPDecisionNode) {
-//					Group contents;
-//					contents = ((POPDecisionNode) node).getContents();
-//					
-//					if((event.getX() - ((contents.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0) {
-//						contents.setLayoutX(0);
-//					} else {
-//						contents.setLayoutX((event.getX() - ((contents.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() - (centerXOfStartNode - 50));
-//					}
-//					contents.setLayoutY((event.getY() - ((contents.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY());
-//				} else {
-					if((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0) {
-						node.setLayoutX(0);
-					} else {
-						node.setLayoutX((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() - (DragManager.lastCenterXOfStartNode - 50));
-					}
-					node.setLayoutY((event.getY() - ((node.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY());
-//				}
-				
+				if((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0) {
+					node.setLayoutX(0);
+				} else {
+					node.setLayoutX((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() - (DragManager.lastCenterXOfStartNode - 50));
+				}
+				node.setLayoutY((event.getY() - ((node.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY());
 				
 				
 				((POPSymbolNode) node).initialize();
 				
 				
-				if(node instanceof POPDecisionNode) {
-					
-					component.getChildren().add(node);
-					for(Node subNode : ((POPDecisionNode) node).getSubNodes()) {
-						component.getChildren().add(subNode);
-						if(subNode instanceof POPSymbolNode) {
-							component.getChildren().add(((POPSymbolNode) subNode).getOutFlowLine());
-							
-						}
-					}
-				} else {
-					component.getChildren().add(node);
-				}
+				add(node);
 				
 //				if(node instanceof POPDecisionNode) {
 //					component.getChildren().add(((POPDecisionNode) node).getLeftFlowLine());
@@ -262,11 +208,21 @@ public class POPScriptArea {
 //					component.getChildren().add(((POPDecisionNode) node).getRightSubNode());
 //				}
 				success = true;
-			} else if(POPNodeType.operationGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
+			} else if(POPNodeType.operationGroup.contains(Enum.valueOf(POPNodeType.class, db.getString())) ||
+					POPNodeType.compareGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
+				
+				String packageName = "";
+				
+				if(POPNodeType.compareGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
+					packageName = "compare";
+				} else {
+					packageName = "operation";
+				}
+				
 				Class<? extends POPOperationSymbol> nodeClass = null;
 				try {
 					nodeClass = (Class<? extends POPOperationSymbol>) Class
-							.forName("kr.co.idiots.model.operation.POP" + db.getString() + "Symbol");
+							.forName("kr.co.idiots.model." + packageName + ".POP" + db.getString() + "Symbol");
 					node = nodeClass.newInstance();
 				} catch (ClassNotFoundException | IllegalAccessException | InstantiationException | 
 						IllegalArgumentException | SecurityException e) {
@@ -307,30 +263,42 @@ public class POPScriptArea {
 		
 	}
 			
-	public void add(POPSymbolNode node) {
+	public void addWithOutFlowLine(POPSymbolNode node) {
+		add(node);
+		
+		if(node.getOutFlowLine() != null)
+			component.getChildren().add(node.getOutFlowLine());	
+	}
+	
+	public void add(Node node) {
 		if(node instanceof POPDecisionNode) {
 			component.getChildren().add(node);
 			for(Node subNode : ((POPDecisionNode) node).getSubNodes()) {
-				component.getChildren().add(subNode);
-				if(subNode instanceof POPSymbolNode) {
+				if(subNode instanceof POPDecisionNode) {
+					add((POPSymbolNode) subNode);
+				} else {
+					component.getChildren().add(subNode);
+				}
+				if(!(subNode instanceof POPDecisionEndNode) && subNode instanceof POPSymbolNode) {
 					component.getChildren().add(((POPSymbolNode) subNode).getOutFlowLine());
 				}
 			}
 		} else {
 			component.getChildren().add(node);
 		}
-		
-		if(node.getOutFlowLine() != null)
-			component.getChildren().add(node.getOutFlowLine());
-		
 	}
 	
 	public void remove(POPSymbolNode node) {
 		if(node instanceof POPDecisionNode) {
 			component.getChildren().remove(node);
 			for(Node subNode : ((POPDecisionNode) node).getSubNodes()) {
-				component.getChildren().remove(subNode);
-				if(subNode instanceof POPSymbolNode) {
+				
+				if(subNode instanceof POPDecisionNode) {
+					remove((POPSymbolNode) subNode);
+				} else {
+					component.getChildren().remove(subNode);
+				}
+				if(!(subNode instanceof POPDecisionEndNode) && subNode instanceof POPSymbolNode) {
 					component.getChildren().remove(((POPSymbolNode) subNode).getOutFlowLine());
 				}
 			}

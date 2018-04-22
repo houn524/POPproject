@@ -11,4 +11,18 @@ public class Calculator {
 	public static String eval(String value) throws ScriptException {
 		return engine.eval(value).toString();
 	}
+	
+	public static boolean compare(String value) {
+		boolean result = false;
+		
+		try {
+			engine.eval("var test = " + value + ";");
+		} catch (ScriptException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		result = Boolean.parseBoolean(engine.get("test").toString());
+		
+		return result;
+	}
 }

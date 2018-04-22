@@ -1,7 +1,8 @@
-package kr.co.idiots.model.operation;
+package kr.co.idiots.model.compare;
 
 import kr.co.idiots.model.POPBlank;
 import kr.co.idiots.model.POPNodeType;
+import kr.co.idiots.model.operation.POPOperationSymbol;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +17,7 @@ public class POPCompareRootSymbol extends POPOperationSymbol {
 		this.type = POPNodeType.Compare;
 		
 		compareBlank = new POPBlank(this);
-		compareBlank.setEditable(true);
+//		compareBlank.setEditable(true);
 		contents.getChildren().add(compareBlank);
 		
 		setInitWidth();

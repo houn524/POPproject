@@ -36,10 +36,12 @@ import kr.co.idiots.POPVariableManager;
 import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPScriptArea;
 import kr.co.idiots.model.POPVariableNode;
+import kr.co.idiots.model.compare.POPIsEqualSymbol;
 import kr.co.idiots.model.operation.POPDivideSymbol;
 import kr.co.idiots.model.operation.POPMinusSymbol;
 import kr.co.idiots.model.operation.POPMultiplySymbol;
 import kr.co.idiots.model.operation.POPPlusSymbol;
+import kr.co.idiots.model.operation.POPRemainderSymbol;
 import kr.co.idiots.model.symbol.POPDecisionNode;
 import kr.co.idiots.model.symbol.POPDocumentNode;
 import kr.co.idiots.model.symbol.POPProcessNode;
@@ -105,6 +107,9 @@ public class POPSolvingLayoutController {
 	private POPMinusSymbol minusSymbol;
 	private POPMultiplySymbol multiplySymbol;
 	private POPDivideSymbol divideSymbol;
+	private POPRemainderSymbol remainderSymbol;
+	
+	private POPIsEqualSymbol isEqualSymbol;
 	
 	private Stage popup;
 	
@@ -117,6 +122,8 @@ public class POPSolvingLayoutController {
 	private RootLayoutController rootController;
 	
 	private POPCreateVariableLayoutController createVariableController;
+
+	
 	
 	public POPSolvingLayoutController() {
 		
@@ -189,6 +196,13 @@ public class POPSolvingLayoutController {
 		divideSymbol = new POPDivideSymbol();
 		operationArea.getChildren().add(divideSymbol);
 		divideSymbol.setTranslateY(150);
+		remainderSymbol = new POPRemainderSymbol();
+		operationArea.getChildren().add(remainderSymbol);
+		remainderSymbol.setTranslateY(200);
+		
+		isEqualSymbol = new POPIsEqualSymbol();
+		operationArea.getChildren().add(isEqualSymbol);
+		isEqualSymbol.setTranslateY(300);
 		
 		POPSymbolNode startNode = new POPStartNode(scriptArea);
 		POPSymbolNode stopNode = new POPStopNode(scriptArea);
@@ -196,8 +210,8 @@ public class POPSolvingLayoutController {
 		startNode.getOutFlowLine().setNextNode(stopNode);
 		
 		scriptArea.setStartNode(startNode);
-		scriptArea.add(startNode);
-		scriptArea.add(stopNode);
+		scriptArea.addWithOutFlowLine(startNode);
+		scriptArea.addWithOutFlowLine(stopNode);
 		scriptArea.getComponent().getChildren().add(btnStart);
 		
 		DragManager.dragRootPane = rootPane;

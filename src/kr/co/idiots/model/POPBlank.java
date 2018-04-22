@@ -52,6 +52,8 @@ public class POPBlank extends TextField {
 				event.acceptTransferModes(TransferMode.MOVE);
 			} else if(db.hasImage() && POPNodeType.operationGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
 				event.acceptTransferModes(TransferMode.MOVE);
+			} else if(db.hasImage() && POPNodeType.compareGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
+				event.acceptTransferModes(TransferMode.MOVE);
 			}
 			
 			if(this.isEditable())
@@ -99,6 +101,28 @@ public class POPBlank extends TextField {
 				POPOperationSymbol symbol = null;
 				try {
 					symbolClass = (Class<? extends POPOperationSymbol>) Class.forName("kr.co.idiots.model.operation.POP" + db.getString() + "Symbol");
+					symbol = symbolClass.newInstance();
+				} catch(ClassNotFoundException | IllegalAccessException | InstantiationException e) {
+					e.printStackTrace();
+				}
+				insertNode(symbol);
+				success = true;
+//				POPPlusSymbol plusSymbol = new POPPlusSymbol();
+//				insertNode(plusSymbol);
+			} else if(db.hasImage() && POPNodeType.compareGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
+				if(DragManager.dragMoving) {
+					insertNode((POPOperationSymbol) DragManager.draggedNode);
+					DragManager.dragMoving = false;
+					DragManager.draggedNode = null;
+					success = true;
+					event.setDropCompleted(success);
+					event.consume();
+					return;
+				}
+				Class<? extends POPOperationSymbol> symbolClass = null;
+				POPOperationSymbol symbol = null;
+				try {
+					symbolClass = (Class<? extends POPOperationSymbol>) Class.forName("kr.co.idiots.model.compare.POP" + db.getString() + "Symbol");
 					symbol = symbolClass.newInstance();
 				} catch(ClassNotFoundException | IllegalAccessException | InstantiationException e) {
 					e.printStackTrace();

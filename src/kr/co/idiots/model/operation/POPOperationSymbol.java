@@ -144,6 +144,7 @@ public class POPOperationSymbol extends StackPane {
 			DragManager.dragMoving = false;
 			DragManager.draggedNode = null;
 			DragManager.isAllocatedNode = false;
+			DragManager.isSynchronized = false;
 		});
 	}
 	
@@ -202,6 +203,13 @@ public class POPOperationSymbol extends StackPane {
 			}
 			
 		}
+		
+		if(this.parentNode != null && parentNode instanceof POPDecisionNode) {
+			((POPDecisionNode) parentNode).adjustPosition();
+			((POPDecisionNode) parentNode).getOutFlowLine().getNextNode().moveCenter();
+			
+		}
+//		this.parentNode.moveCenter();
 	}
 	
 	public void add(int index, POPVariableNode node) {

@@ -11,21 +11,20 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class POPDivideSymbol extends POPOperationSymbol {
-
+public class POPRemainderSymbol extends POPOperationSymbol {
+	
 	private ImageView imgView;
 	
-	public POPDivideSymbol() {
+	public POPRemainderSymbol() {
 		super();
-		// TODO Auto-generated constructor stub
-		symbol = " / ";
+		symbol = " % ";
 		
-		this.type = POPNodeType.Divide;
+		this.type = POPNodeType.Remainder;
 		
 		leftBlank = new POPBlank(this);
 		contents.getChildren().add(leftBlank);
 		
-		InputStream stream = getClass().getResourceAsStream("/images/Divide.png");
+		InputStream stream = getClass().getResourceAsStream("/images/Remainder.png");
 		Image img = new Image(stream);
 		imgView = new ImageView(img);
 		contents.getChildren().add(imgView);
@@ -35,5 +34,4 @@ public class POPDivideSymbol extends POPOperationSymbol {
 		
 		setInitWidth();
 	}
-	
 }

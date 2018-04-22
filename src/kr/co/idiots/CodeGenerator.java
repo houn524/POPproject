@@ -9,7 +9,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import javax.tools.JavaCompiler;
-import javax.tools.ToolProvider;
 
 import kr.co.idiots.model.symbol.POPStartNode;
 import kr.co.idiots.model.symbol.POPStopNode;
@@ -32,8 +31,8 @@ public class CodeGenerator {
 		String jdkPath = new File("").getAbsolutePath() + "\\runtime\\jdk1.8.0_144";
 		System.setProperty("java.home", jdkPath);
 		
-		compiler = ToolProvider.getSystemJavaCompiler();
-		compiler.run(null, null, null, path + "test.java");
+//		compiler = ToolProvider.getSystemJavaCompiler();
+//		compiler.run(null, null, null, path + "test.java");
 		
 	}
 	

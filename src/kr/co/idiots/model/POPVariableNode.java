@@ -112,6 +112,7 @@ public class POPVariableNode extends POPNode {
 			DragManager.dragMoving = false;
 			DragManager.draggedNode = null;
 			DragManager.isAllocatedNode = false;
+			DragManager.isSynchronized = false;
 		});
 	}
 

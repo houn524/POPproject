@@ -78,9 +78,8 @@ public class POPSymbolNode extends POPNode {
 				prevBound = inFlowLine.getPrevNode().getBoundsInParent();
 //			}
 			
-		
 			if(outFlowLine != null) {
-				outFlowLine.setStartX(newBound.getMinX() + (newBound.getWidth() / 2));
+				outFlowLine.setStartX(newBound.getMinX() + (newBound.getWidth() / 2));				
 				outFlowLine.setStartY(newBound.getMaxY());
 			}
 			
@@ -92,7 +91,7 @@ public class POPSymbolNode extends POPNode {
 //			if(this instanceof POPDecisionNode) {
 //				((POPDecisionNode) this).getContents().setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2));
 //			} else {
-				component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2));
+			component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2));
 //			}
 			
 		}
@@ -239,17 +238,16 @@ public class POPSymbolNode extends POPNode {
 		getComponent().setOnDragDone(event -> {
 			
 			if (DragManager.isAllocatedNode && event.getTransferMode() != TransferMode.MOVE) {
-				POPSolvingLayoutController.scriptArea.add(this);
+				POPSolvingLayoutController.scriptArea.addWithOutFlowLine(this);
 				
-				if(outFlowLine != null) {
-					POPSolvingLayoutController.scriptArea.getComponent().getChildren().add(getOutFlowLine());
-				}
+//				if(outFlowLine != null) {
+//					POPSolvingLayoutController.scriptArea.getComponent().getChildren().add(getOutFlowLine());
+//				}
 				
 				this.inFlowLine.insertNode(this);
 			} else if(DragManager.dragMoving && event.getTransferMode() != TransferMode.MOVE) {
 				POPSolvingLayoutController.scriptArea.add(this);
 			}
-			
 			
 			DragManager.dragMoving = false;
 			DragManager.draggedNode = null;
@@ -294,6 +292,8 @@ public class POPSymbolNode extends POPNode {
 				DragManager.isAllocatedNode = true;
 				this.inFlowLine.setNextNode(outFlowLine.getNextNode());
 				this.getScriptArea().remove(this);
+				
+				outFlowLine.removeNodeOfDecision();
 				
 				this.outFlowLine = new POPFlowLine();
 				this.outFlowLine.setPrevNode(this);
