@@ -37,6 +37,9 @@ import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPScriptArea;
 import kr.co.idiots.model.POPVariableNode;
 import kr.co.idiots.model.compare.POPIsEqualSymbol;
+import kr.co.idiots.model.compare.POPLessThanEqualSymbol;
+import kr.co.idiots.model.compare.POPLessThanSymbol;
+import kr.co.idiots.model.compare.POPNotEqualSymbol;
 import kr.co.idiots.model.operation.POPDivideSymbol;
 import kr.co.idiots.model.operation.POPMinusSymbol;
 import kr.co.idiots.model.operation.POPMultiplySymbol;
@@ -44,6 +47,7 @@ import kr.co.idiots.model.operation.POPPlusSymbol;
 import kr.co.idiots.model.operation.POPRemainderSymbol;
 import kr.co.idiots.model.symbol.POPDecisionNode;
 import kr.co.idiots.model.symbol.POPDocumentNode;
+import kr.co.idiots.model.symbol.POPLoopNode;
 import kr.co.idiots.model.symbol.POPProcessNode;
 import kr.co.idiots.model.symbol.POPStartNode;
 import kr.co.idiots.model.symbol.POPStopNode;
@@ -103,6 +107,8 @@ public class POPSolvingLayoutController {
 	private POPProcessNode processSymbol;
 	private POPDocumentNode documentSymbol;
 	private POPDecisionNode decisionSymbol;
+	private POPLoopNode loopSymbol;
+	
 	private POPPlusSymbol plusSymbol;
 	private POPMinusSymbol minusSymbol;
 	private POPMultiplySymbol multiplySymbol;
@@ -110,6 +116,9 @@ public class POPSolvingLayoutController {
 	private POPRemainderSymbol remainderSymbol;
 	
 	private POPIsEqualSymbol isEqualSymbol;
+	private POPLessThanSymbol lessThanSymbol;
+	private POPLessThanEqualSymbol lessThanEqualSymbol;
+	private POPNotEqualSymbol notEqualSymbol;
 	
 	private Stage popup;
 	
@@ -184,6 +193,9 @@ public class POPSolvingLayoutController {
 		decisionSymbol = new POPDecisionNode(scriptArea);
 		symbolArea.getChildren().add(decisionSymbol.getComponent());
 		decisionSymbol.getComponent().setLayoutY(200);
+		loopSymbol = new POPLoopNode(scriptArea);
+		symbolArea.getChildren().add(loopSymbol.getComponent());
+		loopSymbol.getComponent().setLayoutY(300);
 		
 		plusSymbol = new POPPlusSymbol();
 		operationArea.getChildren().add(plusSymbol);
@@ -203,6 +215,16 @@ public class POPSolvingLayoutController {
 		isEqualSymbol = new POPIsEqualSymbol();
 		operationArea.getChildren().add(isEqualSymbol);
 		isEqualSymbol.setTranslateY(300);
+		lessThanSymbol = new POPLessThanSymbol();
+		operationArea.getChildren().add(lessThanSymbol);
+		lessThanSymbol.setTranslateY(350);
+		lessThanEqualSymbol = new POPLessThanEqualSymbol();
+		operationArea.getChildren().add(lessThanEqualSymbol);
+		lessThanEqualSymbol.setTranslateY(400);
+		notEqualSymbol = new POPNotEqualSymbol();
+		operationArea.getChildren().add(notEqualSymbol);
+		notEqualSymbol.setTranslateY(450);
+		
 		
 		POPSymbolNode startNode = new POPStartNode(scriptArea);
 		POPSymbolNode stopNode = new POPStopNode(scriptArea);

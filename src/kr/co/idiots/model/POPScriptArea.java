@@ -1,7 +1,6 @@
 package kr.co.idiots.model;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -12,6 +11,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.ScrollEvent;
@@ -20,12 +20,15 @@ import javafx.scene.layout.AnchorPane;
 import kr.co.idiots.CodeGenerator;
 import kr.co.idiots.MainApp;
 import kr.co.idiots.POPFlowchartPlayer;
+import kr.co.idiots.POPNodeFactory;
+import kr.co.idiots.SubNodeIF;
 import kr.co.idiots.model.operation.POPOperationSymbol;
 import kr.co.idiots.model.symbol.POPDecisionEndNode;
 import kr.co.idiots.model.symbol.POPDecisionNode;
+import kr.co.idiots.model.symbol.POPLoopEndNode;
+import kr.co.idiots.model.symbol.POPLoopNode;
 import kr.co.idiots.model.symbol.POPSymbolNode;
 import kr.co.idiots.util.DragManager;
-import kr.co.idiots.util.POPNodeDataFormat;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -95,6 +98,7 @@ public class POPScriptArea {
 					} else if(event.getDeltaY() < 0) {
 						zoomScale.set(zoomScale.get() - 0.1);
 					}
+					
 					event.consume();
 				}
 					
@@ -108,12 +112,12 @@ public class POPScriptArea {
 			@Override
 			public void changed(ObservableValue<? extends Bounds> arg0, Bounds oldBound, Bounds newBound) {
 				// TODO Auto-generated method stub
-				pane.setPrefSize(scrollPane.getWidth(), scrollPane.getHeight());
+				pane.setPrefSize(scrollPane.getWidth() - 2, scrollPane.getHeight() - 2);
 				
 			}
 
 		});
-		
+				
 		setOnDrag();
 	}
 			
@@ -124,9 +128,6 @@ public class POPScriptArea {
 				event.acceptTransferModes(TransferMode.MOVE);
 			}
 			
-			if(scrollPane.getViewportBounds().getWidth() - event.getSceneX() <= 20) {
-				scrollPane.setHvalue(scrollPane.getHvalue() + 0.03);
-			}
 			DragManager.lastCenterXOfStartNode = centerXOfStartNode;
 			event.consume();
 		});
@@ -139,7 +140,7 @@ public class POPScriptArea {
 			boolean success = false;
 			
 			if(DragManager.dragMoving) {
-				if(!(DragManager.draggedNode instanceof POPDecisionNode)) {
+				if(!(DragManager.draggedNode instanceof POPDecisionNode) && !(DragManager.draggedNode instanceof POPLoopNode)) {
 					DragManager.isSynchronized = true;
 				}
 					
@@ -151,15 +152,6 @@ public class POPScriptArea {
 				}
 				
 				add(node);
-				
-				if((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0) {
-					node.setLayoutX(0);
-				} else {
-					
-					node.setLayoutX((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() - (DragManager.lastCenterXOfStartNode - 50));
-				}
-				node.setLayoutY((event.getY() - ((node.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY());
-//				}
 				
 				if(DragManager.draggedNode instanceof POPOperationSymbol) {
 					((POPOperationSymbol) DragManager.draggedNode).setParentNode(null);
@@ -174,93 +166,63 @@ public class POPScriptArea {
 				DragManager.dragMoving = false;
 				DragManager.draggedNode = null;
 				
-				success = true;
-			} else if(POPNodeType.symbolGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
-				Class<? extends POPSymbolNode> nodeClass = null;
-				try {
-					nodeClass = (Class<? extends POPSymbolNode>) Class
-							.forName("kr.co.idiots.model.symbol.POP" + db.getString() + "Node");
-					node = nodeClass.getDeclaredConstructor(POPScriptArea.class).newInstance(this);
-				} catch (ClassNotFoundException | IllegalAccessException | InstantiationException | 
-						IllegalArgumentException | InvocationTargetException | NoSuchMethodException | 
-						SecurityException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			} else {
 				
-				if((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0) {
-					node.setLayoutX(0);
+				node = (Node) POPNodeFactory.createNode(db);
+				
+				if(node instanceof POPOperationSymbol) {
+					((POPOperationSymbol) node).initialize(null);
+				} else if(node instanceof POPVariableNode) {
+					((POPVariableNode) node).initialize(null);
 				} else {
-					node.setLayoutX((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() - (DragManager.lastCenterXOfStartNode - 50));
+					((POPSymbolNode) node).initialize();
 				}
-				node.setLayoutY((event.getY() - ((node.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY());
 				
-				
-				((POPSymbolNode) node).initialize();
-				
-				
-				add(node);
-				
-//				if(node instanceof POPDecisionNode) {
-//					component.getChildren().add(((POPDecisionNode) node).getLeftFlowLine());
-//					component.getChildren().add(((POPDecisionNode) node).getRightFlowLine());
-//					component.getChildren().add(((POPDecisionNode) node).getLeftSubNode());
-//					component.getChildren().add(((POPDecisionNode) node).getRightSubNode());
-//				}
-				success = true;
-			} else if(POPNodeType.operationGroup.contains(Enum.valueOf(POPNodeType.class, db.getString())) ||
-					POPNodeType.compareGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
-				
-				String packageName = "";
-				
-				if(POPNodeType.compareGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
-					packageName = "compare";
+				if(node instanceof POPSymbolNode) {
+					add(node);
 				} else {
-					packageName = "operation";
+					component.getChildren().add(node);
 				}
-				
-				Class<? extends POPOperationSymbol> nodeClass = null;
-				try {
-					nodeClass = (Class<? extends POPOperationSymbol>) Class
-							.forName("kr.co.idiots.model." + packageName + ".POP" + db.getString() + "Symbol");
-					node = nodeClass.newInstance();
-				} catch (ClassNotFoundException | IllegalAccessException | InstantiationException | 
-						IllegalArgumentException | SecurityException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				((POPOperationSymbol) node).initialize(null);
-				
-				if((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0) {
-					node.setLayoutX(0);
-				} else {
-					node.setLayoutX((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() - (DragManager.lastCenterXOfStartNode - 50));
-				}
-				node.setLayoutY((event.getY() - ((node.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY());
-				
-				component.getChildren().add(node);
-				success = true;
-			} else if(POPNodeType.variableGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
-				node = new POPVariableNode(this, 
-						(String) db.getContent(POPNodeDataFormat.variableNameFormat),
-						(Enum.valueOf(POPNodeType.class, (String) db.getContent(POPNodeDataFormat.variableTypeFormat))));
-				((POPVariableNode) node).initialize(null);
-				
-				if((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0) {
-					node.setLayoutX(0);
-				} else {
-					node.setLayoutX((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() - (DragManager.lastCenterXOfStartNode - 50));
-				}
-				node.setLayoutY((event.getY() - ((node.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY());
-				
-				component.getChildren().add(node);
-				success = true;
 			}
 			
+			
+			locateNode(event, node);
+			
+			success = true;
 			event.setDropCompleted(success);
 			event.consume();
+			
+			
 		});
 		
+	}
+	
+	private void locateNode(DragEvent event, Node node) {
+		double x = -1, y = -1;
+		
+		if((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0 ||
+				(event.getX() - ((node.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY() < 0) {
+			
+		}
+		
+		if((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0) {
+			x = 0;
+		}
+		
+		if((event.getX() - ((node.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY() < 0) {
+			y = 0;
+		} 
+		
+		if(x != 0) {
+			x = (event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() - (DragManager.lastCenterXOfStartNode - 50) + (scrollPane.getHvalue() * ( pane.getBoundsInLocal().getWidth() - scrollPane.getBoundsInLocal().getWidth() / zoomScale.get()));
+		}
+		
+		if(y != 0) {
+			y = (event.getY() - ((node.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY() + (scrollPane.getVvalue() * (pane.getBoundsInLocal().getHeight() - scrollPane.getBoundsInLocal().getHeight() / zoomScale.get()));
+		}
+		
+		node.setLayoutX(x);
+		node.setLayoutY(y);
 	}
 			
 	public void addWithOutFlowLine(POPSymbolNode node) {
@@ -271,15 +233,16 @@ public class POPScriptArea {
 	}
 	
 	public void add(Node node) {
-		if(node instanceof POPDecisionNode) {
+		if(node instanceof SubNodeIF) {
 			component.getChildren().add(node);
-			for(Node subNode : ((POPDecisionNode) node).getSubNodes()) {
-				if(subNode instanceof POPDecisionNode) {
+			
+			for(Node subNode : ((SubNodeIF) node).getSubNodes()) {
+				if(subNode instanceof SubNodeIF) {
 					add((POPSymbolNode) subNode);
 				} else {
 					component.getChildren().add(subNode);
 				}
-				if(!(subNode instanceof POPDecisionEndNode) && subNode instanceof POPSymbolNode) {
+				if(!(subNode instanceof POPDecisionEndNode) && !(subNode instanceof POPLoopEndNode) && subNode instanceof POPSymbolNode) {
 					component.getChildren().add(((POPSymbolNode) subNode).getOutFlowLine());
 				}
 			}
@@ -289,11 +252,11 @@ public class POPScriptArea {
 	}
 	
 	public void remove(POPSymbolNode node) {
-		if(node instanceof POPDecisionNode) {
+		if(node instanceof SubNodeIF) {
 			component.getChildren().remove(node);
-			for(Node subNode : ((POPDecisionNode) node).getSubNodes()) {
+			for(Node subNode : ((SubNodeIF) node).getSubNodes()) {
 				
-				if(subNode instanceof POPDecisionNode) {
+				if(subNode instanceof SubNodeIF) {
 					remove((POPSymbolNode) subNode);
 				} else {
 					component.getChildren().remove(subNode);

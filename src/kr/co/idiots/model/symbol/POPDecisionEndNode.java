@@ -62,29 +62,29 @@ public class POPDecisionEndNode extends POPSymbolNode {
 			public void changed(ObservableValue<? extends Bounds> arg0, Bounds oldBound, Bounds newBound) {
 				// TODO Auto-generated method stub
 				
-				if(sideNode != null) {
-					sideNode.setLayoutY(newBound.getMinY());
-				}
+//				if(sideNode != null) {
+//					sideNode.setLayoutY(newBound.getMinY());
+//				}
 				
-				if(sideFlowLine != null) {
-					
-					sideFlowLine.setStartX(newBound.getMinX());
-					sideFlowLine.setStartY(newBound.getMinY());
-					
-					sideFlowLine.setEndX(sideNode.getLayoutX());
-					sideFlowLine.setEndY(sideNode.getLayoutY());
-				}
+//				if(sideFlowLine != null) {
+//					
+//					sideFlowLine.setStartX(newBound.getMinX());
+//					sideFlowLine.setStartY(newBound.getMinY());
+//					
+//					sideFlowLine.setEndX(sideNode.getLayoutX());
+//					sideFlowLine.setEndY(sideNode.getLayoutY());
+//				}
 				
 				if(inFlowLine != null) {
 					inFlowLine.setEndX(newBound.getMinX());
 					inFlowLine.setEndY(newBound.getMinY());
 				}
 				
-				if(decisionNode != null) {
-					decisionNode.getOutFlowLine().setStartY(newBound.getMinY());
-				}
+//				if(decisionNode != null) {
+//					decisionNode.getOutFlowLine().setStartY(newBound.getMinY());
+//				}
 				
-				moveCenter();
+//				moveCenter();
 			}
 		});
 	}

@@ -5,6 +5,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TextField;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
+import kr.co.idiots.POPNodeFactory;
 import kr.co.idiots.model.operation.POPOperationSymbol;
 import kr.co.idiots.util.DragManager;
 import kr.co.idiots.util.POPNodeDataFormat;
@@ -87,7 +88,7 @@ public class POPBlank extends TextField {
 						(Enum.valueOf(POPNodeType.class, (String) db.getContent(POPNodeDataFormat.variableTypeFormat))));
 				insertNode(variable);
 				success = true;
-			} else if(db.hasImage() && POPNodeType.operationGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
+			} else {
 				if(DragManager.dragMoving) {
 					insertNode((POPOperationSymbol) DragManager.draggedNode);
 					DragManager.dragMoving = false;
@@ -97,40 +98,11 @@ public class POPBlank extends TextField {
 					event.consume();
 					return;
 				}
-				Class<? extends POPOperationSymbol> symbolClass = null;
 				POPOperationSymbol symbol = null;
-				try {
-					symbolClass = (Class<? extends POPOperationSymbol>) Class.forName("kr.co.idiots.model.operation.POP" + db.getString() + "Symbol");
-					symbol = symbolClass.newInstance();
-				} catch(ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-					e.printStackTrace();
-				}
+				
+				symbol = (POPOperationSymbol) POPNodeFactory.createNode(db);
 				insertNode(symbol);
 				success = true;
-//				POPPlusSymbol plusSymbol = new POPPlusSymbol();
-//				insertNode(plusSymbol);
-			} else if(db.hasImage() && POPNodeType.compareGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
-				if(DragManager.dragMoving) {
-					insertNode((POPOperationSymbol) DragManager.draggedNode);
-					DragManager.dragMoving = false;
-					DragManager.draggedNode = null;
-					success = true;
-					event.setDropCompleted(success);
-					event.consume();
-					return;
-				}
-				Class<? extends POPOperationSymbol> symbolClass = null;
-				POPOperationSymbol symbol = null;
-				try {
-					symbolClass = (Class<? extends POPOperationSymbol>) Class.forName("kr.co.idiots.model.compare.POP" + db.getString() + "Symbol");
-					symbol = symbolClass.newInstance();
-				} catch(ClassNotFoundException | IllegalAccessException | InstantiationException e) {
-					e.printStackTrace();
-				}
-				insertNode(symbol);
-				success = true;
-//				POPPlusSymbol plusSymbol = new POPPlusSymbol();
-//				insertNode(plusSymbol);
 			}
 			
 			event.setDropCompleted(success);
@@ -149,13 +121,18 @@ public class POPBlank extends TextField {
 	}
 	
 	public void insertNode(POPOperationSymbol node) {
-		if(!parentSymbol.isInitialized())
+		if(!parentSymbol.isInitialized()) {
 			return;
-		
+		}
+			
+			
 		int index = parentSymbol.getContents().getChildren().indexOf(this);
 		
 		parentSymbol.remove(this);
+		
 		parentSymbol.add(index, node);
+		
+		
 		
 		node.initialize(parentSymbol.getParentNode());
 	}

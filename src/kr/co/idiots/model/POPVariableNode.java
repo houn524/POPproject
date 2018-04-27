@@ -46,8 +46,6 @@ public class POPVariableNode extends POPNode {
 		setOnVariableNodeDrag();
 	}
 	
-	
-	
 	public void initialize(POPOperationSymbol parentSymbol) {
 		isInitialized = true;
 		this.parentSymbol = parentSymbol;
@@ -113,9 +111,11 @@ public class POPVariableNode extends POPNode {
 			DragManager.draggedNode = null;
 			DragManager.isAllocatedNode = false;
 			DragManager.isSynchronized = false;
+//			DragManager.isAdjustPosSync = true;
 		});
 	}
 
 	public String getName() { return this.name; }
 	public Object getValue() { return this.value; }
+
 }

@@ -15,6 +15,6 @@ public class POPStartNode extends POPSymbolNode {
 		
 		outFlowLine = new POPFlowLine();
 		outFlowLine.setPrevNode(this);
-		
+		outFlowLine.setRootNode(this);
 	}
 }

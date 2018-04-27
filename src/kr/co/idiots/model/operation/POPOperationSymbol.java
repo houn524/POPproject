@@ -16,6 +16,7 @@ import kr.co.idiots.model.POPBlank;
 import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPVariableNode;
 import kr.co.idiots.model.symbol.POPDecisionNode;
+import kr.co.idiots.model.symbol.POPLoopNode;
 import kr.co.idiots.model.symbol.POPSymbolNode;
 import kr.co.idiots.util.ClipboardUtil;
 import kr.co.idiots.util.DragManager;
@@ -145,6 +146,7 @@ public class POPOperationSymbol extends StackPane {
 			DragManager.draggedNode = null;
 			DragManager.isAllocatedNode = false;
 			DragManager.isSynchronized = false;
+//			DragManager.isAdjustPosSync = true;
 		});
 	}
 	
@@ -196,7 +198,7 @@ public class POPOperationSymbol extends StackPane {
 		if(parentSymbol != null) {
 			parentSymbol.setContentsAutoSize();
 		} else if(parentNode != null) {
-			if(parentNode instanceof POPDecisionNode) {
+			if(parentNode instanceof POPDecisionNode || parentNode instanceof POPLoopNode) {
 				parentNode.setNodeAutoSize(contents.getPrefWrapLength() + 100);
 			} else {
 				parentNode.setNodeAutoSize(contents.getPrefWrapLength());
@@ -206,8 +208,22 @@ public class POPOperationSymbol extends StackPane {
 		
 		if(this.parentNode != null && parentNode instanceof POPDecisionNode) {
 			((POPDecisionNode) parentNode).adjustPosition();
-			((POPDecisionNode) parentNode).getOutFlowLine().getNextNode().moveCenter();
-			
+			System.out.println("1-8");
+//			if(parentNode.getOutFlowLine().getNextNode() != null) {
+//				((POPDecisionNode) parentNode).getOutFlowLine().getNextNode().moveCenter();
+//			}
+		} else if(this.parentNode != null && parentNode instanceof POPLoopNode) {
+			((POPLoopNode) parentNode).adjustPosition();
+		}
+		
+		if(this.parentNode != null && parentNode.getOutFlowLine() != null && parentNode.getOutFlowLine().getLoopNode() != null) {
+			parentNode.getOutFlowLine().getLoopNode().adjustPosition();
+		} else if(this.parentNode != null && parentNode.getOutFlowLine() != null && parentNode.getOutFlowLine().getDecisionNode() != null) {
+			parentNode.getOutFlowLine().getDecisionNode().adjustPosition();
+		}
+		
+		if(parentNode != null) {
+			parentNode.moveCenter();
 		}
 //		this.parentNode.moveCenter();
 	}
@@ -334,4 +350,5 @@ public class POPOperationSymbol extends StackPane {
 		else
 			return "String ";
 	}
+
 }

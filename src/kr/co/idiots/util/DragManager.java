@@ -17,4 +17,5 @@ public class DragManager {
 	public static TabPane tabPane;
 	
 	public static double lastCenterXOfStartNode;
+	public static boolean isAdjustPosSync = true;
 }

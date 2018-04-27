@@ -17,12 +17,12 @@ public class POPSideFlowLine extends Line {
 	}
 	
 	public void setStartPos(double x, double y) {
-		setStartX(x);
-		setStartY(y);
+//		setStartX(x);
+//		setStartY(y);
 	}
 	
 	public void setEndPos(double x, double y) {
-		setEndX(x);
-		setEndY(y);
+//		setEndX(x);
+//		setEndY(y);
 	}
 }

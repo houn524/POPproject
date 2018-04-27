@@ -40,7 +40,7 @@ public abstract class POPNode extends StackPane implements Serializable, Cloneab
 		component.setPrefHeight(Control.USE_COMPUTED_SIZE);
 		component.setAlignment(Pos.CENTER);
 		
-		if(type != POPNodeType.DecisionSub) {
+		if(type != POPNodeType.DecisionSub && type != POPNodeType.LoopSub) {
 			InputStream stream = getClass().getResourceAsStream("/images/" + type.toString() + ".png");
 			Image img = new Image(stream);
 			imgView = new ImageView(img);

@@ -34,7 +34,7 @@ public class POPDocumentNode extends POPSymbolNode {
 		symbol.setRootSymbol(true);
 		this.setRootSymbol(symbol);
 		
-		this.moveCenter();
+//		this.moveCenter();
 	}
 
 }

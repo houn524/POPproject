@@ -61,8 +61,8 @@ public class POPSymbolNode extends POPNode {
 	}
 	
 	public void moveCenter() {
-		if(inFlowLine != null && (isAllocated || this instanceof POPDecisionEndNode)) {
-			
+		if(inFlowLine != null && (isAllocated || this instanceof POPDecisionEndNode || this instanceof POPLoopEndNode)) {
+//			System.out.println(this);
 			Bounds newBound = null;
 			Bounds prevBound = null;
 			
@@ -77,22 +77,29 @@ public class POPSymbolNode extends POPNode {
 //			} else {
 				prevBound = inFlowLine.getPrevNode().getBoundsInParent();
 //			}
+				
+//				if(component.getLayoutX() != (prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2))
+					
 			
-			if(outFlowLine != null) {
-				outFlowLine.setStartX(newBound.getMinX() + (newBound.getWidth() / 2));				
-				outFlowLine.setStartY(newBound.getMaxY());
-			}
+//			if(outFlowLine != null) {
+//				outFlowLine.setStartX(newBound.getMinX() + (newBound.getWidth() / 2));				
+//				outFlowLine.setStartY(newBound.getMaxY());
+//			}
+//			
+//			if(inFlowLine != null) {
+//				inFlowLine.setEndX(newBound.getMinX() + (newBound.getWidth() / 2));
+//				inFlowLine.setEndY(newBound.getMinY());
+//			}
 			
-			if(inFlowLine != null) {
-				inFlowLine.setEndX(newBound.getMinX() + (newBound.getWidth() / 2));
-				inFlowLine.setEndY(newBound.getMinY());
-			}
-			
+			if(!component.layoutXProperty().isBound())
+				component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2));
+//			System.out.println(this + " : " + component.getLayoutX());
 //			if(this instanceof POPDecisionNode) {
 //				((POPDecisionNode) this).getContents().setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2));
 //			} else {
-			component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2));
+			
 //			}
+			
 			
 		}
 	}
@@ -113,34 +120,47 @@ public class POPSymbolNode extends POPNode {
 //				bottomCenterXProperty().set(newBound.getMinX() + (newBound.getWidth() / 2));
 //				bottomYProperty().set(newBound.getMaxY());
 				
-				if(outFlowLine != null) {
-					outFlowLine.setStartX(newBound.getMinX() + (newBound.getWidth() / 2));
-					outFlowLine.setStartY(newBound.getMaxY());
-				}
+//				if(outFlowLine != null) {
+//					outFlowLine.setStartX(newBound.getMinX() + (newBound.getWidth() / 2));
+//					outFlowLine.setStartY(newBound.getMaxY());
+//				}
+//				
+//				if(inFlowLine != null) {
+//					inFlowLine.setEndX(newBound.getMinX() + (newBound.getWidth() / 2));
+//					inFlowLine.setEndY(newBound.getMinY());
+//				}
 				
-				if(inFlowLine != null) {
-					inFlowLine.setEndX(newBound.getMinX() + (newBound.getWidth() / 2));
-					inFlowLine.setEndY(newBound.getMinY());
-				}
 				
-				moveCenter();
-				if(outFlowLine != null && outFlowLine.getNextNode() != null) {
-					outFlowLine.getNextNode().moveCenter();
-				}
+//				if(outFlowLine != null && outFlowLine.getNextNode() != null) {
+//					outFlowLine.getNextNode().moveCenter();
+//				}
+				
+//				if(outFlowLine != null && outFlowLine.getLoopNode() != null) {
+//					outFlowLine.getLoopNode().adjustPosition();
+//					System.out.println("6");
+//				}
+				
+//				if(outFlowLine != null && outFlowLine.getDecisionNode() != null && !(outFlowLine.getPrevNode() instanceof POPDecisionStartNode)) {
+//					outFlowLine.getDecisionNode().adjustPosition();
+//					System.out.println(this);
+//					System.out.println("1-4");
+//				}
+//				moveCenter();
+				
 			}
 		});
 	}
 	
 	
-	protected void setOnSubSymbolBoundChangeListener() {
-		operationSymbol.boundsInLocalProperty().addListener(new ChangeListener<Bounds>() {
-			@Override
-			public void changed(ObservableValue<? extends Bounds> arg0, Bounds oldBound, Bounds newBound) {
-				// TODO Auto-generated method stub
-				moveCenter();
-			}
-		});
-	}
+//	protected void setOnSubSymbolBoundChangeListener() {
+//		operationSymbol.boundsInLocalProperty().addListener(new ChangeListener<Bounds>() {
+//			@Override
+//			public void changed(ObservableValue<? extends Bounds> arg0, Bounds oldBound, Bounds newBound) {
+//				// TODO Auto-generated method stub
+//				moveCenter();
+//			}
+//		});
+//	}
 	
 	private void setOnNodeDrag() {
 		
@@ -249,10 +269,12 @@ public class POPSymbolNode extends POPNode {
 				POPSolvingLayoutController.scriptArea.add(this);
 			}
 			
+//			if(event.getT)
 			DragManager.dragMoving = false;
 			DragManager.draggedNode = null;
 			DragManager.isAllocatedNode = false;
 			DragManager.isSynchronized = false;
+			DragManager.isAdjustPosSync = true;
 						
 		});
 		
@@ -287,6 +309,7 @@ public class POPSymbolNode extends POPNode {
 			db.setContent(content);
 			
 			if(isAllocated) {
+				outFlowLine.lengthChanging(0, 0);
 				DragManager.draggedNode = this;
 				DragManager.dragMoving = true;
 				DragManager.isAllocatedNode = true;
@@ -294,9 +317,14 @@ public class POPSymbolNode extends POPNode {
 				this.getScriptArea().remove(this);
 				
 				outFlowLine.removeNodeOfDecision();
+				outFlowLine.removeNodeOfLoop();
+				
 				
 				this.outFlowLine = new POPFlowLine();
 				this.outFlowLine.setPrevNode(this);
+				if(this instanceof POPDecisionNode || this instanceof POPLoopNode) {
+					outFlowLine.setRootNode(this);
+				}
 				isAllocated = false;
 			} else if(isInitialized) {
 //				if(this instanceof POPDecisionNode) {
@@ -308,7 +336,7 @@ public class POPSymbolNode extends POPNode {
 				DragManager.dragMoving = true;
 				this.getScriptArea().remove(this);
 			}
-			
+			DragManager.isAdjustPosSync = false;
 //			scriptArea.locateNodeMousePos(this);
 			event.consume();
 			
