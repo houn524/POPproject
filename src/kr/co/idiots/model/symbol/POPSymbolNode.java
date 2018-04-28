@@ -26,6 +26,8 @@ public class POPSymbolNode extends POPNode {
 	protected POPFlowLine inFlowLine;
 	protected POPFlowLine outFlowLine;
 	protected POPProcessNode dragNode;
+	protected POPSymbolNode rootNode;
+	protected POPSymbolNode parentNode;
 	
 	protected DoubleProperty topCenterX = new SimpleDoubleProperty(0);
 	protected DoubleProperty topY = new SimpleDoubleProperty(0);
@@ -320,11 +322,41 @@ public class POPSymbolNode extends POPNode {
 				outFlowLine.removeNodeOfLoop();
 				
 				
+				POPSymbolNode root = parentNode;
+		    	while(true) {
+		    		if(root.getParentNode() != null) {
+		    			root = root.getParentNode();
+		    		} else {
+		    			break;
+		    		}
+		    	}
+		    	System.out.println("ddddddddddddddddddddddddddddd" + root);
+				root.getOutFlowLine().lengthChanging(0, 0);
+				
+				parentNode = null;
+//				if(outFlowLine.getStartNode() != null) {
+//					System.out.println("헤헤ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ : " + this);
+//			    	getOutFlowLine().setStartNode(null);
+//			    	if(this instanceof SubNodeIF) {
+//			    		for(Node subNode : ((SubNodeIF) this).getSubNodes()) {
+//			    			if(subNode instanceof POPSymbolNode && ((POPSymbolNode) subNode).getOutFlowLine() != null) {
+//			    				((POPSymbolNode) subNode).getOutFlowLine().setStartNode(null);
+//			    				System.out.println("1111111111111111111111111111111" + subNode);
+//			    			}
+//			    		}
+//			    	}
+//			    }
+				
 				this.outFlowLine = new POPFlowLine();
 				this.outFlowLine.setPrevNode(this);
 				if(this instanceof POPDecisionNode || this instanceof POPLoopNode) {
 					outFlowLine.setRootNode(this);
 				}
+				
+				
+				
+				
+			
 				isAllocated = false;
 			} else if(isInitialized) {
 //				if(this instanceof POPDecisionNode) {
@@ -337,6 +369,7 @@ public class POPSymbolNode extends POPNode {
 				this.getScriptArea().remove(this);
 			}
 			DragManager.isAdjustPosSync = false;
+			
 //			scriptArea.locateNodeMousePos(this);
 			event.consume();
 			

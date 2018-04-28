@@ -207,19 +207,19 @@ public class POPOperationSymbol extends StackPane {
 		}
 		
 		if(this.parentNode != null && parentNode instanceof POPDecisionNode) {
-			((POPDecisionNode) parentNode).adjustPosition();
+			((POPDecisionNode) parentNode).adjustPositionThread();
 			System.out.println("1-8");
 //			if(parentNode.getOutFlowLine().getNextNode() != null) {
 //				((POPDecisionNode) parentNode).getOutFlowLine().getNextNode().moveCenter();
 //			}
 		} else if(this.parentNode != null && parentNode instanceof POPLoopNode) {
-			((POPLoopNode) parentNode).adjustPosition();
+			((POPLoopNode) parentNode).adjustPositionThread();
 		}
 		
 		if(this.parentNode != null && parentNode.getOutFlowLine() != null && parentNode.getOutFlowLine().getLoopNode() != null) {
-			parentNode.getOutFlowLine().getLoopNode().adjustPosition();
+			parentNode.getOutFlowLine().getLoopNode().adjustPositionThread();
 		} else if(this.parentNode != null && parentNode.getOutFlowLine() != null && parentNode.getOutFlowLine().getDecisionNode() != null) {
-			parentNode.getOutFlowLine().getDecisionNode().adjustPosition();
+			parentNode.getOutFlowLine().getDecisionNode().adjustPositionThread();
 		}
 		
 		if(parentNode != null) {

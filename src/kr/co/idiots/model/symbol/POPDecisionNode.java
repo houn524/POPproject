@@ -91,13 +91,17 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 		
 		leftStartNode = new POPDecisionStartNode(scriptArea);
 		leftStartNode.getOutFlowLine().setDecisionNode(this);
+		leftStartNode.setParentNode(this);
 		rightStartNode = new POPDecisionStartNode(scriptArea);
 		rightStartNode.getOutFlowLine().setDecisionNode(this);
+		rightStartNode.setParentNode(this);
 		
 		rightEndNode = new POPDecisionEndNode(scriptArea, this, null);
 		leftEndNode = new POPDecisionEndNode(scriptArea, this, rightEndNode);
 		rightEndNode.setSideNode(leftEndNode);
 		leftEndNode = leftEndNode.createSideFlowLine();
+		leftEndNode.setParentNode(this);
+		rightEndNode.setParentNode(this);
 		
 		leftStartNode.getOutFlowLine().setNextNode(leftEndNode);
 		leftEndNode.setInFlowLine(leftStartNode.getOutFlowLine());
@@ -181,7 +185,7 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 		setOnBoundChangeListener();
 	}
 	
-	private void resizeDecisionNode() {
+	public void resizeDecisionNode() {
 		
 		leftMaxWidth.set(initMaxWidth);
 		rightMaxWidth.set(initMaxWidth);
@@ -223,7 +227,34 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 	
 	public void adjustPosition() {
 		resizeDecisionNode();
+    	
+    	Node subNode = leftStartNode;
 		
+		while(true) {
+			if(subNode instanceof POPDecisionEndNode) {
+				break;
+			}
+			
+			if(subNode instanceof POPSymbolNode) {
+				((POPSymbolNode) subNode).moveCenter();
+			}
+			subNode = ((POPSymbolNode) subNode).getOutFlowLine().getNextNode();
+		}
+		
+		subNode = rightStartNode;
+		while(true) {
+			if(subNode instanceof POPDecisionEndNode) {
+				break;
+			}
+			
+			if(subNode instanceof POPSymbolNode) {
+				((POPSymbolNode) subNode).moveCenter();
+			}
+			subNode = ((POPSymbolNode) subNode).getOutFlowLine().getNextNode();
+		}
+	}
+	
+	public void adjustPositionThread() {
 		Bounds bound = component.getBoundsInParent();
 		Bounds imgBound = imgView.getBoundsInLocal();
 		Point2D pos = Point2D.ZERO;
@@ -280,30 +311,9 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
             @Override
             public void run() {
                 PlatformHelper.run(() -> {
-                	Node subNode = leftStartNode;
+                	adjustPosition();
     				
-    				while(true) {
-    					if(subNode instanceof POPDecisionEndNode) {
-    						break;
-    					}
-    					
-    					if(subNode instanceof POPSymbolNode) {
-    						((POPSymbolNode) subNode).moveCenter();
-    					}
-    					subNode = ((POPSymbolNode) subNode).getOutFlowLine().getNextNode();
-    				}
     				
-    				subNode = rightStartNode;
-    				while(true) {
-    					if(subNode instanceof POPDecisionEndNode) {
-    						break;
-    					}
-    					
-    					if(subNode instanceof POPSymbolNode) {
-    						((POPSymbolNode) subNode).moveCenter();
-    					}
-    					subNode = ((POPSymbolNode) subNode).getOutFlowLine().getNextNode();
-    				}
                 });
                 try { Thread.sleep(100); } catch (InterruptedException e) {}
             }
@@ -400,7 +410,7 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 			public void changed(ObservableValue<? extends Bounds> arg0, Bounds oldBound, Bounds newBound) {
 				// TODO Auto-generated method stub
 				
-				adjustPosition();
+				adjustPositionThread();
 				System.out.println("1-3");
 				
 //				if(newBound.getHeight() > imgView.getBoundsInLocal().getHeight()) {
@@ -429,7 +439,6 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 //				}
 				outFlowLine.lengthChanging(0, 0);
 				
-				resizeDecisionNode();
 				
 				initMaxWidth += newBound.getWidth() - oldBound.getWidth();
 				

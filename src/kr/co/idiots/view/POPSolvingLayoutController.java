@@ -230,6 +230,8 @@ public class POPSolvingLayoutController {
 		POPSymbolNode stopNode = new POPStopNode(scriptArea);
 		
 		startNode.getOutFlowLine().setNextNode(stopNode);
+		startNode.getOutFlowLine().setStartNode((POPStartNode) startNode); 
+		stopNode.setParentNode(startNode);
 		
 		scriptArea.setStartNode(startNode);
 		scriptArea.addWithOutFlowLine(startNode);
