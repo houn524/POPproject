@@ -369,7 +369,6 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 //		rightFlowLine.setStartPos(pos.getX(), pos.getY());
 //		rightFlowLine.setEndPos(pos.getX() + 10, pos.getY());
 //		adjustPosition();
-		System.out.println("1-5");
 //		this.moveCenter();
 		
 	}
@@ -411,7 +410,6 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 				// TODO Auto-generated method stub
 				
 				adjustPositionThread();
-				System.out.println("1-3");
 				
 //				if(newBound.getHeight() > imgView.getBoundsInLocal().getHeight()) {
 //					System.out.println("Gg");
@@ -437,7 +435,7 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 //					outFlowLine.getLoopNode().adjustPosition();
 //					System.out.println("3");
 //				}
-				outFlowLine.lengthChanging(0, 0);
+				outFlowLine.pullNodesThread();
 				
 				
 				initMaxWidth += newBound.getWidth() - oldBound.getWidth();

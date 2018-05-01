@@ -29,6 +29,8 @@ import kr.co.idiots.model.symbol.POPLoopEndNode;
 import kr.co.idiots.model.symbol.POPLoopNode;
 import kr.co.idiots.model.symbol.POPSymbolNode;
 import kr.co.idiots.util.DragManager;
+import kr.co.idiots.util.POPNodeDataFormat;
+import kr.co.idiots.util.PlatformHelper;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -133,10 +135,20 @@ public class POPScriptArea {
 		});
 		
 		scrollPane.setOnDragDropped(event -> {
+			
 //			DragManager.isSynchronized = true;
 			Dragboard db = event.getDragboard();
-			Node node = null;
+//			
+			String clsName = db.getString();
+			String varName = null;
+			String varTypeName = null;
+			if(db.hasContent(POPNodeDataFormat.variableNameFormat))
+				varName = db.getContent(POPNodeDataFormat.variableNameFormat).toString();
+			if(db.hasContent(POPNodeDataFormat.variableTypeFormat))
+				varTypeName = db.getContent(POPNodeDataFormat.variableTypeFormat).toString();
 			
+			
+			Node node = null;
 			boolean success = false;
 			
 			if(DragManager.dragMoving) {
@@ -151,7 +163,9 @@ public class POPScriptArea {
 					DragManager.isAllocatedNode = false;
 				}
 				
-				add(node);
+//				locateNode(event, node);
+//				add(node);
+				locateAndAddNode(event, node);
 				
 				if(DragManager.draggedNode instanceof POPOperationSymbol) {
 					((POPOperationSymbol) DragManager.draggedNode).setParentNode(null);
@@ -167,8 +181,7 @@ public class POPScriptArea {
 				DragManager.draggedNode = null;
 				
 			} else {
-				
-				node = (Node) POPNodeFactory.createNode(db);
+				node = (Node) POPNodeFactory.createNode(clsName, varName, varTypeName);
 				
 				if(node instanceof POPOperationSymbol) {
 					((POPOperationSymbol) node).initialize(null);
@@ -178,15 +191,15 @@ public class POPScriptArea {
 					((POPSymbolNode) node).initialize();
 				}
 				
-				if(node instanceof POPSymbolNode) {
-					add(node);
-				} else {
-					component.getChildren().add(node);
-				}
+				locateAndAddNode(event, node);
+//				locateNode(event, node);
+//				
+//				if(node instanceof POPSymbolNode) {
+//					add(node);
+//				} else {
+//					component.getChildren().add(node);
+//				}
 			}
-			
-			
-			locateNode(event, node);
 			
 			success = true;
 			event.setDropCompleted(success);
@@ -223,6 +236,25 @@ public class POPScriptArea {
 		
 		node.setLayoutX(x);
 		node.setLayoutY(y);
+	}
+	
+	private void locateAndAddNode(DragEvent event, Node node) {
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				PlatformHelper.run(() -> {
+					locateNode(event, node);
+					if(node instanceof POPSymbolNode) {
+						add(node);
+					} else {
+						component.getChildren().add(node);
+					}
+				});
+			}
+		};
+		
+		thread.setDaemon(true);
+		thread.start();
 	}
 			
 	public void addWithOutFlowLine(POPSymbolNode node) {

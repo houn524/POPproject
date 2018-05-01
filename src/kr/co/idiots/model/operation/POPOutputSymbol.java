@@ -1,10 +1,13 @@
 package kr.co.idiots.model.operation;
 
+import javax.script.ScriptException;
+
 import javafx.scene.Node;
 import kr.co.idiots.POPVariableManager;
 import kr.co.idiots.model.POPBlank;
 import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPVariableNode;
+import kr.co.idiots.util.Calculator;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -52,6 +55,16 @@ public class POPOutputSymbol extends POPOperationSymbol {
 	
 	@Override
 	public void generateString() {
+		if(contents.getChildren().get(0) instanceof POPOperationSymbol) {
+			strValue = ((POPOperationSymbol)contents.getChildren().get(0)).getValueString();
+			try {
+				strValue = Calculator.eval(strValue);
+			} catch (ScriptException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return;
+		}
 		strCode = "";
 		strValue = "";
 		
@@ -59,17 +72,15 @@ public class POPOutputSymbol extends POPOperationSymbol {
 			POPVariableNode variable = (POPVariableNode) contents.getChildren().get(0);
 			
 			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
-				value = POPVariableManager.declaredVars.get(variable.getName());
+				strValue = POPVariableManager.declaredVars.get(variable.getName());
 			} 
 		} else if(contents.getChildren().get(0) instanceof POPBlank) {
 			POPBlank blank = (POPBlank) contents.getChildren().get(0);
-			value = blank.getText();
+			strValue = blank.getText();
 		}
 		
 		strCode += "System.out.println(";
 		strCode += value;
 		strCode += ");";
-		
-		
 	}
 }

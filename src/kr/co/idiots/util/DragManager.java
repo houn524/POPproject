@@ -2,6 +2,7 @@ package kr.co.idiots.util;
 
 import javafx.scene.Node;
 import javafx.scene.control.TabPane;
+import javafx.scene.input.Dragboard;
 import javafx.scene.layout.AnchorPane;
 import kr.co.idiots.model.POPVariableNode;
 
@@ -15,6 +16,7 @@ public class DragManager {
 	public static boolean isDecisionSync = false;
 	public static AnchorPane dragRootPane;
 	public static TabPane tabPane;
+	public static Dragboard dragBoard = null;
 	
 	public static double lastCenterXOfStartNode;
 	public static boolean isAdjustPosSync = true;

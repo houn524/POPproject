@@ -311,7 +311,7 @@ public class POPSymbolNode extends POPNode {
 			db.setContent(content);
 			
 			if(isAllocated) {
-				outFlowLine.lengthChanging(0, 0);
+				outFlowLine.pullNodesThread();
 				DragManager.draggedNode = this;
 				DragManager.dragMoving = true;
 				DragManager.isAllocatedNode = true;
@@ -330,8 +330,7 @@ public class POPSymbolNode extends POPNode {
 		    			break;
 		    		}
 		    	}
-		    	System.out.println("ddddddddddddddddddddddddddddd" + root);
-				root.getOutFlowLine().lengthChanging(0, 0);
+				root.getOutFlowLine().pullNodesThread();
 				
 				parentNode = null;
 //				if(outFlowLine.getStartNode() != null) {

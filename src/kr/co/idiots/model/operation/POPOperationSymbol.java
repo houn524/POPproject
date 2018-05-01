@@ -208,7 +208,6 @@ public class POPOperationSymbol extends StackPane {
 		
 		if(this.parentNode != null && parentNode instanceof POPDecisionNode) {
 			((POPDecisionNode) parentNode).adjustPositionThread();
-			System.out.println("1-8");
 //			if(parentNode.getOutFlowLine().getNextNode() != null) {
 //				((POPDecisionNode) parentNode).getOutFlowLine().getNextNode().moveCenter();
 //			}

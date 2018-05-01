@@ -2,28 +2,26 @@ package kr.co.idiots;
 
 import java.lang.reflect.InvocationTargetException;
 
-import javafx.scene.input.Dragboard;
 import kr.co.idiots.model.POPNode;
 import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPScriptArea;
 import kr.co.idiots.model.POPVariableNode;
 import kr.co.idiots.model.operation.POPOperationSymbol;
-import kr.co.idiots.util.POPNodeDataFormat;
 import kr.co.idiots.view.POPSolvingLayoutController;
 
 public class POPNodeFactory {
 	
-	public static Object createNode(Dragboard db) {
-		POPNodeType type = Enum.valueOf(POPNodeType.class, db.getString());
+	public static Object createNode(String clsName, String varName, String varTypeName) {
+		POPNodeType type = Enum.valueOf(POPNodeType.class, clsName);
 		
 		Object node = null;
 		
 		if(POPNodeType.symbolGroup.contains(type)) {
-			node = createPOPNode(db.getString());
+			node = createPOPNode(clsName);
 		} else if(POPNodeType.operationGroup.contains(type) || POPNodeType.compareGroup.contains(type)) {
-			node = createOperationSymbol(db.getString());
+			node = createOperationSymbol(clsName);
 		} else if(POPNodeType.variableGroup.contains(type)) {
-			node = createVariableNode(db);
+			node = createVariableNode(varName, varTypeName);
 		}
 		
 		return node;
@@ -81,10 +79,10 @@ public class POPNodeFactory {
 		return node;
 	}
 	
-	public static POPVariableNode createVariableNode(Dragboard db) {
+	public static POPVariableNode createVariableNode(String varName, String varTypeName) {
 		POPNode node = new POPVariableNode(POPSolvingLayoutController.scriptArea, 
-				(String) db.getContent(POPNodeDataFormat.variableNameFormat),
-				(Enum.valueOf(POPNodeType.class, (String) db.getContent(POPNodeDataFormat.variableTypeFormat))));
+				varName,
+				(Enum.valueOf(POPNodeType.class, varTypeName)));
 		
 		return (POPVariableNode) node;
 	}

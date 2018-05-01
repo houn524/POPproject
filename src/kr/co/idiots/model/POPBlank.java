@@ -100,7 +100,7 @@ public class POPBlank extends TextField {
 				}
 				POPOperationSymbol symbol = null;
 				
-				symbol = (POPOperationSymbol) POPNodeFactory.createNode(db);
+				symbol = (POPOperationSymbol) POPNodeFactory.createNode(null, null, null);
 				insertNode(symbol);
 				success = true;
 			}

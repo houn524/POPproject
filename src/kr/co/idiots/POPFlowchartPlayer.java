@@ -83,9 +83,9 @@ public class POPFlowchartPlayer {
 		POPOutputSymbol rootSymbol = (POPOutputSymbol) node.getRootSymbol();
 		
 		rootSymbol.generateString();
-		String strResult = rootSymbol.getValue();
+		String strResult = rootSymbol.getValueString();
 		
-		output.append(strResult);
+		output.append(strResult).append(System.lineSeparator());
 	}
 	
 	private boolean playDecisionNode(POPSymbolNode node) throws ScriptException {

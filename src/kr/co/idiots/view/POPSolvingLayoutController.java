@@ -232,6 +232,7 @@ public class POPSolvingLayoutController {
 		startNode.getOutFlowLine().setNextNode(stopNode);
 		startNode.getOutFlowLine().setStartNode((POPStartNode) startNode); 
 		stopNode.setParentNode(startNode);
+		startNode.getOutFlowLine().pullNodesThread();
 		
 		scriptArea.setStartNode(startNode);
 		scriptArea.addWithOutFlowLine(startNode);

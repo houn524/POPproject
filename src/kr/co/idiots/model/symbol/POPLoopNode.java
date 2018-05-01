@@ -154,14 +154,12 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 			if(subNode instanceof POPLoopEndNode) {
 				break;
 			}
-			System.out.println("************************");
 			subNode = ((POPSymbolNode) subNode).getOutFlowLine().getNextNode();
 		}
 	}
 	
 	public void adjustPositionThread() {
 		
-		System.out.println("---------------------");
 		Bounds bound = component.getBoundsInParent();
 		Bounds imgBound = imgView.getBoundsInParent();
 		Point2D pos = Point2D.ZERO;
@@ -267,7 +265,7 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 //				}
 				
 				
-				loopStartNode.getOutFlowLine().lengthChanging(0, 0);
+				loopStartNode.getOutFlowLine().pullNodesThread();
 				
 				initMaxLoopWidth = newBound.getWidth();
 				

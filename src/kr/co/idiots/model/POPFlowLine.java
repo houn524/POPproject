@@ -217,11 +217,9 @@ public class POPFlowLine extends Group {
     
     public void pullNodes() {
     	POPSymbolNode subNode = prevNode;
-    	System.out.println("prevprevrpev : " + subNode);
     	POPSymbolNode subNode2;
     	while(true) {
     		if(subNode instanceof POPLoopNode) {
-    			System.out.println("dididi");
     			((POPLoopNode) subNode).getLoopStartNode().getOutFlowLine().pullNodes();
      		} else if(subNode instanceof POPDecisionNode) {
      			((POPDecisionNode) subNode).getLeftStartNode().getOutFlowLine().pullNodes();
@@ -230,7 +228,6 @@ public class POPFlowLine extends Group {
     		
     		if(subNode instanceof POPLoopNode) {
     			((POPLoopNode) subNode).adjustPosition();
-    			System.out.println("이거 하긴하냐");
     		} else if(subNode instanceof POPDecisionNode) {
     			((POPDecisionNode) subNode).adjustPosition();
     		}
@@ -238,7 +235,6 @@ public class POPFlowLine extends Group {
     		if(subNode.getOutFlowLine() == null || subNode.getOutFlowLine().nextNode == null) {
     			break;
     		}
-    		System.out.println(subNode);
     		
     		if(subNode.getOutFlowLine().nextNode instanceof POPDecisionEndNode) {
     			((POPDecisionEndNode) subNode.getOutFlowLine().nextNode).getDecisionNode().calMaxLength();
@@ -246,19 +242,17 @@ public class POPFlowLine extends Group {
     		} else {
     			subNode.getOutFlowLine().nextNode.setLayoutY(subNode.getOutFlowLine().getStartY() + nodeMinGap);
     			if(subNode instanceof POPLoopNode) {
-    				System.out.println("루프 : " + subNode.getOutFlowLine().nextNode);
     			}
     		}
     		
     		
     		
     		subNode = subNode.getOutFlowLine().nextNode;
-    		System.out.println("Change!!!!!");
     	}
     	
     }
     
-    public void lengthChanging(Number oldLength, Number _newLength) {
+    public void pullNodesThread() {
 //    	Thread thread = new Thread() {
 //            @Override
 //            public void run() {
@@ -683,11 +677,9 @@ public class POPFlowLine extends Group {
 //    	setNextNode(node);
     	if(decisionNode != null) {
     		decisionNode.adjustPositionThread();
-    		System.out.println("1-6");
     		node.getComponent().setLayoutX(line.getStartX() - (node.getComponent().getBoundsInParent().getWidth() / 2));
     	} else if(loopNode != null) {
     		loopNode.adjustPositionThread();
-    		System.out.println("7");
     	}
     	
     	
@@ -711,8 +703,7 @@ public class POPFlowLine extends Group {
     			break;
     		}
     	}
-    	System.out.println("gpgppgpgppgpgpgppg : " + root);
-    	root.getOutFlowLine().lengthChanging(0, 0);
+    	root.getOutFlowLine().pullNodesThread();
     	
     	
 //    	if(startNode != null) {
@@ -736,7 +727,6 @@ public class POPFlowLine extends Group {
 			
 //			decisionNode.getLeftEndNode().setLayoutY(decisionNode.getLayoutY() + decisionNode.getMaxLength());
 			decisionNode.adjustPositionThread();
-			System.out.println("1-7");
 			
 			if(decisionNode.getParentDecisionNode() != null) {
 				if(prevNode == decisionNode) {
@@ -751,7 +741,6 @@ public class POPFlowLine extends Group {
 			loopNode.getSubNodes().remove(prevNode);
 			
 			loopNode.adjustPositionThread();
-			System.out.println("8");
 			
 //			if(decisionNode.getParentDecisionNode() != null) {
 //				if(prevNode == decisionNode) {
