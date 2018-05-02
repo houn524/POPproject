@@ -34,4 +34,12 @@ public class POPLessThanEqualSymbol extends POPOperationSymbol {
 		
 		setInitWidth();
 	}
+	
+	@Override
+	public Object executeSymbol() {
+		if(Integer.parseInt(leftValue) <= Integer.parseInt(rightValue))
+			return "true";
+		else
+			return "false";
+	}
 }

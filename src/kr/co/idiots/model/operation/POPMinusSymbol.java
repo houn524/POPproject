@@ -35,4 +35,9 @@ public class POPMinusSymbol extends POPOperationSymbol {
 		
 		setInitWidth();
 	}
+	
+	@Override
+	public Object executeSymbol() {
+		return Integer.parseInt(leftValue) - Integer.parseInt(rightValue);
+	}
 }

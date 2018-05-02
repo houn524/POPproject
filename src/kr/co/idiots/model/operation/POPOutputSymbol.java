@@ -1,13 +1,10 @@
 package kr.co.idiots.model.operation;
 
-import javax.script.ScriptException;
-
 import javafx.scene.Node;
 import kr.co.idiots.POPVariableManager;
 import kr.co.idiots.model.POPBlank;
 import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPVariableNode;
-import kr.co.idiots.util.Calculator;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -54,15 +51,17 @@ public class POPOutputSymbol extends POPOperationSymbol {
 	}
 	
 	@Override
-	public void generateString() {
+	public void playSymbol() {
 		if(contents.getChildren().get(0) instanceof POPOperationSymbol) {
-			strValue = ((POPOperationSymbol)contents.getChildren().get(0)).getValueString();
-			try {
-				strValue = Calculator.eval(strValue);
-			} catch (ScriptException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(0);
+			symbol.playSymbol();
+//			strValue = ((POPOperationSymbol)contents.getChildren().get(0)).getValueString();
+//			try {
+				strValue = symbol.executeSymbol().toString();//Calculator.eval(strValue);
+//			} catch (ScriptException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			return;
 		}
 		strCode = "";

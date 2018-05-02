@@ -253,28 +253,34 @@ public class POPOperationSymbol extends StackPane {
 	}
 	
 	public String getCodeString() {
-		generateString();
+		playSymbol();
 		return strCode; 
 	}
 	
 	public String getValueString() {
-		generateString();
+		playSymbol();
 		return strValue;
 	}
 	
-	public void generateString() {
-		strCode = "";
+	public Object executeSymbol() {
+		return null;
+	}
+	
+	public void playSymbol() {
+//		strCode = "";
 		leftCode = "";
-		rightCode = "";
-		strValue = "";
+//		rightCode = "";
+//		strValue = "";
 		leftValue = "";
 		rightValue = "";
 		
 		if(contents.getChildren().get(0) instanceof POPOperationSymbol) {
 			POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(0);
-			symbol.generateString();
-			leftCode += "( " + symbol.getCodeString() + " )";
-			leftValue += "( " + symbol.getValueString() + " )";
+			symbol.playSymbol();
+//			leftCode += "( " + symbol.getCodeString() + " )";
+//			leftValue += "( " + symbol.getValueString() + " )";
+			
+			leftValue = symbol.executeSymbol().toString();
 		} else if(contents.getChildren().get(0) instanceof POPVariableNode) {
 			POPVariableNode variable = (POPVariableNode) contents.getChildren().get(0);
 			leftCode += variable.getName();
@@ -283,29 +289,31 @@ public class POPOperationSymbol extends StackPane {
 			}
 		} else {
 			POPBlank blank = (POPBlank) contents.getChildren().get(0);
-			leftCode += blank.getText();
+//			leftCode += blank.getText();
 			leftValue += blank.getText();
 		}
 				
 		if(contents.getChildren().get(2) instanceof POPOperationSymbol) {
 			POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(2);
-			symbol.generateString();
-			rightCode += "( " + symbol.getCodeString() + " )";
-			rightValue += "( " + symbol.getValueString() + " )";
+			symbol.playSymbol();
+//			rightCode += "( " + symbol.getCodeString() + " )";
+//			rightValue += "( " + symbol.getValueString() + " )";
+			
+			rightValue = symbol.executeSymbol().toString();
 		} else if(contents.getChildren().get(2) instanceof POPVariableNode) {
 			POPVariableNode variable = (POPVariableNode) contents.getChildren().get(2);
-			rightCode += variable.getName();
+//			rightCode += variable.getName();
 			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
 				rightValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
 			}
 		} else {
 			POPBlank blank = (POPBlank) contents.getChildren().get(2);
-			rightCode += blank.getText();
+//			rightCode += blank.getText();
 			rightValue += blank.getText();
 		}
 		
-		strCode = leftCode + symbol + rightCode;
-		strValue = leftValue + symbol + rightValue;
+//		strCode = leftCode + symbol + rightCode;
+//		strValue = leftValue + symbol + rightValue;
 		
 		if(symbol.equals(" = ")) {
 			if(!POPVariableManager.declaredVars.containsKey(leftCode)) {
@@ -325,20 +333,13 @@ public class POPOperationSymbol extends StackPane {
 				strCode = type + strCode; //checkType(Calculator.eval(rightValue)) + strCode;	
 			}
 			
-//			try {
-//				POPVariableManager.declaredVars.put(leftCode, Calculator.eval(rightValue));
-//			} catch (ScriptException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
 			
 			leftValue = leftCode;
 			strValue = leftValue + strValue;
 			
-//			System.out.println(leftCode + " : " + POPVariableManager.declaredVars.get(leftCode));
-//			System.out.println(strValue);
 			strCode = strCode + ";";
 		}
+		
 	}
 	
 	private String checkType(String value) {

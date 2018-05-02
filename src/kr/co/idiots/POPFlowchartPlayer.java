@@ -15,8 +15,6 @@ import kr.co.idiots.model.symbol.POPProcessNode;
 import kr.co.idiots.model.symbol.POPStartNode;
 import kr.co.idiots.model.symbol.POPStopNode;
 import kr.co.idiots.model.symbol.POPSymbolNode;
-import kr.co.idiots.util.Calculator;
-import kr.co.idiots.util.PlatformHelper;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -123,19 +121,19 @@ public class POPFlowchartPlayer {
 		POPOperationSymbol rootSymbol = node.getRootSymbol();
 		
 		rootSymbol.getValueString();
-		try {
+//		try {
 
-			POPVariableManager.declaredVars.put(rootSymbol.getLeftCode(), Calculator.eval(rootSymbol.getRightValue()));
-		} catch (ScriptException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			POPVariableManager.declaredVars.put(rootSymbol.getLeftCode(), rootSymbol.getRightValue());//Calculator.eval(rootSymbol.getRightValue()));
+//		} catch (ScriptException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 	
 	private void playDocumentNode(POPDocumentNode node) {
 		POPOutputSymbol rootSymbol = (POPOutputSymbol) node.getRootSymbol();
 		
-		rootSymbol.generateString();
+		rootSymbol.playSymbol();
 		String strResult = rootSymbol.getValueString();
 		
 		output.append(strResult).append(System.lineSeparator());
@@ -143,9 +141,9 @@ public class POPFlowchartPlayer {
 	
 	private boolean playDecisionNode(POPSymbolNode node) throws ScriptException {
 		POPOperationSymbol rootSymbol = (POPOperationSymbol) node.getRootSymbol().getContents().getChildren().get(0);
-		rootSymbol.getValueString();
+		rootSymbol.playSymbol();
 		boolean result = false;
-		result = Calculator.compare(rootSymbol.getValueString());
+		result = Boolean.parseBoolean(rootSymbol.executeSymbol().toString());//Calculator.compare(rootSymbol.getValueString());
 		
 		return result;
 	}
