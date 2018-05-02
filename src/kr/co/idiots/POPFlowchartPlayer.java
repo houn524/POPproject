@@ -36,43 +36,87 @@ public class POPFlowchartPlayer {
 	
 	public void playNode(POPSymbolNode node) {
 		
-		if(node instanceof POPStartNode) {
-			output = new StringBuilder();
-		} else if(node instanceof POPProcessNode) {
-			playProcessNode((POPProcessNode) node);
-		} else if(node instanceof POPDocumentNode) {
-			playDocumentNode((POPDocumentNode) node);
-		} 
 		
-		if(node instanceof POPDecisionNode) {
-			try {
-				if(playDecisionNode(node)) {
-					playNode(((POPDecisionNode) node).getLeftStartNode().getOutFlowLine().getNextNode());
-				} else {
-					playNode(((POPDecisionNode) node).getRightStartNode().getOutFlowLine().getNextNode());
+		
+		while(true) { 
+			if(node instanceof POPStartNode) {
+				output = new StringBuilder();
+			} else if(node instanceof POPProcessNode) {
+				playProcessNode((POPProcessNode) node);
+			} else if(node instanceof POPDocumentNode) {
+				playDocumentNode((POPDocumentNode) node);
+			} 
+			
+			if(node instanceof POPDecisionNode) {
+				try {
+					if(playDecisionNode(node)) {
+						node = ((POPDecisionNode) node).getLeftStartNode().getOutFlowLine().getNextNode();
+					} else {
+						node = ((POPDecisionNode) node).getRightStartNode().getOutFlowLine().getNextNode();
+					}
+				} catch (ScriptException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-			} catch (ScriptException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} else if(node instanceof POPDecisionEndNode) {
-			playNode(((POPDecisionEndNode) node).getDecisionNode().getOutFlowLine().getNextNode());
-		} else if(node instanceof POPLoopNode) {
-			try {
-				if(playDecisionNode(node)) {
-					playNode(((POPLoopNode) node).getLoopStartNode().getOutFlowLine().getNextNode());
-				} else {
-					playNode(node.getOutFlowLine().getNextNode());
+			} else if(node instanceof POPDecisionEndNode) {
+				node = ((POPDecisionEndNode) node).getDecisionNode().getOutFlowLine().getNextNode();
+			} else if(node instanceof POPLoopNode) {
+				try {
+					if(playDecisionNode(node)) {
+						node = ((POPLoopNode) node).getLoopStartNode().getOutFlowLine().getNextNode();
+					} else {
+						node = node.getOutFlowLine().getNextNode();
+					}
+				} catch (ScriptException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
-			} catch (ScriptException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} else if(node instanceof POPLoopEndNode) {
+				node = ((POPLoopEndNode) node).getLoopNode();
+			} else if(!(node instanceof POPStopNode)) {
+				node = node.getOutFlowLine().getNextNode();
+			} else if(node instanceof POPStopNode) {
+				break;
 			}
-		} else if(node instanceof POPLoopEndNode) {
-			playNode(((POPLoopEndNode) node).getLoopNode());
-		} else if(!(node instanceof POPStopNode)) {
-			playNode(node.getOutFlowLine().getNextNode());
 		}
+		
+//		if(node instanceof POPStartNode) {
+//			output = new StringBuilder();
+//		} else if(node instanceof POPProcessNode) {
+//			playProcessNode((POPProcessNode) node);
+//		} else if(node instanceof POPDocumentNode) {
+//			playDocumentNode((POPDocumentNode) node);
+//		} 
+//		
+//		if(node instanceof POPDecisionNode) {
+//			try {
+//				if(playDecisionNode(node)) {
+//					playNode(((POPDecisionNode) node).getLeftStartNode().getOutFlowLine().getNextNode());
+//				} else {
+//					playNode(((POPDecisionNode) node).getRightStartNode().getOutFlowLine().getNextNode());
+//				}
+//			} catch (ScriptException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		} else if(node instanceof POPDecisionEndNode) {
+//			playNode(((POPDecisionEndNode) node).getDecisionNode().getOutFlowLine().getNextNode());
+//		} else if(node instanceof POPLoopNode) {
+//			try {
+//				if(playDecisionNode(node)) {
+//					playNode(((POPLoopNode) node).getLoopStartNode().getOutFlowLine().getNextNode());
+//				} else {
+//					playNode(node.getOutFlowLine().getNextNode());
+//				}
+//			} catch (ScriptException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		} else if(node instanceof POPLoopEndNode) {
+//			playNode(((POPLoopEndNode) node).getLoopNode());
+//		} else if(!(node instanceof POPStopNode)) {
+//			playNode(node.getOutFlowLine().getNextNode());
+//		}
 	}
 	
 	private void playProcessNode(POPProcessNode node) {
