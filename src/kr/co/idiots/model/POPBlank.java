@@ -73,6 +73,15 @@ public class POPBlank extends TextField {
 		setOnDragDropped(event -> {
 			Dragboard db = event.getDragboard();
 			boolean success = false;
+			
+			String clsName = db.getString();
+			String varName = null;
+			String varTypeName = null;
+			if(db.hasContent(POPNodeDataFormat.variableNameFormat))
+				varName = db.getContent(POPNodeDataFormat.variableNameFormat).toString();
+			if(db.hasContent(POPNodeDataFormat.variableTypeFormat))
+				varTypeName = db.getContent(POPNodeDataFormat.variableTypeFormat).toString();
+			
 			if(POPNodeType.variableGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
 				if(DragManager.dragMoving) {
 					insertNode((POPVariableNode) DragManager.draggedNode);
@@ -83,9 +92,10 @@ public class POPBlank extends TextField {
 					event.consume();
 					return;
 				}
-				POPVariableNode variable = new POPVariableNode(POPSolvingLayoutController.scriptArea, 
-						(String) db.getContent(POPNodeDataFormat.variableNameFormat),
-						(Enum.valueOf(POPNodeType.class, (String) db.getContent(POPNodeDataFormat.variableTypeFormat))));
+				POPVariableNode variable = (POPVariableNode) POPNodeFactory.createNode(clsName, varName, varTypeName);
+//				POPVariableNode variable = new POPVariableNode(POPSolvingLayoutController.scriptArea, 
+//						(String) db.getContent(POPNodeDataFormat.variableNameFormat),
+//						(Enum.valueOf(POPNodeType.class, (String) db.getContent(POPNodeDataFormat.variableTypeFormat))));
 				insertNode(variable);
 				success = true;
 			} else {
@@ -100,7 +110,7 @@ public class POPBlank extends TextField {
 				}
 				POPOperationSymbol symbol = null;
 				
-				symbol = (POPOperationSymbol) POPNodeFactory.createNode(null, null, null);
+				symbol = (POPOperationSymbol) POPNodeFactory.createNode(clsName, varName, varTypeName);
 				insertNode(symbol);
 				success = true;
 			}
