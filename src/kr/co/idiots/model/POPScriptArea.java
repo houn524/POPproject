@@ -1,6 +1,7 @@
 package kr.co.idiots.model;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -21,6 +22,7 @@ import kr.co.idiots.CodeGenerator;
 import kr.co.idiots.MainApp;
 import kr.co.idiots.POPFlowchartPlayer;
 import kr.co.idiots.POPNodeFactory;
+import kr.co.idiots.POPVariableManager;
 import kr.co.idiots.SubNodeIF;
 import kr.co.idiots.model.operation.POPOperationSymbol;
 import kr.co.idiots.model.symbol.POPDecisionEndNode;
@@ -316,6 +318,7 @@ public class POPScriptArea {
 	}
 	
 	public String play() {
+		
 		flowchartPlayer.playFlowChart(startNode);
 		return flowchartPlayer.getOutput().toString();
 	}

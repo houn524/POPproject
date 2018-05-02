@@ -53,6 +53,7 @@ import kr.co.idiots.model.symbol.POPStartNode;
 import kr.co.idiots.model.symbol.POPStopNode;
 import kr.co.idiots.model.symbol.POPSymbolNode;
 import kr.co.idiots.util.DragManager;
+import kr.co.idiots.util.PlatformHelper;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -168,7 +169,18 @@ public class POPSolvingLayoutController {
 			@Override
 			public void handle(ActionEvent arg0) {
 				// TODO Auto-generated method stub
-				lbConsole.setText(scriptArea.play());
+				Thread thread = new Thread() {
+					@Override
+					public void run() {
+						PlatformHelper.run(() -> {
+							lbConsole.setText(scriptArea.play());
+						});
+					}
+				};
+				
+				thread.setDaemon(true);
+				thread.start();
+				
 //				try {
 //					lbConsole.setText("출력값 : " + scriptArea.generate());
 //				} catch (IOException | NoSuchFieldException e) {

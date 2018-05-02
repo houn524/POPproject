@@ -16,6 +16,7 @@ import kr.co.idiots.model.symbol.POPStartNode;
 import kr.co.idiots.model.symbol.POPStopNode;
 import kr.co.idiots.model.symbol.POPSymbolNode;
 import kr.co.idiots.util.Calculator;
+import kr.co.idiots.util.PlatformHelper;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,7 +31,6 @@ public class POPFlowchartPlayer {
 	
 	public void playFlowChart(POPSymbolNode node) {
 		POPVariableManager.declaredVars = new HashMap<>();
-		
 		playNode(node);
 	}
 	
