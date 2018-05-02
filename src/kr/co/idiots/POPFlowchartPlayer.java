@@ -1,5 +1,7 @@
 package kr.co.idiots;
 
+import java.util.HashMap;
+
 import javax.script.ScriptException;
 
 import kr.co.idiots.model.operation.POPOperationSymbol;
@@ -26,7 +28,14 @@ public class POPFlowchartPlayer {
 	public POPFlowchartPlayer() {
 	}
 	
+	public void playFlowChart(POPSymbolNode node) {
+		POPVariableManager.declaredVars = new HashMap<>();
+		
+		playNode(node);
+	}
+	
 	public void playNode(POPSymbolNode node) {
+		
 		if(node instanceof POPStartNode) {
 			output = new StringBuilder();
 		} else if(node instanceof POPProcessNode) {

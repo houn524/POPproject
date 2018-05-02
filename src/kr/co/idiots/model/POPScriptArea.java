@@ -316,7 +316,7 @@ public class POPScriptArea {
 	}
 	
 	public String play() {
-		flowchartPlayer.playNode(startNode);
+		flowchartPlayer.playFlowChart(startNode);
 		return flowchartPlayer.getOutput().toString();
 	}
 }
