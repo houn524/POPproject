@@ -11,6 +11,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import kr.co.idiots.SubNodeIF;
 import kr.co.idiots.model.POPFlowLine;
@@ -33,6 +34,9 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 	private POPSideFlowLine leftOutFlowLine;
 	private POPSideFlowLine leftDownFlowLine;
 	private POPSideFlowLine leftInFlowLine;
+	
+	private Label leftLabel;
+	private Label rightLabel;
 	
 	private POPLoopStartNode loopStartNode;
 	private POPLoopEndNode loopEndNode;
@@ -73,6 +77,9 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 		leftInFlowLine.setStartPos(leftDownFlowLine.getEndX(), leftDownFlowLine.getEndY());
 		leftInFlowLine.setEndY(leftDownFlowLine.getEndY());
 		leftInFlowLine.setEndX(POPBoundManager.getBottomCenter(bound).getX());
+		
+		leftLabel = new Label("아니오");
+		rightLabel = new Label("예");
 		
 		loopStartNode = new POPLoopStartNode(scriptArea);
 		loopEndNode = new POPLoopEndNode(scriptArea);
@@ -126,6 +133,11 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 		leftInFlowLine.endXProperty().bind(Bindings.add(component.layoutXProperty(), Bindings.divide(component.widthProperty(), 2)));
 		leftInFlowLine.endYProperty().bind(leftDownFlowLine.endYProperty());
 		
+		leftLabel.layoutXProperty().bind(Bindings.subtract(leftOutFlowLine.endXProperty(), Bindings.divide(leftLabel.widthProperty(), 2)));
+		leftLabel.layoutYProperty().bind(Bindings.subtract(leftOutFlowLine.endYProperty(), 30));
+		rightLabel.layoutXProperty().bind(Bindings.add(loopStartNode.layoutXProperty(), 30));
+		rightLabel.layoutYProperty().bind(loopStartNode.layoutYProperty());
+		
 		loopStartNode.layoutXProperty().bind(Bindings.add(component.layoutXProperty(), Bindings.divide(component.widthProperty(), 2)));
 		loopStartNode.layoutYProperty().bind(Bindings.add(component.layoutYProperty(), component.heightProperty()));
 		
@@ -139,6 +151,7 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 	}
 	
 	public void adjustPosition() {
+		System.out.println("ggg");
 		loopEndNode.setLayoutX(loopStartNode.getLayoutX());
     	
     	resizeLoopNode();
@@ -237,6 +250,8 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 		subNodes.add(leftOutFlowLine);
 		subNodes.add(leftDownFlowLine);
 		subNodes.add(leftInFlowLine);
+		subNodes.add(leftLabel);
+		subNodes.add(rightLabel);
 		subNodes.add(loopStartNode);
 		subNodes.add(loopEndNode);
 		subNodes.add(rightOutFlowLine);

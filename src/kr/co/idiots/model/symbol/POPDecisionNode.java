@@ -11,6 +11,7 @@ import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Rectangle;
 import kr.co.idiots.SubNodeIF;
@@ -33,6 +34,9 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 	
 	private POPSideFlowLine leftFlowLine;
 	private POPSideFlowLine rightFlowLine;
+	
+	private Label leftLabel;
+	private Label rightLabel;
 	
 	private POPDecisionStartNode leftStartNode;
 	private POPDecisionStartNode rightStartNode;
@@ -89,6 +93,9 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 		rightFlowLine.setStartPos(pos.getX(), pos.getY());
 		rightFlowLine.setEndPos(pos.getX() + 10, pos.getY());
 		
+		leftLabel = new Label("예");
+		rightLabel = new Label("아니오");
+		
 		leftStartNode = new POPDecisionStartNode(scriptArea);
 		leftStartNode.getOutFlowLine().setDecisionNode(this);
 		leftStartNode.setParentNode(this);
@@ -123,6 +130,11 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 		rightFlowLine.startYProperty().bind(Bindings.add(component.layoutYProperty(), Bindings.divide(component.heightProperty(), 2)));
 		rightFlowLine.endXProperty().bind(Bindings.add(Bindings.add(component.layoutXProperty(), component.widthProperty()), Bindings.divide(Bindings.subtract(rightMaxWidth, component.widthProperty()), 2)));
 		rightFlowLine.endYProperty().bind(rightFlowLine.startYProperty());
+		
+		leftLabel.layoutXProperty().bind(Bindings.subtract(leftStartNode.layoutXProperty(), Bindings.divide(leftLabel.widthProperty(), 2)));
+		leftLabel.layoutYProperty().bind(Bindings.subtract(leftStartNode.layoutYProperty(), 30));
+		rightLabel.layoutXProperty().bind(Bindings.subtract(rightStartNode.layoutXProperty(), Bindings.divide(rightLabel.widthProperty(), 2)));
+		rightLabel.layoutYProperty().bind(Bindings.subtract(rightStartNode.layoutYProperty(), 30));
 		
 		leftStartNode.layoutXProperty().bind(leftFlowLine.endXProperty());
 		leftStartNode.layoutYProperty().bind(leftFlowLine.endYProperty());
@@ -338,6 +350,8 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 		
 		subNodes.add(leftFlowLine);
 		subNodes.add(rightFlowLine);
+		subNodes.add(leftLabel);
+		subNodes.add(rightLabel);
 		subNodes.add(leftStartNode);
 		subNodes.add(rightStartNode);
 		subNodes.add(leftEndNode);

@@ -5,7 +5,7 @@ import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPScriptArea;
 
 public class POPDecisionStartNode extends POPSymbolNode {
-
+	
 	public POPDecisionStartNode(POPScriptArea scriptArea) {
 		super(scriptArea, POPNodeType.DecisionSub);
 		// TODO Auto-generated constructor stub

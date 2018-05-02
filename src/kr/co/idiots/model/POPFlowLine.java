@@ -379,7 +379,8 @@ public class POPFlowLine extends Group {
 				DragManager.dragMoving = false;
 				DragManager.draggedNode = null;
 //				if(DragManager.isAllocatedNode) {
-					getPrevNode().getScriptArea().addWithOutFlowLine((POPSymbolNode) node);
+				
+				getPrevNode().getScriptArea().addWithOutFlowLine((POPSymbolNode) node);
 //					if(((POPSymbolNode) node).getOutFlowLine() != null) {
 //						POPSolvingLayoutController.scriptArea.getComponent().getChildren().add(((POPSymbolNode) node).getOutFlowLine());
 //					}
@@ -392,8 +393,14 @@ public class POPFlowLine extends Group {
 				POPSymbolNode node = null;
 				node = (POPSymbolNode) POPNodeFactory.createPOPNode(db.getString());
 				node.initialize();
-				getPrevNode().getScriptArea().addWithOutFlowLine(node);
 				insertNode(node);
+				if(node instanceof POPLoopNode)
+					((POPLoopNode) node).adjustPosition();
+				else if(node instanceof POPDecisionNode)
+					((POPDecisionNode) node).adjustPosition();
+				getPrevNode().getScriptArea().addWithOutFlowLine(node);
+				
+				
 			}
 			event.consume();
 		});
