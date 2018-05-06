@@ -2,12 +2,18 @@ package kr.co.idiots.model.operation;
 
 import java.io.InputStream;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
@@ -47,6 +53,8 @@ public class POPOperationSymbol extends StackPane {
 	protected boolean isInitialized = false;
 	protected int lastIndex = -1;
 	
+	protected ContextMenu contextMenu;
+	
 	public POPOperationSymbol() {
 		
 		InputStream stream = getClass().getResourceAsStream("/images/Operation.png");
@@ -64,6 +72,8 @@ public class POPOperationSymbol extends StackPane {
 		contents.setAlignment(Pos.CENTER);
 		contents.setHgap(5);
 		setOnNodeDrag();
+		
+		
 	}
 	
 	public void initialize(POPSymbolNode parentNode) {
@@ -75,18 +85,63 @@ public class POPOperationSymbol extends StackPane {
 			}
 		}
 		
-//		if(leftBlank != null) {
-//			leftBlank.setEditable(true);
-//		}
-//		
-//		if(rightBlank != null) {
-//			rightBlank.setEditable(true);
-//		}
-//		
+		MenuItem deleteItem = new MenuItem("연산 기호 삭제");
+		POPOperationSymbol thisSymbol = this;
+		deleteItem.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				if(isInitialized) {
+					if(parentSymbol != null) {
+						
+						lastIndex = parentSymbol.getContents().getChildren().indexOf(thisSymbol);
+						parentSymbol.getContents().getChildren().remove(thisSymbol);
+						parentSymbol.getContents().getChildren().add(lastIndex, new POPBlank(parentSymbol));
+						parentSymbol.initialize(parentSymbol.getParentNode());
+						parentSymbol.setContentsAutoSize();
+						
+						event.consume();
+						return;
+					} else {
+						lastIndex = -1;
+					}
+					POPSolvingLayoutController.scriptArea.getComponent().getChildren().remove(thisSymbol);
+				}
+			}
+			
+		});
+		
+		contextMenu = new ContextMenu();
+		contextMenu.setAutoHide(true);
+		contextMenu.getItems().add(deleteItem);
+		
+		this.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+
+			@Override
+			public void handle(ContextMenuEvent event) {
+				// TODO Auto-generated method stub
+				if(isRootSymbol) {
+					return;
+				}
+				
+				contextMenu.show(imgShape, event.getScreenX(), event.getScreenY());
+				event.consume();
+			}
+			
+		});
+		
 		isInitialized = true;
 	}
 	
 	private void setOnNodeDrag() {
+		
+		setOnMousePressed(event -> {
+			if(event.getButton().equals(MouseButton.PRIMARY)) {
+				if(contextMenu != null)
+					contextMenu.hide();
+			}
+		});
 		
 		setOnMouseDragged(event -> {
 			event.setDragDetect(true);
@@ -94,6 +149,9 @@ public class POPOperationSymbol extends StackPane {
 		});
 		
 		setOnDragDetected(event -> {
+			if(!event.getButton().equals(MouseButton.PRIMARY))
+				return;
+			
 			if(isRootSymbol) {
 				return;
 			}
@@ -216,6 +274,7 @@ public class POPOperationSymbol extends StackPane {
 		}
 		
 		if(this.parentNode != null && parentNode.getOutFlowLine() != null && parentNode.getOutFlowLine().getLoopNode() != null) {
+			System.out.println("d요거" + parentNode);
 			parentNode.getOutFlowLine().getLoopNode().adjustPositionThread();
 		} else if(this.parentNode != null && parentNode.getOutFlowLine() != null && parentNode.getOutFlowLine().getDecisionNode() != null) {
 			parentNode.getOutFlowLine().getDecisionNode().adjustPositionThread();
@@ -267,18 +326,13 @@ public class POPOperationSymbol extends StackPane {
 	}
 	
 	public void playSymbol() {
-//		strCode = "";
 		leftCode = "";
-//		rightCode = "";
-//		strValue = "";
 		leftValue = "";
 		rightValue = "";
 		
 		if(contents.getChildren().get(0) instanceof POPOperationSymbol) {
 			POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(0);
 			symbol.playSymbol();
-//			leftCode += "( " + symbol.getCodeString() + " )";
-//			leftValue += "( " + symbol.getValueString() + " )";
 			
 			leftValue = symbol.executeSymbol().toString();
 		} else if(contents.getChildren().get(0) instanceof POPVariableNode) {
@@ -289,31 +343,24 @@ public class POPOperationSymbol extends StackPane {
 			}
 		} else {
 			POPBlank blank = (POPBlank) contents.getChildren().get(0);
-//			leftCode += blank.getText();
 			leftValue += blank.getText();
 		}
 				
 		if(contents.getChildren().get(2) instanceof POPOperationSymbol) {
 			POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(2);
 			symbol.playSymbol();
-//			rightCode += "( " + symbol.getCodeString() + " )";
-//			rightValue += "( " + symbol.getValueString() + " )";
 			
 			rightValue = symbol.executeSymbol().toString();
 		} else if(contents.getChildren().get(2) instanceof POPVariableNode) {
 			POPVariableNode variable = (POPVariableNode) contents.getChildren().get(2);
-//			rightCode += variable.getName();
 			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
 				rightValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
 			}
 		} else {
 			POPBlank blank = (POPBlank) contents.getChildren().get(2);
-//			rightCode += blank.getText();
 			rightValue += blank.getText();
 		}
 		
-//		strCode = leftCode + symbol + rightCode;
-//		strValue = leftValue + symbol + rightValue;
 		
 		if(symbol.equals(" = ")) {
 			if(!POPVariableManager.declaredVars.containsKey(leftCode)) {

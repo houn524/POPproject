@@ -52,7 +52,8 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 	private DoubleProperty maxLoopWidth = new SimpleDoubleProperty(initMaxLoopWidth);
 	
 	public double getLoopWidth() {
-		return maxLoopWidth.get() + 60;
+		return rightInFlowLine.getStartX() - leftOutFlowLine.getEndX();
+//		return maxLoopWidth.get() + 60;
 	}
 	
 	public POPLoopNode(POPScriptArea scriptArea) {
@@ -169,6 +170,12 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 			}
 			subNode = ((POPSymbolNode) subNode).getOutFlowLine().getNextNode();
 		}
+    	
+    	if(outFlowLine.getLoopNode() != null) {
+    		outFlowLine.getLoopNode().adjustPosition();
+    	} else if(outFlowLine.getDecisionNode() != null) {
+    		outFlowLine.getDecisionNode().adjustPosition();
+    	}
 	}
 	
 	public void adjustPositionThread() {
@@ -279,7 +286,6 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 //					inFlowLine.setEndY(newBound.getMinY());
 //				}
 				
-				
 				loopStartNode.getOutFlowLine().pullNodesThread();
 				
 				initMaxLoopWidth = newBound.getWidth();
@@ -329,6 +335,7 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 				maxLoopWidth.set(Math.max(((POPDecisionNode) subNode).getDecisionWidth(), maxLoopWidth.get()));
 			} else if(subNode instanceof POPLoopNode) {
 				maxLoopWidth.set(Math.max(((POPLoopNode) subNode).getLoopWidth(), maxLoopWidth.get()));
+				System.out.println("maxLoopWidth : " + ((POPLoopNode) subNode).getLoopWidth() + ", " + initMaxLoopWidth);
 			} else if(!(subNode instanceof POPLoopStartNode) && !(subNode instanceof POPLoopEndNode) && subNode instanceof POPSymbolNode) {
 				maxLoopWidth.set(Math.max(((POPSymbolNode) subNode).getComponent().getWidth(), maxLoopWidth.get()));
 			}

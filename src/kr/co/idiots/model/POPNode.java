@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -31,6 +32,8 @@ public abstract class POPNode extends StackPane implements Serializable, Cloneab
 	protected boolean isAllocated = false;
 	protected Point2D lastXY = null;
 	
+	protected ContextMenu contextMenu;
+	
 	public POPNode(POPScriptArea scriptArea, POPNodeType type) {
 		this.scriptArea = scriptArea;
 		this.type = type;
@@ -50,28 +53,11 @@ public abstract class POPNode extends StackPane implements Serializable, Cloneab
 			component.getChildren().add(imgView);
 			StackPane.setAlignment(imgView, Pos.CENTER);
 			component.setMaxHeight(imgView.getBoundsInLocal().getHeight());
+			
+			
 		}
 		
-//		if(this instanceof POPDecisionNode) {
-//			imgView.setPreserveRatio(true);
-//		}
-		
-		
-		
-		
-		
-		
-		
 	}
-	
-//	public POPNode(POPNode another) {
-//		this.type = another.type;
-//		this.imgView = new ImageView(another.imgView.getImage());
-//		this.dataInput = another.dataInput;
-//		this.label = another.label;
-//		this.component = another.component;
-//		this.scriptArea = another.scriptArea;
-//	}
 	
 	public void moveCenter() {
 		

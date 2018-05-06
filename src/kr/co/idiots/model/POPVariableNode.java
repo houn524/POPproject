@@ -1,11 +1,17 @@
 package kr.co.idiots.model;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.ClipboardContent;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.TransferMode;
 import javafx.scene.text.TextAlignment;
 import kr.co.idiots.model.operation.POPOperationSymbol;
@@ -49,6 +55,48 @@ public class POPVariableNode extends POPNode {
 	public void initialize(POPOperationSymbol parentSymbol) {
 		isInitialized = true;
 		this.parentSymbol = parentSymbol;
+		
+		MenuItem deleteItem = new MenuItem("변수 삭제");
+		POPVariableNode thisNode = this;
+		deleteItem.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent event) {
+				// TODO Auto-generated method stub
+				if(isInitialized) {
+					if(parentSymbol != null) {
+						lastIndex = parentSymbol.getContents().getChildren().indexOf(thisNode);
+						parentSymbol.getContents().getChildren().remove(thisNode);
+						parentSymbol.getContents().getChildren().add(lastIndex, new POPBlank(parentSymbol));
+						parentSymbol.initialize(parentSymbol.getParentNode());
+						parentSymbol.setContentsAutoSize();
+						
+						event.consume();
+						return;
+					} else {
+						lastIndex = -1;
+					}
+					
+					POPSolvingLayoutController.scriptArea.getComponent().getChildren().remove(thisNode);
+				}
+			}
+			
+		});
+		
+		contextMenu = new ContextMenu();
+		contextMenu.setAutoHide(true);
+		contextMenu.getItems().add(deleteItem);
+		
+		component.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+
+			@Override
+			public void handle(ContextMenuEvent event) {
+				// TODO Auto-generated method stub
+				contextMenu.show(component, event.getScreenX(), event.getScreenY());
+				event.consume();
+			}
+			
+		});
 	}
 //	public POPVariableNode(POPNode another) {
 //		super(another);
@@ -56,12 +104,22 @@ public class POPVariableNode extends POPNode {
 	
 	private void setOnVariableNodeDrag() {
 		
+		getComponent().setOnMousePressed(event -> {
+			if(event.getButton().equals(MouseButton.PRIMARY)) {
+				if(contextMenu != null)
+					contextMenu.hide();
+			}
+		});
+		
 		getComponent().setOnMouseDragged(event -> {
 			event.setDragDetect(true);
 			event.consume();
 		});
 		
 		getComponent().setOnDragDetected(event -> {
+			if(!event.getButton().equals(MouseButton.PRIMARY))
+				return;
+			
 			Node on = (Node) event.getTarget();
 			Dragboard db = on.startDragAndDrop(TransferMode.MOVE);
 			ClipboardContent content = new ClipboardContent();

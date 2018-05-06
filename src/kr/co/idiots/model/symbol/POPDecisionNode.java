@@ -264,6 +264,12 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 			}
 			subNode = ((POPSymbolNode) subNode).getOutFlowLine().getNextNode();
 		}
+		
+		if(outFlowLine.getLoopNode() != null) {
+    		outFlowLine.getLoopNode().adjustPosition();
+    	} else if(outFlowLine.getDecisionNode() != null) {
+    		outFlowLine.getDecisionNode().adjustPosition();
+    	}
 	}
 	
 	public void adjustPositionThread() {
