@@ -119,14 +119,4 @@ public class POPSideArrowFlowLine extends Group {
 	public final DoubleProperty endYProperty() {
         return line.endYProperty();
     }
-	
-	public void setStartPos(double x, double y) {
-//		line.setStartX(x);
-//		line.setStartY(y);
-	}
-	
-	public void setEndPos(double x, double y) {
-//		line.setEndX(x);
-//		line.setEndY(y);
-	}
 }

@@ -20,7 +20,6 @@ public class Calculator {
 		try {
 			engine.eval("var test = " + value + ";");
 		} catch (ScriptException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		result = Boolean.parseBoolean(engine.get("test").toString());

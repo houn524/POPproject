@@ -28,36 +28,8 @@ public class POPLoopEndNode extends POPSymbolNode {
 			@Override
 			public void changed(ObservableValue<? extends Bounds> arg0, Bounds oldBound, Bounds newBound) {
 				// TODO Auto-generated method stub
-				
-				
 				if(imgView != null && newBound.getHeight() > imgView.getBoundsInLocal().getHeight())
 					return;
-				
-//				topCenterXProperty().set(newBound.getMinX() + (newBound.getWidth() / 2));
-//				topYProperty().set(newBound.getMinY());
-//				
-//				bottomCenterXProperty().set(newBound.getMinX() + (newBound.getWidth() / 2));
-//				bottomYProperty().set(newBound.getMaxY());
-				
-//				if(outFlowLine != null) {
-//					outFlowLine.setStartX(newBound.getMinX() + (newBound.getWidth() / 2));
-//					outFlowLine.setStartY(newBound.getMaxY());
-//				}
-//				
-//				if(inFlowLine != null) {
-//					inFlowLine.setEndX(newBound.getMinX() + (newBound.getWidth() / 2));
-//					inFlowLine.setEndY(newBound.getMinY());
-//				}
-				
-//				moveCenter();
-//				if(outFlowLine != null && outFlowLine.getNextNode() != null) {
-//					outFlowLine.getNextNode().moveCenter();
-//				}
-				
-//				if(loopNode != null) {
-//					loopNode.adjustPosition();
-//					System.out.println("4");
-//				}
 			}
 		});
 	}

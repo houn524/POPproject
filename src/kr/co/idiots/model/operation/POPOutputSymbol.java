@@ -55,13 +55,7 @@ public class POPOutputSymbol extends POPOperationSymbol {
 		if(contents.getChildren().get(0) instanceof POPOperationSymbol) {
 			POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(0);
 			symbol.playSymbol();
-//			strValue = ((POPOperationSymbol)contents.getChildren().get(0)).getValueString();
-//			try {
-				strValue = symbol.executeSymbol().toString();//Calculator.eval(strValue);
-//			} catch (ScriptException e) {
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+			strValue = symbol.executeSymbol().toString();//Calculator.eval(strValue);
 			return;
 		}
 		strCode = "";

@@ -72,7 +72,6 @@ public class POPSymbolNode extends POPNode {
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
-				System.out.println("symbol");
 				if(isAllocated) {
 					outFlowLine.pullNodesThread();
 					inFlowLine.setNextNode(outFlowLine.getNextNode());

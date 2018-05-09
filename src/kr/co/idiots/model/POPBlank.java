@@ -93,9 +93,6 @@ public class POPBlank extends TextField {
 					return;
 				}
 				POPVariableNode variable = (POPVariableNode) POPNodeFactory.createNode(clsName, varName, varTypeName);
-//				POPVariableNode variable = new POPVariableNode(POPSolvingLayoutController.scriptArea, 
-//						(String) db.getContent(POPNodeDataFormat.variableNameFormat),
-//						(Enum.valueOf(POPNodeType.class, (String) db.getContent(POPNodeDataFormat.variableTypeFormat))));
 				insertNode(variable);
 				success = true;
 			} else {

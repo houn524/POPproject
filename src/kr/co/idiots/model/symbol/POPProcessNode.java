@@ -21,10 +21,6 @@ public class POPProcessNode extends POPSymbolNode {
 	@Override
 	public void initialize() {
 		super.initialize();;
-//		POPProcessDataInput dataInput = new POPProcessDataInput(this);
-//    	setDataInput(dataInput);
-//    	StackPane.setAlignment(dataInput, Pos.CENTER);
-//    	component.getChildren().add(dataInput);
 		
 		POPEqualSymbol symbol = new POPEqualSymbol();
 		symbol.initialize(this);
@@ -33,7 +29,5 @@ public class POPProcessNode extends POPSymbolNode {
 		component.getChildren().add(symbol);
 		symbol.setRootSymbol(true);
 		this.setRootSymbol(symbol);
-    	
-//		this.moveCenter();
 	}	
 }

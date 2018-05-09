@@ -204,7 +204,6 @@ public class POPOperationSymbol extends StackPane {
 			DragManager.draggedNode = null;
 			DragManager.isAllocatedNode = false;
 			DragManager.isSynchronized = false;
-//			DragManager.isAdjustPosSync = true;
 		});
 	}
 	
@@ -266,15 +265,11 @@ public class POPOperationSymbol extends StackPane {
 		
 		if(this.parentNode != null && parentNode instanceof POPDecisionNode) {
 			((POPDecisionNode) parentNode).adjustPositionThread();
-//			if(parentNode.getOutFlowLine().getNextNode() != null) {
-//				((POPDecisionNode) parentNode).getOutFlowLine().getNextNode().moveCenter();
-//			}
 		} else if(this.parentNode != null && parentNode instanceof POPLoopNode) {
 			((POPLoopNode) parentNode).adjustPositionThread();
 		}
 		
 		if(this.parentNode != null && parentNode.getOutFlowLine() != null && parentNode.getOutFlowLine().getLoopNode() != null) {
-			System.out.println("d요거" + parentNode);
 			parentNode.getOutFlowLine().getLoopNode().adjustPositionThread();
 		} else if(this.parentNode != null && parentNode.getOutFlowLine() != null && parentNode.getOutFlowLine().getDecisionNode() != null) {
 			parentNode.getOutFlowLine().getDecisionNode().adjustPositionThread();
@@ -283,7 +278,6 @@ public class POPOperationSymbol extends StackPane {
 		if(parentNode != null) {
 			parentNode.moveCenter();
 		}
-//		this.parentNode.moveCenter();
 	}
 	
 	public void add(int index, POPVariableNode node) {
@@ -377,7 +371,7 @@ public class POPOperationSymbol extends StackPane {
 					type = "String ";
 					break;
 				}
-				strCode = type + strCode; //checkType(Calculator.eval(rightValue)) + strCode;	
+				strCode = type + strCode;
 			}
 			
 			

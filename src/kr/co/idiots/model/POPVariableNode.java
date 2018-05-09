@@ -64,7 +64,7 @@ public class POPVariableNode extends POPNode {
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
 				if(isInitialized) {
-					if(parentSymbol != null) {
+					if(getParentSymbol() != null) {
 						lastIndex = parentSymbol.getContents().getChildren().indexOf(thisNode);
 						parentSymbol.getContents().getChildren().remove(thisNode);
 						parentSymbol.getContents().getChildren().add(lastIndex, new POPBlank(parentSymbol));
@@ -98,9 +98,6 @@ public class POPVariableNode extends POPNode {
 			
 		});
 	}
-//	public POPVariableNode(POPNode another) {
-//		super(another);
-//	}
 	
 	private void setOnVariableNodeDrag() {
 		
@@ -169,7 +166,6 @@ public class POPVariableNode extends POPNode {
 			DragManager.draggedNode = null;
 			DragManager.isAllocatedNode = false;
 			DragManager.isSynchronized = false;
-//			DragManager.isAdjustPosSync = true;
 		});
 	}
 

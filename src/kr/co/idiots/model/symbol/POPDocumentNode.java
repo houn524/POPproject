@@ -21,10 +21,6 @@ public class POPDocumentNode extends POPSymbolNode {
 	@Override
 	public void initialize() {
 		super.initialize();
-//		POPDocumentDataInput dataInput = new POPDocumentDataInput(this);
-//    	setDataInput(dataInput);
-//    	StackPane.setAlignment(dataInput, Pos.CENTER);
-//    	component.getChildren().add(dataInput);
 		
 		POPOutputSymbol symbol = new POPOutputSymbol();
 		symbol.initialize(this);
@@ -33,8 +29,6 @@ public class POPDocumentNode extends POPSymbolNode {
 		component.getChildren().add(symbol);
 		symbol.setRootSymbol(true);
 		this.setRootSymbol(symbol);
-		
-//		this.moveCenter();
 	}
 
 }

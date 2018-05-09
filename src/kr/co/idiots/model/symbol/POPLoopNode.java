@@ -53,7 +53,6 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 	
 	public double getLoopWidth() {
 		return rightInFlowLine.getStartX() - leftOutFlowLine.getEndX();
-//		return maxLoopWidth.get() + 60;
 	}
 	
 	public POPLoopNode(POPScriptArea scriptArea) {
@@ -67,15 +66,10 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 		
 		leftOutFlowLine = new POPSideFlowLine(this);
 		pos = POPBoundManager.getLeftCenter(bound);
-		leftOutFlowLine.setStartPos(pos.getX(), pos.getY());
-		leftOutFlowLine.setEndPos(pos.getX() - 10, pos.getY());
 		
 		leftDownFlowLine = new POPSideFlowLine(this);
-		leftDownFlowLine.setStartPos(leftOutFlowLine.getEndX(), leftOutFlowLine.getEndY());
-		leftDownFlowLine.setEndPos(pos.getX() - 10, pos.getY() + 100);
 		
 		leftInFlowLine = new POPSideFlowLine(this);
-		leftInFlowLine.setStartPos(leftDownFlowLine.getEndX(), leftDownFlowLine.getEndY());
 		leftInFlowLine.setEndY(leftDownFlowLine.getEndY());
 		leftInFlowLine.setEndX(POPBoundManager.getBottomCenter(bound).getX());
 		
@@ -85,11 +79,9 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 		loopStartNode = new POPLoopStartNode(scriptArea);
 		loopEndNode = new POPLoopEndNode(scriptArea);
 		loopStartNode.getOutFlowLine().setLoopNode(this);
-//		loopStartNode.setRootNode(this);
 		loopStartNode.setParentNode(this);
 		loopStartNode.getOutFlowLine().setNextNode(loopEndNode);
 		loopEndNode.setInFlowLine(loopStartNode.getOutFlowLine());
-//		loopEndNode.setRootNode(this);
 		loopEndNode.setParentNode(this);
 		loopEndNode.setLoopNode(this);
 		
@@ -152,7 +144,6 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 	}
 	
 	public void adjustPosition() {
-		System.out.println("ggg");
 		loopEndNode.setLayoutX(loopStartNode.getLayoutX());
     	
     	resizeLoopNode();
@@ -185,44 +176,6 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 		Point2D pos = Point2D.ZERO;
 		
 		pos = POPBoundManager.getBottomCenter(bound);
-//		loopStartNode.setLayoutX(pos.getX());
-//		loopStartNode.setLayoutY(pos.getY());
-		
-		
-		
-//		pos = POPBoundManager.getRightCenter(bound);
-//		rightOutFlowLine.setStartPos(loopEndNode.getLayoutX(), loopEndNode.getLayoutY());
-//		rightOutFlowLine.setEndPos(pos.getX() + (((maxLoopWidth - bound.getWidth()) / 2) + 30), loopEndNode.getLayoutY());
-//		
-//		rightUpFlowLine.setStartPos(rightOutFlowLine.getEndX(), rightOutFlowLine.getEndY());
-//		rightUpFlowLine.setEndPos(rightUpFlowLine.getStartX(), pos.getY());
-//		
-//		rightInFlowLine.setStartPos(rightUpFlowLine.getEndX(), rightUpFlowLine.getEndY());
-//		rightInFlowLine.setEndPos(pos.getX(), pos.getY());
-//		
-//		pos = POPBoundManager.getLeftCenter(bound);
-//		leftOutFlowLine.setStartPos(pos.getX(), pos.getY());
-//		leftOutFlowLine.setEndPos(pos.getX() - (((maxLoopWidth - bound.getWidth()) / 2) + 30), pos.getY());
-//		
-//		leftDownFlowLine.setStartPos(leftOutFlowLine.getEndX(), leftOutFlowLine.getEndY());
-//		leftDownFlowLine.setEndPos(leftOutFlowLine.getEndX(), loopEndNode.getLayoutY() + 20);
-//		
-//		leftInFlowLine.setStartPos(leftDownFlowLine.getEndX(), leftDownFlowLine.getEndY());
-//		leftInFlowLine.setEndY(leftDownFlowLine.getEndY());
-//		leftInFlowLine.setEndX(POPBoundManager.getBottomCenter(bound).getX());
-//		
-//		resizeLoopNode();
-		
-//		outFlowLine.setStartX(leftInFlowLine.getEndX());
-//		outFlowLine.setStartY(leftInFlowLine.getEndY());
-		
-//		if(inFlowLine != null && inFlowLine.getLoopNode() != null) {
-//			inFlowLine.getLoopNode().adjustPosition();
-//			System.out.println("2");
-//		} else if(inFlowLine != null && inFlowLine.getDecisionNode() != null) {
-//			inFlowLine.getDecisionNode().adjustPosition();
-//			System.out.println("1-2");
-//		}
 		
 		Thread thread = new Thread() {
             @Override
@@ -230,16 +183,11 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
                 PlatformHelper.run(() -> {
                 	adjustPosition();
                 });
-//                try { Thread.sleep(100); } catch (InterruptedException e) {}
             }
         };
         
         thread.setDaemon(true);
         thread.start();
-        
-//		DragManager.isDecisionSync = true;
-		
-//		moveCenter();
 	}
 	
 	@Override
@@ -275,29 +223,10 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 				// TODO Auto-generated method stub
 				
 				adjustPositionThread();
-//				System.out.println("5");
-//				if(outFlowLine != null) {
-//					outFlowLine.setStartX(newBound.getMinX() + (newBound.getWidth() / 2));
-//					outFlowLine.setStartY(leftInFlowLine.getEndY());
-//				}
-////				
-//				if(inFlowLine != null) {
-//					inFlowLine.setEndX(newBound.getMinX() + (newBound.getWidth() / 2));
-//					inFlowLine.setEndY(newBound.getMinY());
-//				}
 				
 				loopStartNode.getOutFlowLine().pullNodesThread();
 				
 				initMaxLoopWidth = newBound.getWidth();
-				
-		        
-				
-				
-//				outFlowLine.setStartX(leftInFlowLine.getEndX());
-//				outFlowLine.setStartY(leftInFlowLine.getEndY());
-//				moveCenter();
-				
-				
 			}
 		});
 	}
@@ -312,30 +241,17 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 			newBound = component.getBoundsInParent();
 			prevBound = inFlowLine.getPrevNode().getBoundsInParent();
 			
-		
-//			if(outFlowLine != null) {
-//				outFlowLine.setStartX(newBound.getMinX() + (newBound.getWidth() / 2));				
-//				outFlowLine.setStartY(leftInFlowLine.getEndY());
-//			}
-//			
-//			if(inFlowLine != null) {
-//				inFlowLine.setEndX(newBound.getMinX() + (newBound.getWidth() / 2));
-//				inFlowLine.setEndY(newBound.getMinY());
-//			}
-			
 			component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2));
-			
 		}
 	}
 	
 	public void resizeLoopNode() {
-		maxLoopWidth.set(initMaxLoopWidth);// = initMaxLoopWidth;
+		maxLoopWidth.set(initMaxLoopWidth);
 		for(Node subNode : subNodes) {
 			if(subNode instanceof POPDecisionNode) {
 				maxLoopWidth.set(Math.max(((POPDecisionNode) subNode).getDecisionWidth(), maxLoopWidth.get()));
 			} else if(subNode instanceof POPLoopNode) {
 				maxLoopWidth.set(Math.max(((POPLoopNode) subNode).getLoopWidth(), maxLoopWidth.get()));
-				System.out.println("maxLoopWidth : " + ((POPLoopNode) subNode).getLoopWidth() + ", " + initMaxLoopWidth);
 			} else if(!(subNode instanceof POPLoopStartNode) && !(subNode instanceof POPLoopEndNode) && subNode instanceof POPSymbolNode) {
 				maxLoopWidth.set(Math.max(((POPSymbolNode) subNode).getComponent().getWidth(), maxLoopWidth.get()));
 			}

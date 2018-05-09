@@ -17,7 +17,6 @@ public class POPCompareRootSymbol extends POPOperationSymbol {
 		this.type = POPNodeType.Compare;
 		
 		compareBlank = new POPBlank(this);
-//		compareBlank.setEditable(true);
 		contents.getChildren().add(compareBlank);
 		
 		setInitWidth();

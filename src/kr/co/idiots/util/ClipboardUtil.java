@@ -25,25 +25,13 @@ public class ClipboardUtil {
 			double f = 0;
 			params.setViewport(new Rectangle2D(b.getMinX() - f, b.getMinY() - f, b.getWidth() + f + f, b.getHeight() + f + f));
 			WritableImage image = child.snapshot(params, null);
-//			cb.putImage(image);
 			cb.put(DataFormat.IMAGE, image);
-			
-//			try {
-//				File tmpFile = File.createTempFile("snapshot", ".png");
-//				LinkedList<File> list = new LinkedList<File>();
-//				ImageIO.write(SwingFXUtils.fromFXImage(image,  null), "png", tmpFile);
-//				list.add(tmpFile);
-//				cb.put(DataFormat.FILES, list);
-//			} catch(Exception e) {
-//				
-//			}
 		}
 		return cb;
 	}
 	
 	public static Image makeSnapShot(Node node) {
 		SnapshotParameters params = new SnapshotParameters();
-//		params.setFill(Color.DARKGRAY);
 		Bounds b = node.getBoundsInParent();
 		double f = 0;
 		params.setViewport(new Rectangle2D(b.getMinX() - f, b.getMinY() - f, b.getWidth() + f + f, b.getHeight() + f + f));

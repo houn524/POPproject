@@ -65,8 +65,7 @@ public class POPSolvingLayoutController {
 	
 	@FXML
 	private ImageView node;
-//	@FXML
-//	private ScrollPane scrollPane;
+	
 	@FXML
 	private AnchorPane symbolArea;
 	
@@ -75,8 +74,7 @@ public class POPSolvingLayoutController {
 	
 	@FXML
 	private GridPane variableArea;
-//	@FXML
-//	private ListView variableListView;
+	
 	@FXML
 	public AnchorPane rootPane;
 	
@@ -103,8 +101,6 @@ public class POPSolvingLayoutController {
 	private Label lbConsole;
 	
 	private Button btnStart;
-	
-//	private ObservableList<StackPane> variableItems;
 	
 	private POPProcessNode processSymbol;
 	private POPDocumentNode documentSymbol;
@@ -150,15 +146,11 @@ public class POPSolvingLayoutController {
 		lbConsole.setFont(new Font(20));
 		consoleFrame.setLeft(lbConsole);
 		
-//		variableItems = FXCollections.observableArrayList();
-//		variableListView.setItems(variableItems);
-		
 		scriptArea = new POPScriptArea(scriptPane, scriptScrollPane);
 		
 		scriptScrollPane.viewportBoundsProperty().addListener(new ChangeListener<Bounds>() {
 			@Override
 			public void changed(ObservableValue<? extends Bounds> arg0, Bounds arg1, Bounds arg2) {
-				// TODO Auto-generated method stub
 				Node content = scriptScrollPane.getContent();
 				scriptScrollPane.setFitToWidth(content.prefWidth(-1) < arg2.getWidth());
 				scriptScrollPane.setFitToWidth(content.prefHeight(-1) < arg2.getHeight());
@@ -171,7 +163,6 @@ public class POPSolvingLayoutController {
 			
 			@Override
 			public void handle(ActionEvent arg0) {
-				// TODO Auto-generated method stub
 				Thread thread = new Thread() {
 					@Override
 					public void run() {
@@ -184,12 +175,6 @@ public class POPSolvingLayoutController {
 				thread.setDaemon(true);
 				thread.start();
 				
-//				try {
-//					lbConsole.setText("출력값 : " + scriptArea.generate());
-//				} catch (IOException | NoSuchFieldException e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//				}
 			}
 			
 		});
@@ -305,17 +290,6 @@ public class POPSolvingLayoutController {
 			
 			WritableImage image = child.snapshot(params, null);
 			cb.putImage(image);
-//			cb.put(DataFormat.IMAGE, image);
-			
-//			try {
-//				File tmpFile = File.createTempFile("snapshot", ".png");
-//				LinkedList<File> list = new LinkedList<File>();
-//				ImageIO.write(SwingFXUtils.fromFXImage(image,  null), "png", tmpFile);
-//				list.add(tmpFile);
-//				cb.put(DataFormat.FILES, list);
-//			} catch(Exception e) {
-//				
-//			}
 		}
 		return cb;
 	}

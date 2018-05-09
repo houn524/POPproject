@@ -76,7 +76,6 @@ public class POPScriptArea {
 				}
 				
 				if(newBound.getMinX() < 50) {
-//					moveFlowchart(component, 5);
 					component.setTranslateX(component.getTranslateX() + 5);
 					centerXOfStartNode += 5;
 					
@@ -110,14 +109,11 @@ public class POPScriptArea {
 		
 		
 		scrollPane.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
-
 			@Override
 			public void changed(ObservableValue<? extends Bounds> arg0, Bounds oldBound, Bounds newBound) {
 				// TODO Auto-generated method stub
 				pane.setPrefSize(scrollPane.getWidth() - 2, scrollPane.getHeight() - 2);
-				
 			}
-
 		});
 				
 		setOnDrag();
@@ -136,9 +132,7 @@ public class POPScriptArea {
 		
 		scrollPane.setOnDragDropped(event -> {
 			
-//			DragManager.isSynchronized = true;
 			Dragboard db = event.getDragboard();
-//			
 			String clsName = db.getString();
 			String varName = null;
 			String varTypeName = null;
@@ -163,8 +157,6 @@ public class POPScriptArea {
 					DragManager.isAllocatedNode = false;
 				}
 				
-//				locateNode(event, node);
-//				add(node);
 				locateAndAddNode(event, node);
 				
 				if(DragManager.draggedNode instanceof POPOperationSymbol) {
@@ -192,13 +184,6 @@ public class POPScriptArea {
 				}
 				
 				locateAndAddNode(event, node);
-//				locateNode(event, node);
-//				
-//				if(node instanceof POPSymbolNode) {
-//					add(node);
-//				} else {
-//					component.getChildren().add(node);
-//				}
 			}
 			
 			success = true;

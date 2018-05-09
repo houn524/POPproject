@@ -19,9 +19,6 @@ public class TextUtils {
     }
 
     public static double computeTextWidth(Font font, String text, double help0) {
-        // Toolkit.getToolkit().getFontLoader().computeStringWidth(field.getText(),
-        // field.getFont());
-
         helper.setText(text);
         helper.setFont(font);
 
