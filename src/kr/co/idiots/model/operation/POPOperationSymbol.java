@@ -70,7 +70,7 @@ public class POPOperationSymbol extends StackPane {
 		
 		
 		contents.setAlignment(Pos.CENTER);
-		contents.setHgap(5);
+		contents.setHgap(3);
 		setOnNodeDrag();
 		
 		
@@ -221,7 +221,7 @@ public class POPOperationSymbol extends StackPane {
 				break;
 		}
 		
-		initWidth = width + 40;
+		initWidth = width + 25;
 		
 		imgShape.setFitWidth(initWidth);
 		this.setMaxWidth(imgShape.getBoundsInLocal().getWidth());
@@ -256,7 +256,7 @@ public class POPOperationSymbol extends StackPane {
 			parentSymbol.setContentsAutoSize();
 		} else if(parentNode != null) {
 			if(parentNode instanceof POPDecisionNode || parentNode instanceof POPLoopNode) {
-				parentNode.setNodeAutoSize(contents.getPrefWrapLength() + 100);
+				parentNode.setNodeAutoSize(contents.getPrefWrapLength() + 50);
 			} else {
 				parentNode.setNodeAutoSize(contents.getPrefWrapLength());
 			}

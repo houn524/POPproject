@@ -25,7 +25,6 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -91,7 +90,7 @@ public class POPSolvingLayoutController {
 	private SplitPane splitPane;
 	
 	@FXML
-	private BorderPane consoleFrame;
+	private AnchorPane consoleFrame;
 	
 	@FXML
 	private Button btnCreateVariable;
@@ -100,6 +99,7 @@ public class POPSolvingLayoutController {
 	
 	private Label lbConsole;
 	
+	@FXML
 	private Button btnStart;
 	
 	private POPProcessNode processSymbol;
@@ -144,7 +144,7 @@ public class POPSolvingLayoutController {
 		
 		lbConsole = new Label("출력값 : ");
 		lbConsole.setFont(new Font(20));
-		consoleFrame.setLeft(lbConsole);
+		consoleFrame.getChildren().add(lbConsole);
 		
 		scriptArea = new POPScriptArea(scriptPane, scriptScrollPane);
 		
@@ -158,9 +158,7 @@ public class POPSolvingLayoutController {
 		});
 		
 		
-		btnStart = new Button("실행");
 		btnStart.setOnAction(new EventHandler<ActionEvent>() {
-			
 			@Override
 			public void handle(ActionEvent arg0) {
 				Thread thread = new Thread() {
@@ -183,51 +181,49 @@ public class POPSolvingLayoutController {
 			showCreateVariablePopup();
 		});
 		
-		
-		
 		processSymbol = new POPProcessNode(scriptArea);
 		symbolArea.getChildren().add(processSymbol.getComponent());
 		documentSymbol = new POPDocumentNode(scriptArea);
 		symbolArea.getChildren().add(documentSymbol.getComponent());
-		documentSymbol.getComponent().setLayoutY(100);
+		documentSymbol.getComponent().setLayoutY(70);
 		decisionSymbol = new POPDecisionNode(scriptArea);
 		symbolArea.getChildren().add(decisionSymbol.getComponent());
-		decisionSymbol.getComponent().setLayoutY(200);
+		decisionSymbol.getComponent().setLayoutY(140);
 		loopSymbol = new POPLoopNode(scriptArea);
 		symbolArea.getChildren().add(loopSymbol.getComponent());
-		loopSymbol.getComponent().setLayoutY(300);
+		loopSymbol.getComponent().setLayoutY(210);
 		
 		plusSymbol = new POPPlusSymbol();
 		operationArea.getChildren().add(plusSymbol);
 		minusSymbol = new POPMinusSymbol();
 		operationArea.getChildren().add(minusSymbol);
-		minusSymbol.setTranslateY(50);
+		minusSymbol.setTranslateY(40);
 		multiplySymbol = new POPMultiplySymbol();
 		operationArea.getChildren().add(multiplySymbol);
-		multiplySymbol.setTranslateY(100);
+		multiplySymbol.setTranslateY(80);
 		divideSymbol = new POPDivideSymbol();
 		operationArea.getChildren().add(divideSymbol);
-		divideSymbol.setTranslateY(150);
+		divideSymbol.setTranslateY(120);
 		remainderSymbol = new POPRemainderSymbol();
 		operationArea.getChildren().add(remainderSymbol);
-		remainderSymbol.setTranslateY(200);
+		remainderSymbol.setTranslateY(160);
 		
 		isEqualSymbol = new POPIsEqualSymbol();
 		operationArea.getChildren().add(isEqualSymbol);
-		isEqualSymbol.setTranslateY(300);
+		isEqualSymbol.setTranslateY(240);
 		lessThanSymbol = new POPLessThanSymbol();
 		operationArea.getChildren().add(lessThanSymbol);
-		lessThanSymbol.setTranslateY(350);
+		lessThanSymbol.setTranslateY(280);
 		lessThanEqualSymbol = new POPLessThanEqualSymbol();
 		operationArea.getChildren().add(lessThanEqualSymbol);
-		lessThanEqualSymbol.setTranslateY(400);
+		lessThanEqualSymbol.setTranslateY(320);
 		notEqualSymbol = new POPNotEqualSymbol();
 		operationArea.getChildren().add(notEqualSymbol);
-		notEqualSymbol.setTranslateY(450);
+		notEqualSymbol.setTranslateY(360);
 		
 		stringPlusSymbol = new POPStringPlusSymbol();
 		operationArea.getChildren().add(stringPlusSymbol);
-		stringPlusSymbol.setLayoutY(550);
+		stringPlusSymbol.setLayoutY(440);
 		
 		
 		POPSymbolNode startNode = new POPStartNode(scriptArea);
@@ -241,7 +237,6 @@ public class POPSolvingLayoutController {
 		scriptArea.setStartNode(startNode);
 		scriptArea.addWithOutFlowLine(startNode);
 		scriptArea.addWithOutFlowLine(stopNode);
-		scriptArea.getComponent().getChildren().add(btnStart);
 		
 		DragManager.dragRootPane = rootPane;
 		DragManager.tabPane = tabPane;

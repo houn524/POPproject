@@ -2,8 +2,6 @@ package kr.co.idiots;
 
 import java.util.HashMap;
 
-import javax.script.ScriptException;
-
 import kr.co.idiots.model.operation.POPOperationSymbol;
 import kr.co.idiots.model.operation.POPOutputSymbol;
 import kr.co.idiots.model.symbol.POPDecisionEndNode;
@@ -33,9 +31,6 @@ public class POPFlowchartPlayer {
 	}
 	
 	public void playNode(POPSymbolNode node) {
-		
-		
-		
 		while(true) { 
 			if(node instanceof POPStartNode) {
 				output = new StringBuilder();
@@ -46,28 +41,18 @@ public class POPFlowchartPlayer {
 			} 
 			
 			if(node instanceof POPDecisionNode) {
-				try {
-					if(playDecisionNode(node)) {
-						node = ((POPDecisionNode) node).getLeftStartNode().getOutFlowLine().getNextNode();
-					} else {
-						node = ((POPDecisionNode) node).getRightStartNode().getOutFlowLine().getNextNode();
-					}
-				} catch (ScriptException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if(playDecisionNode(node)) {
+					node = ((POPDecisionNode) node).getLeftStartNode().getOutFlowLine().getNextNode();
+				} else {
+					node = ((POPDecisionNode) node).getRightStartNode().getOutFlowLine().getNextNode();
 				}
 			} else if(node instanceof POPDecisionEndNode) {
 				node = ((POPDecisionEndNode) node).getDecisionNode().getOutFlowLine().getNextNode();
 			} else if(node instanceof POPLoopNode) {
-				try {
-					if(playDecisionNode(node)) {
-						node = ((POPLoopNode) node).getLoopStartNode().getOutFlowLine().getNextNode();
-					} else {
-						node = node.getOutFlowLine().getNextNode();
-					}
-				} catch (ScriptException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				if(playDecisionNode(node)) {
+					node = ((POPLoopNode) node).getLoopStartNode().getOutFlowLine().getNextNode();
+				} else {
+					node = node.getOutFlowLine().getNextNode();
 				}
 			} else if(node instanceof POPLoopEndNode) {
 				node = ((POPLoopEndNode) node).getLoopNode();
@@ -77,7 +62,6 @@ public class POPFlowchartPlayer {
 				break;
 			}
 		}
-		
 	}
 	
 	private void playProcessNode(POPProcessNode node) {
@@ -97,11 +81,11 @@ public class POPFlowchartPlayer {
 		output.append(strResult).append(System.lineSeparator());
 	}
 	
-	private boolean playDecisionNode(POPSymbolNode node) throws ScriptException {
+	private boolean playDecisionNode(POPSymbolNode node) {
 		POPOperationSymbol rootSymbol = (POPOperationSymbol) node.getRootSymbol().getContents().getChildren().get(0);
 		rootSymbol.playSymbol();
 		boolean result = false;
-		result = Boolean.parseBoolean(rootSymbol.executeSymbol().toString());//Calculator.compare(rootSymbol.getValueString());
+		result = Boolean.parseBoolean(rootSymbol.executeSymbol().toString());
 		
 		return result;
 	}

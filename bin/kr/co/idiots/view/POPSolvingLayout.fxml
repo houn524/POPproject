@@ -7,7 +7,6 @@
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
@@ -22,21 +21,25 @@
                   <content>
                   	<ScrollPane fitToHeight="true" fitToWidth="true">
               			<content>
-                			<AnchorPane fx:id="symbolArea" minHeight="0.0" minWidth="0.0" pickOnBounds="false" prefHeight="687.0" prefWidth="383.0" />
+                			<AnchorPane fx:id="symbolArea" pickOnBounds="false" />
               			</content>
             		</ScrollPane>
                   </content>
                 </Tab>
-                <Tab text="연산 기호">
-                  <content>
-                    <AnchorPane fx:id="operationArea" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                  </content>
-                </Tab>
+                  <Tab text="연산 기호">
+                     <content>
+                        <ScrollPane fitToHeight="true" fitToWidth="true">
+                           <content>
+                              <AnchorPane fx:id="operationArea" pickOnBounds="false" />
+                           </content>
+                        </ScrollPane>
+                     </content>
+                  </Tab>
                 <Tab text="변수">
                   <content>
                     <ScrollPane fitToHeight="true" fitToWidth="true">
               			<content>
-                			<AnchorPane minHeight="0.0" minWidth="0.0" pickOnBounds="false" prefHeight="687.0" prefWidth="383.0">
+                			<AnchorPane pickOnBounds="false">
                                  <children>
                                     <Button fx:id="btnCreateVariable" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#showVariablePopup" text="변수 생성" />
                                     <GridPane fx:id="variableArea" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
@@ -69,7 +72,7 @@
                 </Tab>
               </tabs>
             </TabPane>
-            <SplitPane fx:id="splitPane" dividerPositions="0.8785140562248996" orientation="VERTICAL">
+            <SplitPane fx:id="splitPane" dividerPositions="0.8421492204899778" orientation="VERTICAL">
               <items>
                   <ScrollPane fx:id="scriptScrollPane" fitToHeight="true" fitToWidth="true">
                      <content>
@@ -79,7 +82,15 @@
                            </children></Group>
                      </content>
                   </ScrollPane>
-                  <BorderPane fx:id="consoleFrame" prefHeight="200.0" prefWidth="200.0" />
+                  <ScrollPane fx:id="scriptScrollPane1" fitToHeight="true" fitToWidth="true">
+                     <content>
+                        <AnchorPane fx:id="consoleFrame">
+                           <children>
+                              <Button fx:id="btnStart" mnemonicParsing="false" prefHeight="33.0" prefWidth="68.0" text="실행" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </ScrollPane>
               </items>
             </SplitPane>
          </items>

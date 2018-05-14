@@ -13,7 +13,7 @@ public class POPSideFlowLine extends Line {
 		
 	public POPSideFlowLine(POPSymbolNode prevNode) {
 		this.prevNode = prevNode;
-		setStrokeWidth(5.0f);
+		setStrokeWidth(3.0f);
 	}
 	
 }

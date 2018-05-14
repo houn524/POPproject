@@ -10,7 +10,6 @@ import kr.co.idiots.model.operation.POPOperationSymbol;
 import kr.co.idiots.util.DragManager;
 import kr.co.idiots.util.POPNodeDataFormat;
 import kr.co.idiots.util.TextUtils;
-import kr.co.idiots.view.POPSolvingLayoutController;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -22,7 +21,7 @@ public class POPBlank extends TextField {
 	
 	public POPBlank(POPOperationSymbol parentSymbol) {
 		this.parentSymbol = parentSymbol;
-		this.setPrefSize(10, 34);
+		this.setPrefSize(10, 20);
 		this.setEditable(false);
 		
 		setOnBlankDrag();

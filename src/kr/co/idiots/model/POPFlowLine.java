@@ -57,34 +57,22 @@ public class POPFlowLine extends Group {
     	
     }
 
-    private static final double arrowLength = 20;
+    private static final double arrowLength = 10;
     private static final double arrowWidth = 7;
     public static final double nodeMinGap = 30;
-    private double decisionGap = 60;
+    private double decisionGap = 40;
     
     private POPFlowLine(Line line, Line arrow1, Line arrow2, Rectangle area) {
         super(line, arrow1, arrow2, area);
         this.line = line;
         this.area = area;
                         
-        line.setStrokeWidth(5.0f);
-        arrow1.setStrokeWidth(5.0f);
-        arrow2.setStrokeWidth(5.0f);
+        line.setStrokeWidth(3.0f);
+        arrow1.setStrokeWidth(3.0f);
+        arrow2.setStrokeWidth(3.0f);
         area.setFill(Color.rgb(0,  0,  0, 0));
         
         length = Bindings.subtract(line.endYProperty(), line.startYProperty());
-        
-//        area.xProperty().bind(Bindings.subtract(Bindings.min(startXProperty(), endXProperty()), 20));
-//        area.yProperty().bind(Bindings.min(startYProperty(), endYProperty()));
-//        area.setWidth(40);
-////        area.widthProperty().bind(Bindings.add(Bindings.subtract(startXProperty(), endXProperty()), 40));
-//        area.heightProperty().bind(Bindings.subtract(startYProperty(), endYProperty()));
-//        area.toFront();
-        
-//        area.setX(Math.min(getStartX(), getEndX()) - 20);
-//    	area.setY(Math.min(getStartY(), getEndY()));
-//    	area.setWidth(Math.abs(getStartX() - getEndX()) + 40);
-//    	area.setHeight(Math.abs(getStartY() - getEndY()));
         
         InvalidationListener updater = new InvalidationListener() {
 
@@ -94,14 +82,6 @@ public class POPFlowLine extends Group {
 
 				double ex = getEndX();
 				double ey = getEndY();
-				
-//				if(nextNode != null) {
-//					Bounds nextNodeBound = nextNode.getBoundsInParent();
-//					ex = nextNodeBound.getMinX() + (nextNodeBound.getWidth() / 2);//getEndX();
-//		            ey = nextNodeBound.getMinY();//getEndY();
-//		            line.setEndX(ex);
-//		            line.setEndY(ey);
-//				}
 				
 	            double sx = getStartX();
 	            double sy = getStartY();
@@ -138,43 +118,6 @@ public class POPFlowLine extends Group {
         	
         };
         
-//        InvalidationListener updater = o -> {
-//        	
-//            double ex = getEndX();
-//            double ey = getEndY();
-//            double sx = getStartX();
-//            double sy = getStartY();
-//
-//            arrow1.setEndX(ex);
-//            arrow1.setEndY(ey);
-//            arrow2.setEndX(ex);
-//            arrow2.setEndY(ey);
-//
-//            if (ex == sx && ey == sy) {
-//                // arrow parts of length 0
-//                arrow1.setStartX(ex);
-//                arrow1.setStartY(ey);
-//                arrow2.setStartX(ex);
-//                arrow2.setStartY(ey);
-//            } else {
-//                double factor = arrowLength / Math.hypot(sx-ex, sy-ey);
-//                double factorO = arrowWidth / Math.hypot(sx-ex, sy-ey);
-//
-//                // part in direction of main line
-//                double dx = (sx - ex) * factor;
-//                double dy = (sy - ey) * factor;
-//
-//                // part ortogonal to main line
-//                double ox = (sx - ex) * factorO;
-//                double oy = (sy - ey) * factorO;
-//
-//                arrow1.setStartX(ex + dx - oy);
-//                arrow1.setStartY(ey + dy + ox);
-//                arrow2.setStartX(ex + dx + oy);
-//                arrow2.setStartY(ey + dy - ox);
-//            }
-//        };
-        
         setOnLengthChange();
 
         this.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
@@ -203,16 +146,6 @@ public class POPFlowLine extends Group {
 			e.printStackTrace();
 		}
         
-//        area.xProperty().bind(Bindings.subtract(Bindings.min(startXProperty(), endXProperty()), 20));
-//        area.yProperty().bind(startYProperty());
-//        area.setWidth(40);
-////        area.widthProperty().bind(Bindings.add(Bindings.subtract(startXProperty(), endXProperty()), 40));
-//        area.heightProperty().bind(Bindings.subtract(startYProperty(), endYProperty()));
-//        area.setFill(Color.BLACK);
-//        area.setX(Math.min(getStartX(), getEndX()) - 20);
-//    	area.setY(Math.min(getStartY(), getEndY()));
-//    	area.setWidth(Math.abs(getStartX() - getEndX()) + 40);
-//    	area.setHeight(Math.abs(getStartY() - getEndY()));
     }
     
     public void pullNodes() {

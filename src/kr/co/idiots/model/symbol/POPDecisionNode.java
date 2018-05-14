@@ -47,7 +47,7 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 	
 	private DoubleProperty maxLength = new SimpleDoubleProperty(100);
 	
-	private double initMaxWidth = 250;
+	private double initMaxWidth = 160;
 	private DoubleProperty leftMaxWidth = new SimpleDoubleProperty(initMaxWidth);
 	private DoubleProperty rightMaxWidth = new SimpleDoubleProperty(initMaxWidth);
 	private DoubleProperty sideFlowLineY = new SimpleDoubleProperty();
@@ -84,13 +84,9 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 		
 		leftFlowLine = new POPSideFlowLine(this);
 		pos = POPBoundManager.getLeftCenter(bound);
-//		leftFlowLine.setStartPos(pos.getX(), pos.getY());
-//		leftFlowLine.setEndPos(pos.getX() - 10, pos.getY());
 		
 		rightFlowLine = new POPSideFlowLine(this);
 		pos = POPBoundManager.getRightCenter(bound);
-//		rightFlowLine.setStartPos(pos.getX(), pos.getY());
-//		rightFlowLine.setEndPos(pos.getX() + 10, pos.getY());
 		
 		leftLabel = new Label("예");
 		rightLabel = new Label("아니오");
@@ -122,12 +118,12 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 		
 		leftFlowLine.startXProperty().bind(component.layoutXProperty());
 		leftFlowLine.startYProperty().bind(Bindings.add(component.layoutYProperty(), Bindings.divide(component.heightProperty(), 2)));
-		leftFlowLine.endXProperty().bind(Bindings.subtract(component.layoutXProperty(), Bindings.divide(Bindings.subtract(leftMaxWidth, component.widthProperty()), 2)));
+		leftFlowLine.endXProperty().bind(Bindings.subtract(Bindings.subtract(component.layoutXProperty(), Bindings.divide(Bindings.subtract(leftMaxWidth, component.widthProperty()), 2)), 10));
 		leftFlowLine.endYProperty().bind(leftFlowLine.startYProperty());
 		
 		rightFlowLine.startXProperty().bind(Bindings.add(component.layoutXProperty(), component.widthProperty()));
 		rightFlowLine.startYProperty().bind(Bindings.add(component.layoutYProperty(), Bindings.divide(component.heightProperty(), 2)));
-		rightFlowLine.endXProperty().bind(Bindings.add(Bindings.add(component.layoutXProperty(), component.widthProperty()), Bindings.divide(Bindings.subtract(rightMaxWidth, component.widthProperty()), 2)));
+		rightFlowLine.endXProperty().bind(Bindings.add(Bindings.add(Bindings.add(component.layoutXProperty(), component.widthProperty()), Bindings.divide(Bindings.subtract(rightMaxWidth, component.widthProperty()), 2)), 10));
 		rightFlowLine.endYProperty().bind(rightFlowLine.startYProperty());
 		
 		leftLabel.layoutXProperty().bind(Bindings.subtract(leftStartNode.layoutXProperty(), Bindings.divide(leftLabel.widthProperty(), 2)));

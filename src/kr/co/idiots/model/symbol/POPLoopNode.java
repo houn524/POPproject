@@ -134,8 +134,6 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 		loopStartNode.layoutXProperty().bind(Bindings.add(component.layoutXProperty(), Bindings.divide(component.widthProperty(), 2)));
 		loopStartNode.layoutYProperty().bind(Bindings.add(component.layoutYProperty(), component.heightProperty()));
 		
-		
-		
 		setOnBoundChangeListener();
 	}
 	

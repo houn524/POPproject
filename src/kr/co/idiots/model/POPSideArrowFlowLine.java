@@ -25,9 +25,9 @@ public class POPSideArrowFlowLine extends Group {
 		super(line, arrow1, arrow2);
 		this.line = line;
 		
-		line.setStrokeWidth(5.0f);
-        arrow1.setStrokeWidth(5.0f);
-        arrow2.setStrokeWidth(5.0f);
+		line.setStrokeWidth(3.0f);
+        arrow1.setStrokeWidth(3.0f);
+        arrow2.setStrokeWidth(3.0f);
         
         InvalidationListener updater = new InvalidationListener() {
 
