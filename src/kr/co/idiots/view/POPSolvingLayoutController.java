@@ -32,6 +32,7 @@ import javafx.stage.Stage;
 import kr.co.idiots.MainApp;
 import kr.co.idiots.POPFlowchartPlayer;
 import kr.co.idiots.POPVariableManager;
+import kr.co.idiots.model.POPArrayNode;
 import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPScriptArea;
 import kr.co.idiots.model.POPVariableNode;
@@ -95,6 +96,9 @@ public class POPSolvingLayoutController {
 	@FXML
 	private Button btnCreateVariable;
 	
+	@FXML
+	private Button btnCreateArray;
+	
 	private POPFlowchartPlayer flowchartPlayer;
 	
 	private Label lbConsole;
@@ -131,6 +135,7 @@ public class POPSolvingLayoutController {
 	private RootLayoutController rootController;
 	
 	private POPCreateVariableLayoutController createVariableController;
+	private POPCreateArrayLayoutController createArrayController;
 
 	
 	
@@ -179,6 +184,10 @@ public class POPSolvingLayoutController {
 		
 		btnCreateVariable.setOnAction(event-> {
 			showCreateVariablePopup();
+		});
+		
+		btnCreateArray.setOnAction(event -> {
+			showCreateArrayPopup();
 		});
 		
 		processSymbol = new POPProcessNode(scriptArea);
@@ -259,10 +268,34 @@ public class POPSolvingLayoutController {
 		}
 	}
 	
+	public void showCreateArrayPopup() {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/POPCreateArrayLayout.fxml"));
+			AnchorPane createArrayPopup = (AnchorPane)loader.load();
+			
+			popup = new Stage();
+			popup.setScene(new Scene(createArrayPopup));
+			popup.show();
+			
+			createArrayController = loader.getController();
+			createArrayController.setController(this);
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
 	public void addVariable(String name, POPNodeType type) {
 		POPVariableNode varNode = new POPVariableNode(scriptArea, name, type);
 		variableArea.add(varNode, POPVariableManager.createdVars.size() % 3, POPVariableManager.createdVars.size() / 3);
 		POPVariableManager.createdVars.add(varNode.getName());
+		popup.close();
+	}
+	
+	public void addArray(String name) {
+		POPArrayNode arrayNode = new POPArrayNode(scriptArea, name);
+		variableArea.add(arrayNode,  POPVariableManager.createdVars.size() % 3, POPVariableManager.createdVars.size() / 3);
+		POPVariableManager.createdVars.add(arrayNode.getName());
 		popup.close();
 	}
 	

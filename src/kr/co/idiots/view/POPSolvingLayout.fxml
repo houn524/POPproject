@@ -42,6 +42,7 @@
                 			<AnchorPane pickOnBounds="false">
                                  <children>
                                     <Button fx:id="btnCreateVariable" layoutX="14.0" layoutY="14.0" mnemonicParsing="false" onAction="#showVariablePopup" text="변수 생성" />
+                                    <Button fx:id="btnCreateArray" layoutX="98.0" layoutY="14.0" mnemonicParsing="false" onAction="#showVariablePopup" text="배열 생성" />
                                     <GridPane fx:id="variableArea" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="50.0">
                                       <columnConstraints>
                                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />

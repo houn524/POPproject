@@ -13,11 +13,14 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.TransferMode;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.TextAlignment;
 import kr.co.idiots.model.operation.POPOperationSymbol;
 import kr.co.idiots.util.ClipboardUtil;
 import kr.co.idiots.util.DragManager;
 import kr.co.idiots.util.POPNodeDataFormat;
+import kr.co.idiots.util.TextUtils;
 import kr.co.idiots.view.POPSolvingLayoutController;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,27 +29,39 @@ import lombok.Setter;
 @Setter
 public class POPVariableNode extends POPNode {
 	
-	private String name;
-	private Object value;
-	private Label lbName;
-	private POPOperationSymbol parentSymbol;
-	private int lastIndex = -1;
+	protected String name;
+	protected Object value;
+	protected Label lbName;
+	protected FlowPane contents;
+	protected POPOperationSymbol parentSymbol;
+	protected int lastIndex = -1;
 	
 	public POPVariableNode(POPScriptArea scriptArea, String name, POPNodeType type) {
 		super(scriptArea, type);
 		// TODO Auto-generated constructor stub
 		this.name = name;
-		this.value = value;
 		
 		lbName = new Label(name);
 		
-		component.getChildren().add(lbName);
+		contents = new FlowPane();
+		
+		component.getChildren().add(contents);
+		
+		StackPane.setAlignment(contents, Pos.CENTER);
+		contents.setAlignment(Pos.CENTER);
+		contents.setPrefWrapLength(imgView.getBoundsInLocal().getWidth());
+		contents.setMinWidth(imgView.getBoundsInLocal().getWidth());
+		contents.getChildren().add(lbName);
 		
 		Bounds lbBound  = lbName.getBoundsInParent();
 		Bounds compBound = component.getBoundsInParent();
 		Bounds imgBound = imgView.getBoundsInParent();
 		lbName.setTextAlignment(TextAlignment.CENTER);
-		lbName.setPrefSize(compBound.getWidth(), compBound.getHeight());
+		
+//		imgView.fitWidthProperty().bind(Bindings.add(TextUtils.computeTextWidth(lbName.getFont(), lbName.textProperty(), 0.0D), 20));
+		imgView.setFitWidth(TextUtils.computeTextWidth(lbName.getFont(), lbName.getText(), 0.0D) + 20);
+//		imgView.setFitWidth(component.getWidth());
+//		lbName.setPrefSize(compBound.getWidth(), compBound.getHeight());
 		lbName.setAlignment(Pos.CENTER);
 		
 		setOnVariableNodeDrag();

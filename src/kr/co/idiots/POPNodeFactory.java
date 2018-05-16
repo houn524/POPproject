@@ -2,6 +2,7 @@ package kr.co.idiots;
 
 import java.lang.reflect.InvocationTargetException;
 
+import kr.co.idiots.model.POPArrayNode;
 import kr.co.idiots.model.POPNode;
 import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPScriptArea;
@@ -22,6 +23,8 @@ public class POPNodeFactory {
 			node = createOperationSymbol(clsName);
 		} else if(POPNodeType.variableGroup.contains(type)) {
 			node = createVariableNode(varName, varTypeName);
+		} else if(POPNodeType.arrayGroup.contains(type)) {
+			node = createArrayNode(varName);
 		}
 		
 		return node;
@@ -85,5 +88,11 @@ public class POPNodeFactory {
 				(Enum.valueOf(POPNodeType.class, varTypeName)));
 		
 		return (POPVariableNode) node;
+	}
+	
+	private static POPArrayNode createArrayNode(String varName) {
+		POPNode node = new POPArrayNode(POPSolvingLayoutController.scriptArea, varName);
+		
+		return (POPArrayNode) node;
 	}
 }
