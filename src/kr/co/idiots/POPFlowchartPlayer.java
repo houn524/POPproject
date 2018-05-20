@@ -1,7 +1,10 @@
 package kr.co.idiots;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import kr.co.idiots.model.POPArrayNode;
+import kr.co.idiots.model.POPVariableNode;
 import kr.co.idiots.model.operation.POPOperationSymbol;
 import kr.co.idiots.model.operation.POPOutputSymbol;
 import kr.co.idiots.model.symbol.POPDecisionEndNode;
@@ -27,6 +30,7 @@ public class POPFlowchartPlayer {
 	
 	public void playFlowChart(POPSymbolNode node) {
 		POPVariableManager.declaredVars = new HashMap<>();
+		POPVariableManager.declaredArrs = new HashMap<>();
 		playNode(node);
 	}
 	
@@ -65,11 +69,41 @@ public class POPFlowchartPlayer {
 	}
 	
 	private void playProcessNode(POPProcessNode node) {
-		POPOperationSymbol rootSymbol = node.getRootSymbol();
 		
+		POPOperationSymbol rootSymbol = node.getRootSymbol();
 		rootSymbol.getValueString();
-
-		POPVariableManager.declaredVars.put(rootSymbol.getLeftCode(), rootSymbol.getRightValue());
+		
+		int index = 0;
+		
+		if(rootSymbol.getContents().getChildren().get(0) instanceof POPArrayNode) {
+			
+			POPArrayNode array = (POPArrayNode) rootSymbol.getContents().getChildren().get(0);
+			if(POPVariableManager.declaredArrs.containsKey(array.getName())) {
+				if(array.getIndexBlank().getValue().equals("마지막")) {
+					POPVariableManager.declaredArrs.get(array.getName()).add(POPVariableManager.declaredArrs.get(array.getName()).size() - 1, rootSymbol.getRightValue());
+				} else if(array.getIndexBlank().getValue().equals("끝에 추가")) {
+					POPVariableManager.declaredArrs.get(array.getName()).add(rootSymbol.getRightValue());
+				} else {
+					POPVariableManager.declaredArrs.get(array.getName()).add(Integer.parseInt(array.getIndexBlank().getValue().toString()), rootSymbol.getRightValue());
+				}
+				
+			} else {
+				ArrayList<Object> list = new ArrayList<>();
+				POPVariableManager.declaredArrs.put(array.getName(), list);
+				
+				if(array.getIndexBlank().getValue().equals("마지막")) {
+					POPVariableManager.declaredArrs.get(array.getName()).add(POPVariableManager.declaredArrs.get(array.getName()).size() - 1, rootSymbol.getRightValue());
+				} else if(array.getIndexBlank().getValue().equals("끝에 추가")) {
+					POPVariableManager.declaredArrs.get(array.getName()).add(rootSymbol.getRightValue());
+				} else {
+					POPVariableManager.declaredArrs.get(array.getName()).add(Integer.parseInt(array.getIndexBlank().getValue().toString()), rootSymbol.getRightValue());
+				}
+			}
+		} else if(rootSymbol.getContents().getChildren().get(0) instanceof POPVariableNode) {
+			
+			POPVariableManager.declaredVars.put(rootSymbol.getLeftCode(), rootSymbol.getRightValue());
+		}
+		
 	}
 	
 	private void playDocumentNode(POPDocumentNode node) {

@@ -2,6 +2,7 @@ package kr.co.idiots.model.operation;
 
 import javafx.scene.Node;
 import kr.co.idiots.POPVariableManager;
+import kr.co.idiots.model.POPArrayNode;
 import kr.co.idiots.model.POPBlank;
 import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPVariableNode;
@@ -61,7 +62,23 @@ public class POPOutputSymbol extends POPOperationSymbol {
 		strCode = "";
 		strValue = "";
 		
-		if(contents.getChildren().get(0) instanceof POPVariableNode) {
+		if(contents.getChildren().get(0) instanceof POPArrayNode) {
+			POPArrayNode array = (POPArrayNode) contents.getChildren().get(0);
+			
+			int index = 0;
+			
+//			if(array.getIndexBlank().getValue().equals("마지막")) {
+//				index = POPVariableManager.declaredArrs.get(array.getName()).size() - 1;
+//			} else {
+//				index = Integer.parseInt(array.getIndexBlank().getEditor().getText());
+//			}
+			
+			if(POPVariableManager.declaredArrs.containsKey(array.getName())) {
+				strValue = array.getValue();
+			}
+//				strValue = POPVariableManager.declaredArrs.get(array.getName()).get(index).toString();
+//			}
+		} else if(contents.getChildren().get(0) instanceof POPVariableNode) {
 			POPVariableNode variable = (POPVariableNode) contents.getChildren().get(0);
 			
 			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {

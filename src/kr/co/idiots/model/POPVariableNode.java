@@ -16,6 +16,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.TextAlignment;
+import kr.co.idiots.model.operation.POPEqualSymbol;
 import kr.co.idiots.model.operation.POPOperationSymbol;
 import kr.co.idiots.util.ClipboardUtil;
 import kr.co.idiots.util.DragManager;
@@ -35,6 +36,8 @@ public class POPVariableNode extends POPNode {
 	protected FlowPane contents;
 	protected POPOperationSymbol parentSymbol;
 	protected int lastIndex = -1;
+	private POPArrayNode parentNode;
+	private POPArrayNode parentArrayNode;
 	
 	public POPVariableNode(POPScriptArea scriptArea, String name, POPNodeType type) {
 		super(scriptArea, type);
@@ -58,18 +61,16 @@ public class POPVariableNode extends POPNode {
 		Bounds imgBound = imgView.getBoundsInParent();
 		lbName.setTextAlignment(TextAlignment.CENTER);
 		
-//		imgView.fitWidthProperty().bind(Bindings.add(TextUtils.computeTextWidth(lbName.getFont(), lbName.textProperty(), 0.0D), 20));
 		imgView.setFitWidth(TextUtils.computeTextWidth(lbName.getFont(), lbName.getText(), 0.0D) + 20);
-//		imgView.setFitWidth(component.getWidth());
-//		lbName.setPrefSize(compBound.getWidth(), compBound.getHeight());
 		lbName.setAlignment(Pos.CENTER);
 		
 		setOnVariableNodeDrag();
 	}
 	
-	public void initialize(POPOperationSymbol parentSymbol) {
+	public void initialize(POPOperationSymbol parentSymbol, POPArrayNode parentArrayNode) {
 		isInitialized = true;
 		this.parentSymbol = parentSymbol;
+		this.parentArrayNode = parentArrayNode;
 		
 		MenuItem deleteItem = new MenuItem("변수 삭제");
 		POPVariableNode thisNode = this;
@@ -155,6 +156,14 @@ public class POPVariableNode extends POPNode {
 					
 					event.consume();
 					return;
+				} else if(parentArrayNode != null) {
+					lastIndex = parentArrayNode.getContents().getChildren().indexOf(this);
+					parentArrayNode.getContents().getChildren().remove(this);
+					parentArrayNode.getContents().getChildren().add(lastIndex, parentArrayNode.getIndexBlank());
+					parentArrayNode.initialize(parentArrayNode.getParentSymbol(), parentArrayNode.getParentArrayNode());
+					parentArrayNode.resizeContents();
+					
+					event.consume();
 				} else {
 					lastIndex = -1;
 				}
@@ -169,13 +178,30 @@ public class POPVariableNode extends POPNode {
 			if(!isInitialized)
 				return;
 			
-			if (parentSymbol != null && event.getTransferMode() != TransferMode.MOVE) {
+			if (getParentSymbol() != null && event.getTransferMode() != TransferMode.MOVE) {
 				POPBlank lastBlank = (POPBlank) parentSymbol.getContents().getChildren().get(lastIndex);
 				lastBlank.insertNode(this);
 			} 
-			else if(parentSymbol == null && event.getTransferMode() != TransferMode.MOVE) {
+			else if(getParentSymbol() == null && event.getTransferMode() != TransferMode.MOVE) {
 				POPSolvingLayoutController.scriptArea.getComponent().getChildren().add(this);
 			}
+			
+			if(getParentSymbol() != null && event.getTransferMode() == TransferMode.MOVE) {
+				if(parentSymbol instanceof POPEqualSymbol && this instanceof POPArrayNode) {
+					POPArrayNode array = (POPArrayNode) this;
+					if(!array.getIndexBlank().getOptions().contains("끝에 추가"))
+						array.getIndexBlank().getOptions().add("끝에 추가");
+				} else if(this instanceof POPArrayNode) {
+					POPArrayNode array = (POPArrayNode) this;
+					array.getIndexBlank().getOptions().remove("끝에 추가");
+				}
+			} else if(getParentSymbol() == null && event.getTransferMode() == TransferMode.MOVE) {
+				if(this instanceof POPArrayNode) {
+					POPArrayNode array = (POPArrayNode) this;
+					array.getIndexBlank().getOptions().remove("끝에 추가");
+				}
+			}
+			
 			
 			DragManager.dragMoving = false;
 			DragManager.draggedNode = null;

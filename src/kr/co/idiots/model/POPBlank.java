@@ -6,6 +6,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 import kr.co.idiots.POPNodeFactory;
+import kr.co.idiots.model.operation.POPEqualSymbol;
 import kr.co.idiots.model.operation.POPOperationSymbol;
 import kr.co.idiots.util.DragManager;
 import kr.co.idiots.util.POPNodeDataFormat;
@@ -54,6 +55,8 @@ public class POPBlank extends TextField {
 				event.acceptTransferModes(TransferMode.MOVE);
 			} else if(db.hasImage() && POPNodeType.compareGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
 				event.acceptTransferModes(TransferMode.MOVE);
+			} else if(db.hasImage() && POPNodeType.arrayGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
+				event.acceptTransferModes(TransferMode.MOVE);
 			}
 			
 			if(this.isEditable())
@@ -94,6 +97,25 @@ public class POPBlank extends TextField {
 				POPVariableNode variable = (POPVariableNode) POPNodeFactory.createNode(clsName, varName, varTypeName);
 				insertNode(variable);
 				success = true;
+			} else if(POPNodeType.arrayGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
+				if(DragManager.dragMoving) {
+					insertNode((POPArrayNode) DragManager.draggedNode);
+					DragManager.dragMoving = false;
+					DragManager.draggedNode = null;
+					success = true;
+					event.setDropCompleted(success);
+					event.consume();
+					return;
+				}
+				POPArrayNode array = (POPArrayNode) POPNodeFactory.createNode(clsName, varName, varTypeName);
+				if(parentSymbol instanceof POPEqualSymbol) {
+					if(!array.getIndexBlank().getOptions().contains("끝에 추가"))
+						array.getIndexBlank().getOptions().add("끝에 추가");
+				} else {
+					array.getIndexBlank().getOptions().remove("끝에 추가");
+				}
+				insertNode(array);
+				success = true;
 			} else {
 				if(DragManager.dragMoving) {
 					insertNode((POPOperationSymbol) DragManager.draggedNode);
@@ -123,7 +145,7 @@ public class POPBlank extends TextField {
 		int index = parentSymbol.getContents().getChildren().indexOf(this);
 		parentSymbol.remove(this);
 		parentSymbol.add(index, node);
-		node.initialize(parentSymbol);
+		node.initialize(parentSymbol, null);
 	}
 	
 	public void insertNode(POPOperationSymbol node) {

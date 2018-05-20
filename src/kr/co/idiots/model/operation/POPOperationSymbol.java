@@ -18,7 +18,9 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import kr.co.idiots.POPVariableManager;
+import kr.co.idiots.model.POPArrayNode;
 import kr.co.idiots.model.POPBlank;
+import kr.co.idiots.model.POPNode;
 import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPVariableNode;
 import kr.co.idiots.model.symbol.POPDecisionNode;
@@ -54,6 +56,7 @@ public class POPOperationSymbol extends StackPane {
 	protected int lastIndex = -1;
 	
 	protected ContextMenu contextMenu;
+	private POPArrayNode parentArrayNode;
 	
 	public POPOperationSymbol() {
 		
@@ -76,8 +79,12 @@ public class POPOperationSymbol extends StackPane {
 		
 	}
 	
-	public void initialize(POPSymbolNode parentNode) {
-		this.parentNode = parentNode;
+	public void initialize(POPNode parentNode) {
+		if(parentNode instanceof POPSymbolNode) {
+			this.parentNode = (POPSymbolNode) parentNode;
+		} else if(parentNode instanceof POPArrayNode) {
+			this.parentArrayNode = (POPArrayNode) parentNode;
+		}			
 		
 		for(Node child : contents.getChildren()) {
 			if(child instanceof POPBlank) {
@@ -178,6 +185,14 @@ public class POPOperationSymbol extends StackPane {
 					
 					event.consume();
 					return;
+				} else if(parentArrayNode != null) {
+					lastIndex = parentArrayNode.getContents().getChildren().indexOf(this);
+					parentArrayNode.getContents().getChildren().remove(this);
+					parentArrayNode.getContents().getChildren().add(lastIndex, parentArrayNode.getIndexBlank());
+					parentArrayNode.initialize(parentArrayNode.getParentSymbol(), parentArrayNode.getParentArrayNode());
+					parentArrayNode.resizeContents();
+					
+					event.consume();
 				} else {
 					lastIndex = -1;
 				}
@@ -237,6 +252,9 @@ public class POPOperationSymbol extends StackPane {
 		for(int i = 0; i < contents.getChildren().size(); i++) {
 			if(contents.getChildren().get(i) instanceof POPBlank)
 				width += ((POPBlank) contents.getChildren().get(i)).getPrefWidth();
+			else if(contents.getChildren().get(i) instanceof POPArrayNode) {
+				width += ((POPArrayNode) contents.getChildren().get(i)).getContents().getPrefWrapLength();
+			}
 			else
 				width += contents.getChildren().get(i).getBoundsInLocal().getWidth();
 			width += contents.getHgap();
@@ -277,6 +295,10 @@ public class POPOperationSymbol extends StackPane {
 		
 		if(parentNode != null) {
 			parentNode.moveCenter();
+		}
+		
+		if(parentArrayNode != null) {
+			parentArrayNode.resizeContents();
 		}
 	}
 	
@@ -329,13 +351,19 @@ public class POPOperationSymbol extends StackPane {
 			symbol.playSymbol();
 			
 			leftValue = symbol.executeSymbol().toString();
+		} else if(contents.getChildren().get(0) instanceof POPArrayNode) {
+			POPArrayNode array = (POPArrayNode) contents.getChildren().get(0);
+			leftCode += array.getName();
+			if(POPVariableManager.declaredArrs.containsKey(array.getName())) {
+				leftValue = array.getValue();
+			}
 		} else if(contents.getChildren().get(0) instanceof POPVariableNode) {
 			POPVariableNode variable = (POPVariableNode) contents.getChildren().get(0);
 			leftCode += variable.getName();
 			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
 				leftValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
 			}
-		} else {
+		}  else {
 			POPBlank blank = (POPBlank) contents.getChildren().get(0);
 			leftValue += blank.getText();
 		}
@@ -345,16 +373,21 @@ public class POPOperationSymbol extends StackPane {
 			symbol.playSymbol();
 			
 			rightValue = symbol.executeSymbol().toString();
+		} else if(contents.getChildren().get(2) instanceof POPArrayNode) {
+			POPArrayNode array = (POPArrayNode) contents.getChildren().get(2);
+			leftCode += array.getName();
+			if(POPVariableManager.declaredArrs.containsKey(array.getName())) {
+				rightValue = array.getValue();
+			}
 		} else if(contents.getChildren().get(2) instanceof POPVariableNode) {
 			POPVariableNode variable = (POPVariableNode) contents.getChildren().get(2);
 			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
 				rightValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
 			}
-		} else {
+		}  else {
 			POPBlank blank = (POPBlank) contents.getChildren().get(2);
 			rightValue += blank.getText();
 		}
-		
 		
 		if(symbol.equals(" = ")) {
 			if(!POPVariableManager.declaredVars.containsKey(leftCode)) {

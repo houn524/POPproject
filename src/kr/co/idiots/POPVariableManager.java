@@ -6,5 +6,6 @@ import java.util.Map;
 
 public class POPVariableManager {
 	public static Map<String, String> declaredVars = new HashMap<>();
+	public static Map<String, ArrayList<Object>> declaredArrs = new HashMap<>();
 	public static ArrayList<String> createdVars = new ArrayList<>();
 }

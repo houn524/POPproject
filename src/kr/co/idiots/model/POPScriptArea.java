@@ -162,10 +162,12 @@ public class POPScriptArea {
 				if(DragManager.draggedNode instanceof POPOperationSymbol) {
 					((POPOperationSymbol) DragManager.draggedNode).setParentNode(null);
 					((POPOperationSymbol) DragManager.draggedNode).setParentSymbol(null);
+					((POPOperationSymbol) DragManager.draggedNode).setParentArrayNode(null);
 				}
 				
 				if(DragManager.draggedNode instanceof POPVariableNode) {
 					((POPVariableNode) DragManager.draggedNode).setParentSymbol(null);
+					((POPVariableNode) DragManager.draggedNode).setParentArrayNode(null);
 				}
 				
 				
@@ -178,7 +180,7 @@ public class POPScriptArea {
 				if(node instanceof POPOperationSymbol) {
 					((POPOperationSymbol) node).initialize(null);
 				} else if(node instanceof POPVariableNode) {
-					((POPVariableNode) node).initialize(null);
+					((POPVariableNode) node).initialize(null, null);
 				} else {
 					((POPSymbolNode) node).initialize();
 				}
