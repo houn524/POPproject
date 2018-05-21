@@ -84,6 +84,7 @@ public class POPOutputSymbol extends POPOperationSymbol {
 			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
 				strValue = POPVariableManager.declaredVars.get(variable.getName());
 			} 
+			System.out.println(strValue);
 		} else if(contents.getChildren().get(0) instanceof POPBlank) {
 			POPBlank blank = (POPBlank) contents.getChildren().get(0);
 			strValue = blank.getText();

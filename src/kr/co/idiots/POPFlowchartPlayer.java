@@ -79,29 +79,36 @@ public class POPFlowchartPlayer {
 			
 			POPArrayNode array = (POPArrayNode) rootSymbol.getContents().getChildren().get(0);
 			if(POPVariableManager.declaredArrs.containsKey(array.getName())) {
-				if(array.getIndexBlank().getValue().equals("마지막")) {
+				if(array.getIndexBlank().getEditor().getText().equals("마지막")) {
 					POPVariableManager.declaredArrs.get(array.getName()).add(POPVariableManager.declaredArrs.get(array.getName()).size() - 1, rootSymbol.getRightValue());
-				} else if(array.getIndexBlank().getValue().equals("끝에 추가")) {
+				} else if(array.getIndexBlank().getEditor().getText().equals("끝에 추가")) {
 					POPVariableManager.declaredArrs.get(array.getName()).add(rootSymbol.getRightValue());
+				} else if(array.getContents().getChildren().get(1) instanceof POPVariableNode) {
+					POPVariableNode variable = (POPVariableNode) array.getContents().getChildren().get(1);
+					POPVariableManager.declaredArrs.get(array.getName()).set(Integer.parseInt(POPVariableManager.declaredVars.get(variable.getName())), rootSymbol.getRightValue());
 				} else {
-					POPVariableManager.declaredArrs.get(array.getName()).add(Integer.parseInt(array.getIndexBlank().getValue().toString()), rootSymbol.getRightValue());
+					POPVariableManager.declaredArrs.get(array.getName()).add(Integer.parseInt(array.getIndexBlank().getEditor().getText().toString()), rootSymbol.getRightValue());
 				}
 				
 			} else {
 				ArrayList<Object> list = new ArrayList<>();
 				POPVariableManager.declaredArrs.put(array.getName(), list);
 				
-				if(array.getIndexBlank().getValue().equals("마지막")) {
+				if(array.getIndexBlank().getEditor().getText().equals("마지막")) {
 					POPVariableManager.declaredArrs.get(array.getName()).add(POPVariableManager.declaredArrs.get(array.getName()).size() - 1, rootSymbol.getRightValue());
-				} else if(array.getIndexBlank().getValue().equals("끝에 추가")) {
+				} else if(array.getIndexBlank().getEditor().getText().equals("끝에 추가")) {
 					POPVariableManager.declaredArrs.get(array.getName()).add(rootSymbol.getRightValue());
+				} else if(array.getContents().getChildren().get(1) instanceof POPVariableNode) {
+					POPVariableNode variable = (POPVariableNode) array.getContents().getChildren().get(1);
+					POPVariableManager.declaredArrs.get(array.getName()).set(Integer.parseInt(POPVariableManager.declaredVars.get(variable.getName())), rootSymbol.getRightValue());
 				} else {
-					POPVariableManager.declaredArrs.get(array.getName()).add(Integer.parseInt(array.getIndexBlank().getValue().toString()), rootSymbol.getRightValue());
+					POPVariableManager.declaredArrs.get(array.getName()).add(Integer.parseInt(array.getIndexBlank().getEditor().getText()), rootSymbol.getRightValue());
 				}
 			}
 		} else if(rootSymbol.getContents().getChildren().get(0) instanceof POPVariableNode) {
 			
 			POPVariableManager.declaredVars.put(rootSymbol.getLeftCode(), rootSymbol.getRightValue());
+			System.out.println(rootSymbol.getLeftCode() + " : " + rootSymbol.getRightValue());
 		}
 		
 	}

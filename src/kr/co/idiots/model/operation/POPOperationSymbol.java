@@ -255,6 +255,8 @@ public class POPOperationSymbol extends StackPane {
 			else if(contents.getChildren().get(i) instanceof POPArrayNode) {
 				width += ((POPArrayNode) contents.getChildren().get(i)).getContents().getPrefWrapLength();
 			}
+			else if(contents.getChildren().get(i) instanceof POPVariableNode)
+				width += ((POPVariableNode) contents.getChildren().get(i)).getContents().getPrefWrapLength();
 			else
 				width += contents.getChildren().get(i).getBoundsInLocal().getWidth();
 			width += contents.getHgap();
@@ -375,7 +377,7 @@ public class POPOperationSymbol extends StackPane {
 			rightValue = symbol.executeSymbol().toString();
 		} else if(contents.getChildren().get(2) instanceof POPArrayNode) {
 			POPArrayNode array = (POPArrayNode) contents.getChildren().get(2);
-			leftCode += array.getName();
+			rightCode += array.getName();
 			if(POPVariableManager.declaredArrs.containsKey(array.getName())) {
 				rightValue = array.getValue();
 			}
