@@ -17,9 +17,14 @@ import javafx.stage.Stage;
 import kr.co.idiots.model.Person;
 import kr.co.idiots.view.PersonEditDialogController;
 import kr.co.idiots.view.RootLayoutController;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class MainApp extends Application {
 
+	private RootLayoutController rootController;
 	private Stage primaryStage;
 	private Stage popup;
 	
@@ -66,14 +71,18 @@ public class MainApp extends Application {
 			controller.setMainApp(this);
 			loader.setController(controller);
 			
+			this.rootController = controller;
+			
 			// 상위 레이아웃을 포함하는 scene을 보여준다.
 			Scene scene = new Scene(rootLayout);
-			scene.setOnKeyPressed(e -> {
-				pressedKeys.add(e.getCode());
-			});
-			scene.setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
 			
-			controller.showPOPMainLayout();
+//			scene.setOnKeyPressed(e -> {
+//				pressedKeys.add(e.getCode());
+//			});
+//			scene.setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
+//			
+//			controller.showPOPMainLayout();
+			controller.showPOPSelectProblemLayout();
 			
 			primaryStage.setScene(scene);
 			primaryStage.show();

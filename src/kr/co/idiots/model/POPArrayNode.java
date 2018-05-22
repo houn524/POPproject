@@ -57,7 +57,7 @@ public class POPArrayNode extends POPVariableNode {
 	}
 	
 	public String getValue() {
-		if(indexBlank.getEditor().getText().equals("끝에 추가")) {
+		if(indexBlank.getEditor().getText().equals("추가")) {
 			return "";
 		}
 		

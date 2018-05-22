@@ -80,29 +80,34 @@ public class POPFlowchartPlayer {
 			POPArrayNode array = (POPArrayNode) rootSymbol.getContents().getChildren().get(0);
 			if(POPVariableManager.declaredArrs.containsKey(array.getName())) {
 				if(array.getIndexBlank().getEditor().getText().equals("마지막")) {
-					POPVariableManager.declaredArrs.get(array.getName()).add(POPVariableManager.declaredArrs.get(array.getName()).size() - 1, rootSymbol.getRightValue());
-				} else if(array.getIndexBlank().getEditor().getText().equals("끝에 추가")) {
+					POPVariableManager.declaredArrs.get(array.getName()).set(POPVariableManager.declaredArrs.get(array.getName()).size() - 1, rootSymbol.getRightValue());
+				} else if(array.getIndexBlank().getEditor().getText().equals("추가")) {
 					POPVariableManager.declaredArrs.get(array.getName()).add(rootSymbol.getRightValue());
+					POPVariableManager.declaredVars.put(array.getName() + "의 크기", String.valueOf(Integer.parseInt(POPVariableManager.declaredVars.get(array.getName() + "의 크기")) + 1));
 				} else if(array.getContents().getChildren().get(1) instanceof POPVariableNode) {
 					POPVariableNode variable = (POPVariableNode) array.getContents().getChildren().get(1);
 					POPVariableManager.declaredArrs.get(array.getName()).set(Integer.parseInt(POPVariableManager.declaredVars.get(variable.getName())), rootSymbol.getRightValue());
 				} else {
 					POPVariableManager.declaredArrs.get(array.getName()).add(Integer.parseInt(array.getIndexBlank().getEditor().getText().toString()), rootSymbol.getRightValue());
+					POPVariableManager.declaredVars.put(array.getName() + "의 크기", String.valueOf(Integer.parseInt(POPVariableManager.declaredVars.get(array.getName() + "의 크기")) + 1));
 				}
 				
 			} else {
 				ArrayList<Object> list = new ArrayList<>();
 				POPVariableManager.declaredArrs.put(array.getName(), list);
+				POPVariableManager.declaredVars.put(array.getName() + "의 크기", "0");
 				
 				if(array.getIndexBlank().getEditor().getText().equals("마지막")) {
-					POPVariableManager.declaredArrs.get(array.getName()).add(POPVariableManager.declaredArrs.get(array.getName()).size() - 1, rootSymbol.getRightValue());
-				} else if(array.getIndexBlank().getEditor().getText().equals("끝에 추가")) {
+					POPVariableManager.declaredArrs.get(array.getName()).set(POPVariableManager.declaredArrs.get(array.getName()).size() - 1, rootSymbol.getRightValue());
+				} else if(array.getIndexBlank().getEditor().getText().equals("추가")) {
 					POPVariableManager.declaredArrs.get(array.getName()).add(rootSymbol.getRightValue());
+					POPVariableManager.declaredVars.put(array.getName() + "의 크기", String.valueOf(Integer.parseInt(POPVariableManager.declaredVars.get(array.getName() + "의 크기")) + 1));
 				} else if(array.getContents().getChildren().get(1) instanceof POPVariableNode) {
 					POPVariableNode variable = (POPVariableNode) array.getContents().getChildren().get(1);
 					POPVariableManager.declaredArrs.get(array.getName()).set(Integer.parseInt(POPVariableManager.declaredVars.get(variable.getName())), rootSymbol.getRightValue());
 				} else {
 					POPVariableManager.declaredArrs.get(array.getName()).add(Integer.parseInt(array.getIndexBlank().getEditor().getText()), rootSymbol.getRightValue());
+					POPVariableManager.declaredVars.put(array.getName() + "의 크기", String.valueOf(Integer.parseInt(POPVariableManager.declaredVars.get(array.getName() + "의 크기")) + 1));
 				}
 			}
 		} else if(rootSymbol.getContents().getChildren().get(0) instanceof POPVariableNode) {

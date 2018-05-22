@@ -19,11 +19,30 @@ public class RootLayoutController {
 	private BorderPane rootLayout;
 	private Stage popup;
 	
+	private POPSelectProblemLayoutController selectProblemLayoutController;
 	private POPSolvingLayoutController solvingLayoutController;
 	private POPCreateVariableLayoutController createVariableController;
 	
 	public RootLayoutController(BorderPane rootLayout) {
 		this.rootLayout = rootLayout;
+	}
+	
+	public void showPOPSelectProblemLayout() {
+		try {
+			selectProblemLayoutController = new POPSelectProblemLayoutController(mainApp);
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/POPSelectProblemLayout.fxml"));
+			loader.setControllerFactory(c -> {
+				return selectProblemLayoutController;
+			});
+			AnchorPane popSelectProblemLayout = (AnchorPane)loader.load();
+			
+			rootLayout.setCenter(popSelectProblemLayout);
+			
+			selectProblemLayoutController.setRootController(this);
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	/*

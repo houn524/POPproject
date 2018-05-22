@@ -109,10 +109,10 @@ public class POPBlank extends TextField {
 				}
 				POPArrayNode array = (POPArrayNode) POPNodeFactory.createNode(clsName, varName, varTypeName);
 				if(parentSymbol instanceof POPEqualSymbol) {
-					if(!array.getIndexBlank().getOptions().contains("끝에 추가"))
-						array.getIndexBlank().getOptions().add("끝에 추가");
+					if(!array.getIndexBlank().getOptions().contains("추가"))
+						array.getIndexBlank().getOptions().add("추가");
 				} else {
-					array.getIndexBlank().getOptions().remove("끝에 추가");
+					array.getIndexBlank().getOptions().remove("추가");
 				}
 				insertNode(array);
 				success = true;

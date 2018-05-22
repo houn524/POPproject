@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<StackPane fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.POPProblemCardController">
+   <children>
+      <Rectangle fx:id="rect" arcHeight="50.0" arcWidth="50.0" fill="#e5e5e5" height="77.0" stroke="BLACK" strokeType="INSIDE" width="609.0" />
+      <Label fx:id="problemTitle" text="문제 제목">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+   </children>
+</StackPane>

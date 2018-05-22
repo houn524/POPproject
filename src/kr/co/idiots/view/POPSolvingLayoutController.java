@@ -25,7 +25,7 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
@@ -73,7 +73,7 @@ public class POPSolvingLayoutController {
 	private AnchorPane operationArea;
 	
 	@FXML
-	private GridPane variableArea;
+	private FlowPane variableArea;
 	
 	@FXML
 	public AnchorPane rootPane;
@@ -269,8 +269,11 @@ public class POPSolvingLayoutController {
 			if(Double.isNaN(oldVal.doubleValue())) {
 				return;
 			}
-			double absScriptDividerPos = oldVal.doubleValue() - (scriptSplitPane.getDividerPositions()[0] * oldVal.doubleValue());
-			scriptSplitPane.setDividerPosition(0, (newVal.doubleValue() - absScriptDividerPos) / newVal.doubleValue());
+			double absConsoleDividerPos = oldVal.doubleValue() - (scriptSplitPane.getDividerPositions()[1] * oldVal.doubleValue());
+			scriptSplitPane.setDividerPosition(1, (newVal.doubleValue() - absConsoleDividerPos) / newVal.doubleValue());
+			
+			double absProblemDividerPos = scriptSplitPane.getDividerPositions()[0] * oldVal.doubleValue();
+			scriptSplitPane.setDividerPosition(0, absProblemDividerPos / newVal.doubleValue());
 		});
 	}
 	
@@ -310,15 +313,18 @@ public class POPSolvingLayoutController {
 	
 	public void addVariable(String name, POPNodeType type) {
 		POPVariableNode varNode = new POPVariableNode(scriptArea, name, type);
-		variableArea.add(varNode, POPVariableManager.createdVars.size() % 3, POPVariableManager.createdVars.size() / 3);
+		variableArea.getChildren().add(varNode);
 		POPVariableManager.createdVars.add(varNode.getName());
 		popup.close();
 	}
 	
 	public void addArray(String name) {
 		POPArrayNode arrayNode = new POPArrayNode(scriptArea, name);
-		variableArea.add(arrayNode,  POPVariableManager.createdVars.size() % 3, POPVariableManager.createdVars.size() / 3);
+		POPVariableNode sizeNode = new POPVariableNode(scriptArea, name + "의 크기", POPNodeType.ArraySize);
+		variableArea.getChildren().add(arrayNode);
 		POPVariableManager.createdVars.add(arrayNode.getName());
+		variableArea.getChildren().add(sizeNode);
+		POPVariableManager.createdVars.add(sizeNode.getName());
 		popup.close();
 	}
 	

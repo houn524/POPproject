@@ -52,9 +52,7 @@ public class POPVariableNode extends POPNode {
 		
 		StackPane.setAlignment(contents, Pos.CENTER);
 		contents.setAlignment(Pos.CENTER);
-		contents.setPrefWrapLength(imgView.getBoundsInLocal().getWidth());
-		contents.setMinWidth(imgView.getBoundsInLocal().getWidth());
-		contents.getChildren().add(lbName);
+		
 		
 		Bounds lbBound  = lbName.getBoundsInParent();
 		Bounds compBound = component.getBoundsInParent();
@@ -62,8 +60,12 @@ public class POPVariableNode extends POPNode {
 		lbName.setTextAlignment(TextAlignment.CENTER);
 		
 		imgView.setFitWidth(TextUtils.computeTextWidth(lbName.getFont(), lbName.getText(), 0.0D) + 20);
+		
 		lbName.setAlignment(Pos.CENTER);
 		
+		contents.setPrefWrapLength(imgView.getBoundsInLocal().getWidth());
+		contents.setMinWidth(imgView.getBoundsInLocal().getWidth());
+		contents.getChildren().add(lbName);
 		setOnVariableNodeDrag();
 	}
 	
@@ -189,16 +191,16 @@ public class POPVariableNode extends POPNode {
 			if(getParentSymbol() != null && event.getTransferMode() == TransferMode.MOVE) {
 				if(parentSymbol instanceof POPEqualSymbol && this instanceof POPArrayNode) {
 					POPArrayNode array = (POPArrayNode) this;
-					if(!array.getIndexBlank().getOptions().contains("끝에 추가"))
-						array.getIndexBlank().getOptions().add("끝에 추가");
+					if(!array.getIndexBlank().getOptions().contains("추가"))
+						array.getIndexBlank().getOptions().add("추가");
 				} else if(this instanceof POPArrayNode) {
 					POPArrayNode array = (POPArrayNode) this;
-					array.getIndexBlank().getOptions().remove("끝에 추가");
+					array.getIndexBlank().getOptions().remove("추가");
 				}
 			} else if(getParentSymbol() == null && event.getTransferMode() == TransferMode.MOVE) {
 				if(this instanceof POPArrayNode) {
 					POPArrayNode array = (POPArrayNode) this;
-					array.getIndexBlank().getOptions().remove("끝에 추가");
+					array.getIndexBlank().getOptions().remove("추가");
 				}
 			}
 			

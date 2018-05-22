@@ -116,7 +116,7 @@ public class POPIndexBlank extends ComboBox {
 					return;
 				}
 				POPArrayNode array = (POPArrayNode) POPNodeFactory.createNode(clsName, varName, varTypeName);
-				array.getIndexBlank().getOptions().remove("끝에 추가");
+				array.getIndexBlank().getOptions().remove("추가");
 				insertNode(array);
 				success = true;
 			} else {
