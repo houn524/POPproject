@@ -13,7 +13,7 @@
 
 <AnchorPane fx:id="rootPane" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.POPSolvingLayoutController">
    <children>
-      <SplitPane dividerPositions="0.15492957746478872" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane fx:id="nodeSplitPane" dividerPositions="0.15" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <items>
             <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
@@ -73,7 +73,7 @@
                 </Tab>
               </tabs>
             </TabPane>
-            <SplitPane fx:id="splitPane" dividerPositions="0.8421492204899778" orientation="VERTICAL">
+            <SplitPane fx:id="scriptSplitPane" dividerPositions="0.8421492204899778" orientation="VERTICAL">
               <items>
                   <ScrollPane fx:id="scriptScrollPane" fitToHeight="true" fitToWidth="true">
                      <content>

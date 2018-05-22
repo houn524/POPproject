@@ -9,8 +9,13 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import kr.co.idiots.MainApp;
 import kr.co.idiots.model.POPNodeType;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class RootLayoutController {
+	private MainApp mainApp;
 	private BorderPane rootLayout;
 	private Stage popup;
 	
@@ -26,14 +31,25 @@ public class RootLayoutController {
 	 */
 	public void showPOPMainLayout() {
 		try {
+			solvingLayoutController = new POPSolvingLayoutController(mainApp);
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/POPSolvingLayout.fxml"));
+			loader.setControllerFactory(c -> {
+				return solvingLayoutController;
+			});
 			AnchorPane popMainLayout = (AnchorPane)loader.load();
 			
 			rootLayout.setCenter(popMainLayout);
 			
-			solvingLayoutController = loader.getController();
+			//loader.getController();
+			
+//			loader.setController(solvingLayoutController);
+			
 			solvingLayoutController.setRootController(this);
+//			solvingLayoutController.setMainApp(mainApp);
+			
+			
+//			solvingLayoutController.setMainApp(mainApp);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

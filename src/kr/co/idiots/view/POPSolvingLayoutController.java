@@ -88,7 +88,10 @@ public class POPSolvingLayoutController {
 	private ScrollPane scriptScrollPane;
 	
 	@FXML
-	private SplitPane splitPane;
+	private SplitPane nodeSplitPane;
+	
+	@FXML
+	private SplitPane scriptSplitPane;
 	
 	@FXML
 	private AnchorPane consoleFrame;
@@ -139,8 +142,13 @@ public class POPSolvingLayoutController {
 
 	
 	
-	public POPSolvingLayoutController() {
-		
+	public POPSolvingLayoutController(MainApp mainApp) {
+		this.mainApp = mainApp;
+//		mainApp.getPrimaryStage().widthProperty().addListener((obs, oldVal, newVal) -> {
+//			double absNodeDividerPos = 0;
+//			absNodeDividerPos = nodeSplitPane.getDividerPositions()[0] * oldVal.doubleValue();
+//			nodeSplitPane.setDividerPosition(0, absNodeDividerPos / newVal.doubleValue());
+//		});
 	}
 	
 	@FXML
@@ -161,7 +169,6 @@ public class POPSolvingLayoutController {
 				scriptScrollPane.setFitToWidth(content.prefHeight(-1) < arg2.getHeight());
 			}
 		});
-		
 		
 		btnStart.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -249,6 +256,22 @@ public class POPSolvingLayoutController {
 		
 		DragManager.dragRootPane = rootPane;
 		DragManager.tabPane = tabPane;
+		
+		mainApp.getPrimaryStage().widthProperty().addListener((obs, oldVal, newVal) -> {
+			if(Double.isNaN(oldVal.doubleValue())) {
+				return;
+			}
+			double absNodeDividerPos = nodeSplitPane.getDividerPositions()[0] * oldVal.doubleValue();
+			nodeSplitPane.setDividerPosition(0, absNodeDividerPos / newVal.doubleValue());
+		});
+		
+		mainApp.getPrimaryStage().heightProperty().addListener((obs, oldVal, newVal) -> {
+			if(Double.isNaN(oldVal.doubleValue())) {
+				return;
+			}
+			double absScriptDividerPos = oldVal.doubleValue() - (scriptSplitPane.getDividerPositions()[0] * oldVal.doubleValue());
+			scriptSplitPane.setDividerPosition(0, (newVal.doubleValue() - absScriptDividerPos) / newVal.doubleValue());
+		});
 	}
 	
 	public void showCreateVariablePopup() {
@@ -324,5 +347,7 @@ public class POPSolvingLayoutController {
 	
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
+		
+		
 	}
 }

@@ -63,6 +63,7 @@ public class MainApp extends Application {
 			BorderPane rootLayout = (BorderPane)loader.load();
 			
 			RootLayoutController controller = new RootLayoutController(rootLayout);
+			controller.setMainApp(this);
 			loader.setController(controller);
 			
 			// 상위 레이아웃을 포함하는 scene을 보여준다.
@@ -80,11 +81,6 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-		
-	
-	
-	
-	
 	
 	
 	/*
