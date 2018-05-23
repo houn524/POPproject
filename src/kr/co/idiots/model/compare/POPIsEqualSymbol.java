@@ -28,7 +28,7 @@ public class POPIsEqualSymbol extends POPOperationSymbol {
 		leftBlank = new POPBlank(this);
 		contents.getChildren().add(leftBlank);
 		
-		stream = getClass().getResourceAsStream("/images/Equal.png");
+		stream = getClass().getResourceAsStream("/images/isEqual.png");
 		img = new Image(stream);
 		isEqual = new ImageView(img);
 		contents.getChildren().add(isEqual);
