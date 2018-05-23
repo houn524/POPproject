@@ -28,7 +28,7 @@ public class MainApp extends Application {
 	private Stage primaryStage;
 	private Stage popup;
 	
-	public static final Set<KeyCode> pressedKeys = new HashSet<>();
+//	public static final Set<KeyCode> pressedKeys = new HashSet<>();
 	
 	/*
 		연락처에 대한 ovservable 리스트
@@ -76,12 +76,6 @@ public class MainApp extends Application {
 			// 상위 레이아웃을 포함하는 scene을 보여준다.
 			Scene scene = new Scene(rootLayout);
 			
-//			scene.setOnKeyPressed(e -> {
-//				pressedKeys.add(e.getCode());
-//			});
-//			scene.setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
-//			
-//			controller.showPOPMainLayout();
 			controller.showPOPSelectProblemLayout();
 			
 			primaryStage.setScene(scene);

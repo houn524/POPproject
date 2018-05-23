@@ -1,6 +1,8 @@
 package kr.co.idiots.view;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -23,6 +25,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.DataFormat;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.FlowPane;
@@ -140,10 +143,16 @@ public class POPSolvingLayoutController {
 	private POPCreateVariableLayoutController createVariableController;
 	private POPCreateArrayLayoutController createArrayController;
 
-	
+	public static final Set<KeyCode> pressedKeys = new HashSet<>();
 	
 	public POPSolvingLayoutController(MainApp mainApp) {
 		this.mainApp = mainApp;
+		
+		mainApp.getPrimaryStage().getScene().setOnKeyPressed(e -> {
+			pressedKeys.add(e.getCode());
+		});
+		mainApp.getPrimaryStage().getScene().setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
+		
 //		mainApp.getPrimaryStage().widthProperty().addListener((obs, oldVal, newVal) -> {
 //			double absNodeDividerPos = 0;
 //			absNodeDividerPos = nodeSplitPane.getDividerPositions()[0] * oldVal.doubleValue();

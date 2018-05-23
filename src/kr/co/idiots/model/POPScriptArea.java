@@ -31,6 +31,7 @@ import kr.co.idiots.model.symbol.POPSymbolNode;
 import kr.co.idiots.util.DragManager;
 import kr.co.idiots.util.POPNodeDataFormat;
 import kr.co.idiots.util.PlatformHelper;
+import kr.co.idiots.view.POPSolvingLayoutController;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -93,7 +94,7 @@ public class POPScriptArea {
 			@Override
 			public void handle(ScrollEvent event) {
 				// TODO Auto-generated method stub
-				if(MainApp.pressedKeys.contains(KeyCode.CONTROL)) {
+				if(POPSolvingLayoutController.pressedKeys.contains(KeyCode.CONTROL)) {
 					if(event.getDeltaY() > 0) {
 						zoomScale.set(zoomScale.get() + 0.1);
 					} else if(event.getDeltaY() < 0) {
