@@ -142,6 +142,7 @@ public class POPSolvingLayoutController {
 	
 	private POPCreateVariableLayoutController createVariableController;
 	private POPCreateArrayLayoutController createArrayController;
+	private POPErrorPopupLayoutController errorPopupController;
 
 	public static final Set<KeyCode> pressedKeys = new HashSet<>();
 	
@@ -153,6 +154,7 @@ public class POPSolvingLayoutController {
 		});
 		mainApp.getPrimaryStage().getScene().setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
 		
+		showErrorPopup("test");
 //		mainApp.getPrimaryStage().widthProperty().addListener((obs, oldVal, newVal) -> {
 //			double absNodeDividerPos = 0;
 //			absNodeDividerPos = nodeSplitPane.getDividerPositions()[0] * oldVal.doubleValue();
@@ -162,13 +164,13 @@ public class POPSolvingLayoutController {
 	
 	@FXML
 	private void initialize() {
-		flowchartPlayer = new POPFlowchartPlayer();
+		flowchartPlayer = new POPFlowchartPlayer(this);
 		
 		lbConsole = new Label("출력값 : ");
 		lbConsole.setFont(new Font(20));
 		consoleFrame.getChildren().add(lbConsole);
 		
-		scriptArea = new POPScriptArea(scriptPane, scriptScrollPane);
+		scriptArea = new POPScriptArea(scriptPane, scriptScrollPane, this);
 		
 		scriptScrollPane.viewportBoundsProperty().addListener(new ChangeListener<Bounds>() {
 			@Override
@@ -284,6 +286,29 @@ public class POPSolvingLayoutController {
 			double absProblemDividerPos = scriptSplitPane.getDividerPositions()[0] * oldVal.doubleValue();
 			scriptSplitPane.setDividerPosition(0, absProblemDividerPos / newVal.doubleValue());
 		});
+	}
+	
+	public void showErrorPopup(String string) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/POPErrorPopupLayout.fxml"));
+			AnchorPane errorPopup = (AnchorPane)loader.load();
+			
+			popup = new Stage();
+			popup.setScene(new Scene(errorPopup));
+			popup.show();
+			
+			errorPopupController = loader.getController();
+			errorPopupController = errorPopupController.setText(string);
+			errorPopupController.setSolvingController(this);
+			errorPopupController.isCommitProperty().addListener((obs, wasCommit, isCommit) -> {
+	            if (isCommit) {
+	                popup.close();
+	            }
+	        });
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void showCreateVariablePopup() {

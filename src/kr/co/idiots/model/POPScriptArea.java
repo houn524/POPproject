@@ -48,19 +48,22 @@ public class POPScriptArea {
 	private Group component;
 	private boolean isSynchronized = false;
 	
+	private POPSolvingLayoutController solvingController;
+	
 	private double lastMouseX;
 	private double lastMouseY;
 	
 	private DoubleProperty zoomScale = new SimpleDoubleProperty(1.0);
 	
-	public POPScriptArea(AnchorPane pane, ScrollPane scrollPane) {
+	public POPScriptArea(AnchorPane pane, ScrollPane scrollPane, POPSolvingLayoutController solvingController) {
 		this.pane = pane;
 		this.scrollPane = scrollPane;
+		this.solvingController = solvingController;
 		
 		component = new Group();
 		pane.getChildren().add(component);
 		
-		flowchartPlayer = new POPFlowchartPlayer();
+		flowchartPlayer = new POPFlowchartPlayer(solvingController);
 		
 		generator = new CodeGenerator();
 		

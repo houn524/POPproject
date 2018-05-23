@@ -16,6 +16,7 @@ import kr.co.idiots.model.symbol.POPProcessNode;
 import kr.co.idiots.model.symbol.POPStartNode;
 import kr.co.idiots.model.symbol.POPStopNode;
 import kr.co.idiots.model.symbol.POPSymbolNode;
+import kr.co.idiots.view.POPSolvingLayoutController;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,7 +26,14 @@ public class POPFlowchartPlayer {
 	
 	private StringBuilder output;
 	
-	public POPFlowchartPlayer() {
+	private POPSolvingLayoutController solvingController;
+	
+	private boolean isLoop = false;
+	private int loopCount = 0;
+	private final long MAX_LOOP_COUNT = 100000;
+	
+	public POPFlowchartPlayer(POPSolvingLayoutController solvingController) {
+		this.solvingController = solvingController;
 	}
 	
 	public void playFlowChart(POPSymbolNode node) {
@@ -55,11 +63,24 @@ public class POPFlowchartPlayer {
 			} else if(node instanceof POPLoopNode) {
 				if(playDecisionNode(node)) {
 					node = ((POPLoopNode) node).getLoopStartNode().getOutFlowLine().getNextNode();
+					if(!isLoop) {
+						isLoop = true;
+						loopCount = 0;
+					}
 				} else {
 					node = node.getOutFlowLine().getNextNode();
+					isLoop = false;
 				}
 			} else if(node instanceof POPLoopEndNode) {
 				node = ((POPLoopEndNode) node).getLoopNode();
+				if(isLoop) {
+					loopCount++;
+					if(loopCount >= MAX_LOOP_COUNT) {
+						isLoop = false;
+						solvingController.showErrorPopup("무한 루프");
+						break;
+					}
+				}
 			} else if(!(node instanceof POPStopNode)) {
 				node = node.getOutFlowLine().getNextNode();
 			} else if(node instanceof POPStopNode) {
