@@ -2,8 +2,11 @@ package kr.co.idiots.view;
 
 import java.io.IOException;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.effect.Bloom;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -19,12 +22,75 @@ public class RootLayoutController {
 	private BorderPane rootLayout;
 	private Stage popup;
 	
+	@FXML
+	private Label lbHome;
+	
+	@FXML
+	private Label lbSolving;
+	
 	private POPSelectProblemLayoutController selectProblemLayoutController;
 	private POPSolvingLayoutController solvingLayoutController;
 	private POPCreateVariableLayoutController createVariableController;
 	
-	public RootLayoutController(BorderPane rootLayout) {
-		this.rootLayout = rootLayout;
+	public RootLayoutController() {
+	}
+	
+	@FXML
+	private void initialize() {
+		lbHome.setOnMouseEntered(event -> {
+			Bloom bloom = new Bloom();
+			bloom.setThreshold(0.1);
+			lbHome.setEffect(bloom);
+		});
+		
+		lbHome.setOnMouseExited(event -> {
+			Bloom bloom = new Bloom();
+			bloom.setThreshold(0.2);
+			lbHome.setEffect(bloom);
+		});
+		
+		lbHome.setOnMouseClicked(event -> {
+			showPOPHomeLayout();
+		});
+		
+		lbSolving.setOnMouseEntered(event -> {
+			Bloom bloom = new Bloom();
+			bloom.setThreshold(0.1);
+			lbSolving.setEffect(bloom);
+		});
+		
+		lbSolving.setOnMouseExited(event -> {
+			Bloom bloom = new Bloom();
+			bloom.setThreshold(0.2);
+			lbSolving.setEffect(bloom);
+		});
+		
+		lbSolving.setOnMouseClicked(event -> {
+			showPOPSelectProblemLayout();
+		});
+		
+	}
+	
+	public void showPOPHomeLayout() {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/POPHomeLayout.fxml"));
+			BorderPane popHomeLayout = (BorderPane)loader.load();
+			
+			rootLayout.setCenter(popHomeLayout);
+			
+			//loader.getController();
+			
+//			loader.setController(solvingLayoutController);
+			
+//			solvingLayoutController.setRootController(this);
+//			solvingLayoutController.setMainApp(mainApp);
+			
+			
+//			solvingLayoutController.setMainApp(mainApp);
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void showPOPSelectProblemLayout() {

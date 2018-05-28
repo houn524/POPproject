@@ -10,6 +10,6 @@ public class POPStopNode extends POPSymbolNode {
 		setOnBoundChangeListener();
 		
 		component.setLayoutX(50d);
-		component.setLayoutY(400d);
+		component.setLayoutY(135d);
 	}
 }

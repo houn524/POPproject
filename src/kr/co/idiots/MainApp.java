@@ -15,6 +15,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import kr.co.idiots.model.Person;
+import kr.co.idiots.view.POPSolvingLayoutController;
 import kr.co.idiots.view.PersonEditDialogController;
 import kr.co.idiots.view.RootLayoutController;
 import lombok.Getter;
@@ -59,24 +60,31 @@ public class MainApp extends Application {
 //		showPersonOverview();
 	}
 
+	
 	/*상위 레이아웃을 초기화한다.*/
 	public void initRootLayout() {
 		try {
 			// fxml 파일에서 상위 레이아웃을 가져온다.
+			RootLayoutController controller = new RootLayoutController();
+			
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/RootLayout.fxml"));
+			loader.setControllerFactory(c -> {
+				return controller;
+			});
 			BorderPane rootLayout = (BorderPane)loader.load();
 			
-			RootLayoutController controller = new RootLayoutController(rootLayout);
+			controller.setRootLayout(rootLayout);
+			
 			controller.setMainApp(this);
-			loader.setController(controller);
 			
 			this.rootController = controller;
 			
 			// 상위 레이아웃을 포함하는 scene을 보여준다.
 			Scene scene = new Scene(rootLayout);
 			
-			controller.showPOPSelectProblemLayout();
+			controller.showPOPHomeLayout();
+//			controller.showPOPSelectProblemLayout();
 			
 			primaryStage.setScene(scene);
 			primaryStage.show();
