@@ -28,6 +28,9 @@ public class RootLayoutController {
 	@FXML
 	private Label lbSolving;
 	
+	@FXML
+	private BorderPane rootPane;
+	
 	private POPSelectProblemLayoutController selectProblemLayoutController;
 	private POPSolvingLayoutController solvingLayoutController;
 	private POPCreateVariableLayoutController createVariableController;
@@ -101,7 +104,7 @@ public class RootLayoutController {
 			loader.setControllerFactory(c -> {
 				return selectProblemLayoutController;
 			});
-			AnchorPane popSelectProblemLayout = (AnchorPane)loader.load();
+			BorderPane popSelectProblemLayout = (BorderPane)loader.load();
 			
 			rootLayout.setCenter(popSelectProblemLayout);
 			

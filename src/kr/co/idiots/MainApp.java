@@ -1,21 +1,21 @@
 package kr.co.idiots;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import kr.co.idiots.model.Person;
-import kr.co.idiots.view.POPSolvingLayoutController;
 import kr.co.idiots.view.PersonEditDialogController;
 import kr.co.idiots.view.RootLayoutController;
 import lombok.Getter;
@@ -28,6 +28,11 @@ public class MainApp extends Application {
 	private RootLayoutController rootController;
 	private Stage primaryStage;
 	private Stage popup;
+	
+	private Font f;
+	
+	private double xOffset = 0;
+	private double yOffset = 0;
 	
 //	public static final Set<KeyCode> pressedKeys = new HashSet<>();
 	
@@ -55,6 +60,16 @@ public class MainApp extends Application {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("PoP");
 		
+//		Font.loadFont(getClass().getResourceAsStream("Roboto-Regular.ttf"), 14);
+		try {
+			Font.loadFont(new FileInputStream(new File("src/BM-HANNA.ttf")), 14);
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+//		this.primaryStage.initStyle(StageStyle.UNDECORATED);
+		
 		initRootLayout();
 		
 //		showPersonOverview();
@@ -75,19 +90,45 @@ public class MainApp extends Application {
 			BorderPane rootLayout = (BorderPane)loader.load();
 			
 			controller.setRootLayout(rootLayout);
-			
+//			controller.getRootLayout().setPadding(new Insets(20, 20, 20, 20));
 			controller.setMainApp(this);
+			
+//			controller.getRootPane().setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0);" +
+//	                "-fx-background-color: white;");
+//			
+//			controller.getRootLayout().setStyle("-fx-background-color: transparent;");
 			
 			this.rootController = controller;
 			
 			// 상위 레이아웃을 포함하는 scene을 보여준다.
 			Scene scene = new Scene(rootLayout);
-			
+//			controller.getLbHome().setFont(f);
 			controller.showPOPHomeLayout();
 //			controller.showPOPSelectProblemLayout();
 			
+//			rootLayout.setOnMousePressed(event -> {
+//				if(primaryStage.getScene().getCursor().equals(Cursor.DEFAULT)) {
+//					xOffset = event.getSceneX();
+//	                yOffset = event.getSceneY();
+//				}
+//				
+//			});
+//			
+//			rootLayout.setOnMouseDragged(event -> {
+//				if(primaryStage.getScene().getCursor().equals(Cursor.DEFAULT)) {
+//					primaryStage.setX(event.getScreenX() - xOffset);
+//	                primaryStage.setY(event.getScreenY() - yOffset);
+//				}
+//			});
+			
 			primaryStage.setScene(scene);
+//			scene.setFill(Color.TRANSPARENT);
+//			ResizeHelper.addResizeListener(primaryStage);
+//			primaryStage.initStyle(StageStyle.TRANSPARENT);
 			primaryStage.show();
+			
+//			this.primaryStage.getScene().getRoot().setEffect(new DropShadow());
+//			this.primaryStage.getScene().setFill(Color.TRANSPARENT);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

@@ -136,7 +136,7 @@ public class POPVariableNode extends POPNode {
 				return;
 			
 			Node on = (Node) event.getTarget();
-			Dragboard db = on.startDragAndDrop(TransferMode.MOVE);
+			Dragboard db = on.startDragAndDrop(TransferMode.COPY_OR_MOVE);
 			ClipboardContent content = new ClipboardContent();
 			content.putString(getType().toString());
 			content.put(POPNodeDataFormat.variableNameFormat, this.name);
@@ -180,15 +180,15 @@ public class POPVariableNode extends POPNode {
 			if(!isInitialized)
 				return;
 			
-			if (getParentSymbol() != null && event.getTransferMode() != TransferMode.MOVE) {
+			if (getParentSymbol() != null && event.getTransferMode() != TransferMode.MOVE && event.getTransferMode() != TransferMode.COPY) {
 				POPBlank lastBlank = (POPBlank) parentSymbol.getContents().getChildren().get(lastIndex);
 				lastBlank.insertNode(this);
 			} 
-			else if(getParentSymbol() == null && event.getTransferMode() != TransferMode.MOVE) {
+			else if(getParentSymbol() == null && event.getTransferMode() != TransferMode.MOVE && event.getTransferMode() != TransferMode.COPY) {
 				POPSolvingLayoutController.scriptArea.getComponent().getChildren().add(this);
 			}
 			
-			if(getParentSymbol() != null && event.getTransferMode() == TransferMode.MOVE) {
+			if(getParentSymbol() != null && event.getTransferMode() == TransferMode.COPY) {
 				if(parentSymbol instanceof POPEqualSymbol && this instanceof POPArrayNode) {
 					POPArrayNode array = (POPArrayNode) this;
 					if(!array.getIndexBlank().getOptions().contains("추가"))

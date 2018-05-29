@@ -58,13 +58,13 @@ public class POPIndexBlank extends ComboBox {
 		setOnDragOver(event -> {
 			Dragboard db = event.getDragboard();
 			if(db.hasImage() && POPNodeType.variableGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
-				event.acceptTransferModes(TransferMode.MOVE);
+				event.acceptTransferModes(TransferMode.COPY);
 			} else if(db.hasImage() && POPNodeType.operationGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
-				event.acceptTransferModes(TransferMode.MOVE);
+				event.acceptTransferModes(TransferMode.COPY);
 			} else if(db.hasImage() && POPNodeType.compareGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
-				event.acceptTransferModes(TransferMode.MOVE);
+				event.acceptTransferModes(TransferMode.COPY);
 			} else if(db.hasImage() && POPNodeType.arrayGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
-				event.acceptTransferModes(TransferMode.MOVE);
+				event.acceptTransferModes(TransferMode.COPY);
 			}
 			
 			if(this.isEditable())

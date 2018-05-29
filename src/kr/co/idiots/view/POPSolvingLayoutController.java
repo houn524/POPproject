@@ -153,12 +153,6 @@ public class POPSolvingLayoutController {
 			pressedKeys.add(e.getCode());
 		});
 		mainApp.getPrimaryStage().getScene().setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
-		
-//		mainApp.getPrimaryStage().widthProperty().addListener((obs, oldVal, newVal) -> {
-//			double absNodeDividerPos = 0;
-//			absNodeDividerPos = nodeSplitPane.getDividerPositions()[0] * oldVal.doubleValue();
-//			nodeSplitPane.setDividerPosition(0, absNodeDividerPos / newVal.doubleValue());
-//		});
 	}
 	
 	@FXML

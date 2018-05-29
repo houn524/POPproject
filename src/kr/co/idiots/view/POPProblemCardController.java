@@ -5,7 +5,6 @@ import javafx.fxml.FXML;
 import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
-import javafx.scene.shape.Rectangle;
 import kr.co.idiots.MainApp;
 import lombok.Getter;
 import lombok.Setter;
@@ -20,8 +19,8 @@ public class POPProblemCardController {
 	@FXML
 	private StackPane stackPane;
 	
-	@FXML
-	private Rectangle rect;
+//	@FXML
+//	private Rectangle rect;
 	
 	private MainApp mainApp;
 	
@@ -35,12 +34,12 @@ public class POPProblemCardController {
 	private void initialize() {
 		stackPane.setOnMouseEntered(event -> {
 			mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND);
-			rect.setOpacity(0.5);//.setStyle("-fx-background-color:#dae7f3;");
+			problemTitle.setOpacity(0.5);//.setStyle("-fx-background-color:#dae7f3;");
 		});
 		
 		stackPane.setOnMouseExited(event -> {
 			mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT);
-			rect.setOpacity(1);
+			problemTitle.setOpacity(1);
 		});
 		
 		stackPane.setOnMouseClicked(event -> {

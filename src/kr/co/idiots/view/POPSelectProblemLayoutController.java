@@ -27,9 +27,9 @@ public class POPSelectProblemLayoutController {
 	
 	@FXML
 	private void initialize() {
-		flowPane.getChildren().add(new POPProblemCard(mainApp).setText("구구단").getComponent());
-		flowPane.getChildren().add(new POPProblemCard(mainApp).setText("문제1").getComponent());
-		flowPane.getChildren().add(new POPProblemCard(mainApp).setText("문제2").getComponent());
-		flowPane.getChildren().add(new POPProblemCard(mainApp).setText("문제3").getComponent());
+		flowPane.getChildren().add(new POPProblemCard(mainApp).setText("1. 구구단").getComponent());
+		flowPane.getChildren().add(new POPProblemCard(mainApp).setText("2. 문제1").getComponent());
+		flowPane.getChildren().add(new POPProblemCard(mainApp).setText("3. 문제2").getComponent());
+		flowPane.getChildren().add(new POPProblemCard(mainApp).setText("4. 문제3").getComponent());
 	}
 }

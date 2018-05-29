@@ -195,7 +195,7 @@ public class POPSymbolNode extends POPNode {
 				return;
 			
 			Node on = (Node) event.getTarget();
-			Dragboard db = on.startDragAndDrop(TransferMode.MOVE);
+			Dragboard db = on.startDragAndDrop(TransferMode.COPY_OR_MOVE);
 			ClipboardContent content = new ClipboardContent();
 			content.putString(getType().toString());
 			

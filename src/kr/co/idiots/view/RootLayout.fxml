@@ -2,38 +2,52 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: lightblue;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.RootLayoutController">
+<BorderPane prefHeight="720.0" prefWidth="1280.0" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0); -fx-background-color: FFFFFF;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.RootLayoutController">
    <top>
-      <FlowPane alignment="CENTER_LEFT" hgap="50.0" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <AnchorPane BorderPane.alignment="CENTER">
          <children>
-            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="50.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
-            <Label fx:id="lbHome" alignment="CENTER" contentDisplay="CENTER" text="홈" textAlignment="CENTER">
-               <font>
-                  <Font size="30.0" />
-               </font>
-            </Label>
-            <Label fx:id="lbSolving" alignment="CENTER" contentDisplay="CENTER" layoutX="60.0" layoutY="36.0" text="문제 풀기" textAlignment="CENTER">
-               <font>
-                  <Font size="30.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="270.0" layoutY="42.0" text="문제 공유" textAlignment="CENTER">
-               <font>
-                  <Font size="30.0" />
-               </font>
-            </Label>
+            <FlowPane prefHeight="91.0" prefWidth="1280.0">
+               <children>
+                  <StackPane prefHeight="81.0" prefWidth="200.0">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="50.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
+                     </children>
+                  </StackPane>
+                  <FlowPane alignment="CENTER_LEFT" hgap="50.0" prefHeight="89.0" prefWidth="726.0">
+                     <children>
+                        <Label fx:id="lbHome" alignment="CENTER" contentDisplay="CENTER" text="홈" textAlignment="CENTER">
+                           <font>
+                              <Font name="BM HANNA" size="30.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="lbSolving" alignment="CENTER" contentDisplay="CENTER" layoutX="60.0" layoutY="36.0" text="문제 풀기" textAlignment="CENTER">
+                           <font>
+                              <Font name="BM HANNA" size="30.0" />
+                           </font>
+                        </Label>
+                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="270.0" layoutY="42.0" text="문제 공유" textAlignment="CENTER">
+                           <font>
+                              <Font name="BM HANNA" size="30.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets left="50.0" />
+                     </padding>
+                  </FlowPane>
+               </children>
+            </FlowPane>
          </children>
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-         <padding>
-            <Insets left="50.0" />
-         </padding>
-      </FlowPane>
+      </AnchorPane>
    </top>
 </BorderPane>

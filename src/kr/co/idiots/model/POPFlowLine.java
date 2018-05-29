@@ -34,6 +34,8 @@ import lombok.Setter;
 public class POPFlowLine extends Group {
 
     private Line line;
+    private Line arrow1;
+    private Line arrow2;
     private Rectangle area;
     protected POPSymbolNode prevNode;
     protected POPSymbolNode nextNode;
@@ -65,6 +67,8 @@ public class POPFlowLine extends Group {
     private POPFlowLine(Line line, Line arrow1, Line arrow2, Rectangle area) {
         super(line, arrow1, arrow2, area);
         this.line = line;
+        this.arrow1 = arrow1;
+        this.arrow2 = arrow2;
         this.area = area;
                         
         line.setStrokeWidth(3.0f);
@@ -215,18 +219,28 @@ public class POPFlowLine extends Group {
 		setOnDragOver(event -> {
 			Dragboard db = event.getDragboard();
 			if(db.hasImage() && POPNodeType.symbolGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {//!POPNodeType.db.getString().equals("Variable")) {
-				event.acceptTransferModes(TransferMode.MOVE);
+				event.acceptTransferModes(TransferMode.COPY);
     			DropShadow dropShadow = new DropShadow();
         		dropShadow.setRadius(5.0);
         		dropShadow.setOffsetX(3.0);
         		dropShadow.setOffsetY(3.0);
         		dropShadow.setColor(Color.color(0.4, 0.5, 0.5));
         		this.setEffect(dropShadow);
+        		
+        		line.setStroke(Color.GREEN);
+        		arrow1.setStroke(Color.GREEN);
+        		arrow2.setStroke(Color.GREEN);
 			}
+			
+			event.consume();
 		});
 		
 		this.setOnDragExited(event -> {
 			this.setEffect(null);
+			
+			line.setStroke(Color.BLACK);
+    		arrow1.setStroke(Color.BLACK);
+    		arrow2.setStroke(Color.BLACK);
 		});
 		
 		setOnDragDropped(event -> {
