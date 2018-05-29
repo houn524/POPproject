@@ -16,6 +16,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import kr.co.idiots.model.Person;
+import kr.co.idiots.view.POPLoginLayoutController;
 import kr.co.idiots.view.PersonEditDialogController;
 import kr.co.idiots.view.RootLayoutController;
 import lombok.Getter;
@@ -70,11 +71,36 @@ public class MainApp extends Application {
 		
 //		this.primaryStage.initStyle(StageStyle.UNDECORATED);
 		
-		initRootLayout();
+		showLoginLayout();
+//		initRootLayout();
 		
 //		showPersonOverview();
 	}
 
+	
+	public void showLoginLayout() {
+		
+		try {
+			POPLoginLayoutController controller = new POPLoginLayoutController(this);
+			
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/POPLoginLayout.fxml"));
+			loader.setControllerFactory(c -> {
+				return controller;
+			});
+			
+			AnchorPane loginLayout = (AnchorPane) loader.load();
+			
+			Scene scene = new Scene(loginLayout);
+			
+			primaryStage.setScene(scene);
+			primaryStage.setResizable(false);
+			primaryStage.show();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 	
 	/*상위 레이아웃을 초기화한다.*/
 	public void initRootLayout() {
@@ -120,12 +146,13 @@ public class MainApp extends Application {
 //	                primaryStage.setY(event.getScreenY() - yOffset);
 //				}
 //			});
-			
+			primaryStage.setResizable(true);
 			primaryStage.setScene(scene);
+//			
 //			scene.setFill(Color.TRANSPARENT);
 //			ResizeHelper.addResizeListener(primaryStage);
 //			primaryStage.initStyle(StageStyle.TRANSPARENT);
-			primaryStage.show();
+//			primaryStage.show();
 			
 //			this.primaryStage.getScene().getRoot().setEffect(new DropShadow());
 //			this.primaryStage.getScene().setFill(Color.TRANSPARENT);
