@@ -97,9 +97,8 @@ public class POPFlowchartPlayer {
 			} else {
 				POPSolvingLayoutController.showErrorPopup(e.getMessage());
 			}
-			
 			POPSolvingLayoutController.scriptArea.stop();
-			System.out.println("변수 초기화 필요");
+			System.out.println(e);
 		}
 		
 	}

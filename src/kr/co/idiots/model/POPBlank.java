@@ -47,6 +47,15 @@ public class POPBlank extends TextField {
 	}
 	
 	private void setOnBlankDrag() {
+		setOnMousePressed(event -> {
+			if(parentSymbol.getParentNode() != null) {
+				if(parentSymbol.getParentNode().isException()) {
+					parentSymbol.getParentNode().getImgView().setStyle("");
+					parentSymbol.getParentNode().setException(false);
+				}
+			}
+		});
+		
 		setOnDragOver(event -> {
 			Dragboard db = event.getDragboard();
 			if(db.hasImage() && POPNodeType.variableGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
@@ -73,6 +82,13 @@ public class POPBlank extends TextField {
 		});
 		
 		setOnDragDropped(event -> {
+			if(parentSymbol.getParentNode() != null) {
+				if(parentSymbol.getParentNode().isException()) {
+					parentSymbol.getParentNode().getImgView().setStyle("");
+					parentSymbol.getParentNode().setException(false);
+				}
+			}
+			
 			Dragboard db = event.getDragboard();
 			boolean success = false;
 			

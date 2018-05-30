@@ -268,8 +268,6 @@ public class POPFlowLine extends Group {
 				else if(node instanceof POPDecisionNode)
 					((POPDecisionNode) node).adjustPosition();
 				getPrevNode().getScriptArea().addWithOutFlowLine(node);
-				
-				
 			}
 			event.consume();
 		});

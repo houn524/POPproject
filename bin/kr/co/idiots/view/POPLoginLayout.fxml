@@ -16,9 +16,9 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.POPLoginLayoutController">
    <children>
-      <StackPane layoutX="434.0" layoutY="140.0" prefHeight="402.0" prefWidth="330.0" style="-fx-border-color: black; -fx-background-color: linear-gradient(lightblue, white); -fx-effect: dropshadow(three-pass-box, grey, 10, 0.5, 1, 1);" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="100.0">
+      <StackPane layoutX="104.0" layoutY="159.0" prefHeight="402.0" prefWidth="330.0" style="-fx-border-color: black; -fx-background-color: linear-gradient(lightblue, white); -fx-effect: dropshadow(three-pass-box, grey, 10, 0.5, 1, 1);">
          <children>
-            <GridPane alignment="CENTER" prefHeight="240.0" prefWidth="289.0" StackPane.alignment="CENTER">
+            <GridPane alignment="CENTER" prefHeight="197.0" prefWidth="289.0" StackPane.alignment="CENTER">
               <columnConstraints>
                 <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="109.20001220703125" minWidth="10.0" prefWidth="89.59996337890625" />
                 <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="169.5999755859375" minWidth="10.0" prefWidth="139.20003662109377" />
@@ -27,7 +27,7 @@
                 <RowConstraints maxHeight="120.0" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="140.8" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
                 <RowConstraints maxHeight="144.80001220703127" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
-                  <RowConstraints maxHeight="144.80001220703127" minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="144.80001220703127" minHeight="50.0" prefHeight="70.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <Label text="이메일 : " GridPane.rowIndex="1">
@@ -67,10 +67,10 @@
             </GridPane>
          </children>
          <padding>
-            <Insets bottom="150.0" left="20.0" right="20.0" top="100.0" />
+            <Insets bottom="120.0" left="20.0" right="20.0" top="100.0" />
          </padding>
       </StackPane>
-      <ImageView fitHeight="590.0" fitWidth="737.0" layoutX="510.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="590.0" fitWidth="737.0" layoutX="510.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="510.0" AnchorPane.topAnchor="65.0">
          <image>
             <Image url="@../../../../images/LoginImage.png" />
          </image>

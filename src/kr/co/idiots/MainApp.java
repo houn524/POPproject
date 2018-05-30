@@ -94,7 +94,7 @@ public class MainApp extends Application {
 			Scene scene = new Scene(loginLayout);
 			
 			primaryStage.setScene(scene);
-			primaryStage.setResizable(false);
+//			primaryStage.setResizable(false);
 			primaryStage.show();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -146,7 +146,7 @@ public class MainApp extends Application {
 //	                primaryStage.setY(event.getScreenY() - yOffset);
 //				}
 //			});
-			primaryStage.setResizable(true);
+//			primaryStage.setResizable(true);
 			primaryStage.setScene(scene);
 //			
 //			scene.setFill(Color.TRANSPARENT);

@@ -148,8 +148,6 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
     	
     	Node subNode = loopStartNode;
     	while(true) {
-			
-			
 			if(subNode instanceof POPSymbolNode) {
 				((POPSymbolNode) subNode).moveCenter();
 			}

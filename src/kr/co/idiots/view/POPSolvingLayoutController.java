@@ -16,6 +16,8 @@ import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -132,7 +134,7 @@ public class POPSolvingLayoutController {
 	
 	private static Stage popup;
 	
-	private MainApp mainApp;
+	private static MainApp mainApp;
 	
 	private Bounds frameBounds;
 	
@@ -282,26 +284,35 @@ public class POPSolvingLayoutController {
 	}
 	
 	public static void showErrorPopup(String string) {
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("view/POPErrorPopupLayout.fxml"));
-			AnchorPane errorPopup = (AnchorPane)loader.load();
+//		try {
+//			FXMLLoader loader = new FXMLLoader();
+//			loader.setLocation(MainApp.class.getResource("view/POPErrorPopupLayout.fxml"));
+//			AnchorPane errorPopup = (AnchorPane)loader.load();
+//			
+//			popup = new Stage();
+//			popup.setScene(new Scene(errorPopup));
+////			mainApp.getPrimaryStage().setOnHidden(e -> { popup.show(); });
+////			popup.show();
+//			
+//			errorPopupController = loader.getController();
+//			errorPopupController = errorPopupController.setText(string);
+////			errorPopupController.setSolvingController(this);
+//			errorPopupController.isCommitProperty().addListener((obs, wasCommit, isCommit) -> {
+//	            if (isCommit) {
+//	                popup.close();
+//	            }
+//	        });
 			
-			popup = new Stage();
-			popup.setScene(new Scene(errorPopup));
-			popup.show();
-			
-			errorPopupController = loader.getController();
-			errorPopupController = errorPopupController.setText(string);
-//			errorPopupController.setSolvingController(this);
-			errorPopupController.isCommitProperty().addListener((obs, wasCommit, isCommit) -> {
-	            if (isCommit) {
-	                popup.close();
-	            }
-	        });
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
+//			popup.showAndWait();
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("실행 오류");
+			alert.setHeaderText("순서도를 실행할 수 없습니다.");
+			alert.setContentText(string);
+
+			alert.showAndWait();
+//		} catch(IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 	
 	public void showCreateVariablePopup() {

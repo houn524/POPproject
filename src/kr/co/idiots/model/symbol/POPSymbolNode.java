@@ -40,6 +40,8 @@ public class POPSymbolNode extends POPNode {
 	protected DoubleProperty bottomCenterX = new SimpleDoubleProperty(0);
 	protected DoubleProperty bottomY = new SimpleDoubleProperty(0);
 	
+	protected boolean isException = false;
+	
 	public DoubleProperty topCenterXProperty() {
     	return topCenterX;
     }
@@ -162,6 +164,11 @@ public class POPSymbolNode extends POPNode {
 			if(event.getButton().equals(MouseButton.PRIMARY)) {
 				if(contextMenu != null)
 					contextMenu.hide();
+			}
+			
+			if(isException) {
+				this.imgView.setStyle("");
+				isException = false;
 			}
 		});
 		

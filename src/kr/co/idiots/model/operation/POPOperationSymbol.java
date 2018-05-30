@@ -228,6 +228,13 @@ public class POPOperationSymbol extends StackPane {
 		for(int i = 0; i < contents.getChildren().size(); i++) {
 			if(contents.getChildren().get(i) instanceof POPBlank)
 				width += ((POPBlank) contents.getChildren().get(i)).getPrefWidth();
+			else if(contents.getChildren().get(i) instanceof POPArrayNode) {
+				width += ((POPArrayNode) contents.getChildren().get(i)).getContents().getPrefWrapLength();
+			}
+			else if(contents.getChildren().get(i) instanceof POPVariableNode) {
+				width += ((POPVariableNode) contents.getChildren().get(i)).getContents().getPrefWrapLength();
+				System.out.println(((POPVariableNode) contents.getChildren().get(i)).getContents().getPrefWrapLength());
+			}
 			else
 				width += contents.getChildren().get(i).getBoundsInLocal().getWidth();
 			width += contents.getHgap();
@@ -267,10 +274,10 @@ public class POPOperationSymbol extends StackPane {
 				break;
 		}
 		
-		if(width > contents.getPrefWrapLength() - 40)
-			contents.setPrefWrapLength(width + 20);
-		else if(width < contents.getPrefWrapLength() - 40 && contents.getPrefWrapLength() > initWidth) {
-			contents.setPrefWrapLength(Math.max(width + 20, initWidth));
+		if(width > contents.getPrefWrapLength() - 25)
+			contents.setPrefWrapLength(width + 25);
+		else if(width < contents.getPrefWrapLength() - 25 && contents.getPrefWrapLength() > initWidth) {
+			contents.setPrefWrapLength(Math.max(width + 25, initWidth));
 		}
 		
 		imgShape.setFitWidth(Math.max(contents.getPrefWrapLength(), initWidth));
@@ -366,7 +373,9 @@ public class POPOperationSymbol extends StackPane {
 				leftCode += variable.getName();
 				if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
 					leftValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
-				} else {
+				} else if(!(this instanceof POPEqualSymbol)) {
+					this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
+					this.parentNode.setException(true);
 					throw new NullPointerException();
 				}
 //				else {
@@ -376,6 +385,8 @@ public class POPOperationSymbol extends StackPane {
 			}  else {
 				POPBlank blank = (POPBlank) contents.getChildren().get(0);
 				if(blank.getText().isEmpty()) {
+					this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
+					this.parentNode.setException(true);
 					throw new NullPointerException("빈 칸");
 				}
 				leftValue += blank.getText();
@@ -397,6 +408,8 @@ public class POPOperationSymbol extends StackPane {
 				if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
 					rightValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
 				} else {
+					this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
+					this.parentNode.setException(true);
 					throw new NullPointerException();
 				}
 //				else {
@@ -406,6 +419,8 @@ public class POPOperationSymbol extends StackPane {
 			}  else {
 				POPBlank blank = (POPBlank) contents.getChildren().get(2);
 				if(blank.getText().isEmpty()) {
+					this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
+					this.parentNode.setException(true);
 					throw new NullPointerException("빈 칸");
 				}
 				rightValue += blank.getText();
