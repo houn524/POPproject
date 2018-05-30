@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import kr.co.idiots.model.POPBlank;
 import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.operation.POPOperationSymbol;
+import kr.co.idiots.view.POPSolvingLayoutController;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -40,10 +41,17 @@ public class POPIsEqualSymbol extends POPOperationSymbol {
 	}
 	
 	@Override
-	public Object executeSymbol() {
-		if(Integer.parseInt(leftValue) == Integer.parseInt(rightValue))
-			return "true";
-		else
-			return "false";
+	public Object executeSymbol() throws NumberFormatException {
+//		try {
+			if(Integer.parseInt(leftValue) == Integer.parseInt(rightValue))
+				return "true";
+			else
+				return "false";
+//		} catch(NumberFormatException e) {
+//			POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
+//			POPSolvingLayoutController.scriptArea.stop();
+//			return null;
+//		}
+		
 	}
 }

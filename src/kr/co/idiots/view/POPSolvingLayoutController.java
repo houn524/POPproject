@@ -130,7 +130,7 @@ public class POPSolvingLayoutController {
 	
 	private POPStringPlusSymbol stringPlusSymbol;
 	
-	private Stage popup;
+	private static Stage popup;
 	
 	private MainApp mainApp;
 	
@@ -142,7 +142,7 @@ public class POPSolvingLayoutController {
 	
 	private POPCreateVariableLayoutController createVariableController;
 	private POPCreateArrayLayoutController createArrayController;
-	private POPErrorPopupLayoutController errorPopupController;
+	private static POPErrorPopupLayoutController errorPopupController;
 
 	public static final Set<KeyCode> pressedKeys = new HashSet<>();
 	
@@ -281,7 +281,7 @@ public class POPSolvingLayoutController {
 		});
 	}
 	
-	public void showErrorPopup(String string) {
+	public static void showErrorPopup(String string) {
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/POPErrorPopupLayout.fxml"));
@@ -293,7 +293,7 @@ public class POPSolvingLayoutController {
 			
 			errorPopupController = loader.getController();
 			errorPopupController = errorPopupController.setText(string);
-			errorPopupController.setSolvingController(this);
+//			errorPopupController.setSolvingController(this);
 			errorPopupController.isCommitProperty().addListener((obs, wasCommit, isCommit) -> {
 	            if (isCommit) {
 	                popup.close();

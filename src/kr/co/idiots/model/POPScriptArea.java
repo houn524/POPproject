@@ -311,4 +311,8 @@ public class POPScriptArea {
 		flowchartPlayer.playFlowChart(startNode);
 		return flowchartPlayer.getOutput().toString();
 	}
+	
+	public void stop() {
+		flowchartPlayer.stop();
+	}
 }

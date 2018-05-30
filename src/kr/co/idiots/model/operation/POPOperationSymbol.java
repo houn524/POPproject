@@ -336,7 +336,7 @@ public class POPOperationSymbol extends StackPane {
 		return strCode; 
 	}
 	
-	public String getValueString() {
+	public String getValueString() throws NullPointerException {
 		playSymbol();
 		return strValue;
 	}
@@ -345,71 +345,97 @@ public class POPOperationSymbol extends StackPane {
 		return null;
 	}
 	
-	public void playSymbol() {
+	public void playSymbol() throws NullPointerException, NumberFormatException {
 		leftCode = "";
 		leftValue = "";
 		rightValue = "";
-		
-		if(contents.getChildren().get(0) instanceof POPOperationSymbol) {
-			POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(0);
-			symbol.playSymbol();
-			
-			leftValue = symbol.executeSymbol().toString();
-		} else if(contents.getChildren().get(0) instanceof POPArrayNode) {
-			POPArrayNode array = (POPArrayNode) contents.getChildren().get(0);
-			leftCode += array.getName();
-			if(POPVariableManager.declaredArrs.containsKey(array.getName())) {
-				leftValue = array.getValue();
-			}
-		} else if(contents.getChildren().get(0) instanceof POPVariableNode) {
-			POPVariableNode variable = (POPVariableNode) contents.getChildren().get(0);
-			leftCode += variable.getName();
-			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
-				leftValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
-			}
-		}  else {
-			POPBlank blank = (POPBlank) contents.getChildren().get(0);
-			leftValue += blank.getText();
-		}
+//		try {
+			if(contents.getChildren().get(0) instanceof POPOperationSymbol) {
+				POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(0);
+				symbol.playSymbol();
 				
-		if(contents.getChildren().get(2) instanceof POPOperationSymbol) {
-			POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(2);
-			symbol.playSymbol();
-			
-			rightValue = symbol.executeSymbol().toString();
-		} else if(contents.getChildren().get(2) instanceof POPArrayNode) {
-			POPArrayNode array = (POPArrayNode) contents.getChildren().get(2);
-			rightCode += array.getName();
-			if(POPVariableManager.declaredArrs.containsKey(array.getName())) {
-				rightValue = array.getValue();
+				leftValue = symbol.executeSymbol().toString();
+			} else if(contents.getChildren().get(0) instanceof POPArrayNode) {
+				POPArrayNode array = (POPArrayNode) contents.getChildren().get(0);
+				leftCode += array.getName();
+				if(POPVariableManager.declaredArrs.containsKey(array.getName())) {
+					leftValue = array.getValue();
+				}
+			} else if(contents.getChildren().get(0) instanceof POPVariableNode) {
+				POPVariableNode variable = (POPVariableNode) contents.getChildren().get(0);
+				leftCode += variable.getName();
+				if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
+					leftValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
+				} else {
+					throw new NullPointerException();
+				}
+//				else {
+//					POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
+//					POPSolvingLayoutController.scriptArea.stop();
+//				}
+			}  else {
+				POPBlank blank = (POPBlank) contents.getChildren().get(0);
+				if(blank.getText().isEmpty()) {
+					throw new NullPointerException("빈 칸");
+				}
+				leftValue += blank.getText();
 			}
-		} else if(contents.getChildren().get(2) instanceof POPVariableNode) {
-			POPVariableNode variable = (POPVariableNode) contents.getChildren().get(2);
-			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
-				rightValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
+					
+			if(contents.getChildren().get(2) instanceof POPOperationSymbol) {
+				POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(2);
+				symbol.playSymbol();
+				
+				rightValue = symbol.executeSymbol().toString();
+			} else if(contents.getChildren().get(2) instanceof POPArrayNode) {
+				POPArrayNode array = (POPArrayNode) contents.getChildren().get(2);
+				rightCode += array.getName();
+				if(POPVariableManager.declaredArrs.containsKey(array.getName())) {
+					rightValue = array.getValue();
+				}
+			} else if(contents.getChildren().get(2) instanceof POPVariableNode) {
+				POPVariableNode variable = (POPVariableNode) contents.getChildren().get(2);
+				if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
+					rightValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
+				} else {
+					throw new NullPointerException();
+				}
+//				else {
+//					POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
+//					POPSolvingLayoutController.scriptArea.stop();
+//				}
+			}  else {
+				POPBlank blank = (POPBlank) contents.getChildren().get(2);
+				if(blank.getText().isEmpty()) {
+					throw new NullPointerException("빈 칸");
+				}
+				rightValue += blank.getText();
 			}
-		}  else {
-			POPBlank blank = (POPBlank) contents.getChildren().get(2);
-			rightValue += blank.getText();
-		}
+//		} catch(NullPointerException e) {
+//			POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
+//			POPSolvingLayoutController.scriptArea.stop();
+//		} catch(NumberFormatException e) {
+//			POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
+//			POPSolvingLayoutController.scriptArea.stop();
+//		}
+		
 		
 		if(symbol.equals(" = ")) {
-			if(!POPVariableManager.declaredVars.containsKey(leftCode)) {
-				POPVariableNode variable = (POPVariableNode) contents.getChildren().get(0);
-				String type = "";
-				switch(variable.getType()) {
-				case IntegerVariable :
-					type = "int ";
-					break;
-				case DoubleVariable :
-					type = "double ";
-					break;
-				case StringVariable :
-					type = "String ";
-					break;
-				}
-				strCode = type + strCode;
-			}
+//			if(!POPVariableManager.declaredVars.containsKey(leftCode)) {
+//				POPVariableNode variable = (POPVariableNode) contents.getChildren().get(0);
+//				String type = "";
+//				switch(variable.getType()) {
+//				case IntegerVariable :
+//					type = "int ";
+//					break;
+//				case DoubleVariable :
+//					type = "double ";
+//					break;
+//				case StringVariable :
+//					type = "String ";
+//					break;
+//				}
+//				strCode = type + strCode;
+//			}
 			
 			
 			leftValue = leftCode;

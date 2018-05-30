@@ -8,6 +8,7 @@ import kr.co.idiots.POPVariableManager;
 import kr.co.idiots.model.POPBlank;
 import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPVariableNode;
+import kr.co.idiots.view.POPSolvingLayoutController;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -42,7 +43,7 @@ public class POPStringPlusSymbol extends POPOperationSymbol {
 	}
 	
 	@Override
-	public void playSymbol() {
+	public void playSymbol() throws NullPointerException {
 		leftCode = "";
 		leftValue = "";
 		rightValue = "";
@@ -57,7 +58,11 @@ public class POPStringPlusSymbol extends POPOperationSymbol {
 			leftCode += variable.getName();
 			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
 				leftValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
-			}
+			} 
+//			else {
+//				POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
+//				POPSolvingLayoutController.scriptArea.stop();
+//			}
 		} else {
 			POPBlank blank = (POPBlank) contents.getChildren().get(0);
 			leftValue += blank.getText();
@@ -72,7 +77,11 @@ public class POPStringPlusSymbol extends POPOperationSymbol {
 			POPVariableNode variable = (POPVariableNode) contents.getChildren().get(2);
 			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
 				rightValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
-			}
+			} 
+//			else {
+//				POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
+//				POPSolvingLayoutController.scriptArea.stop();
+//			}
 		} else {
 			POPBlank blank = (POPBlank) contents.getChildren().get(2);
 			rightValue += blank.getText();

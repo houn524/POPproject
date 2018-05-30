@@ -25,6 +25,7 @@ import lombok.Setter;
 public class POPFlowchartPlayer {
 	
 	private StringBuilder output;
+	private boolean isStop = false;
 	
 	private POPSolvingLayoutController solvingController;
 	
@@ -43,53 +44,67 @@ public class POPFlowchartPlayer {
 	}
 	
 	public void playNode(POPSymbolNode node) {
-		while(true) { 
-			if(node instanceof POPStartNode) {
-				output = new StringBuilder();
-			} else if(node instanceof POPProcessNode) {
-				playProcessNode((POPProcessNode) node);
-			} else if(node instanceof POPDocumentNode) {
-				playDocumentNode((POPDocumentNode) node);
-			} 
-			
-			if(node instanceof POPDecisionNode) {
-				if(playDecisionNode(node)) {
-					node = ((POPDecisionNode) node).getLeftStartNode().getOutFlowLine().getNextNode();
-				} else {
-					node = ((POPDecisionNode) node).getRightStartNode().getOutFlowLine().getNextNode();
-				}
-			} else if(node instanceof POPDecisionEndNode) {
-				node = ((POPDecisionEndNode) node).getDecisionNode().getOutFlowLine().getNextNode();
-			} else if(node instanceof POPLoopNode) {
-				if(playDecisionNode(node)) {
-					node = ((POPLoopNode) node).getLoopStartNode().getOutFlowLine().getNextNode();
-					if(!isLoop) {
-						isLoop = true;
-						loopCount = 0;
+		isStop = false;
+		
+		try {
+			while(!isStop) { 
+				if(node instanceof POPStartNode) {
+					output = new StringBuilder();
+				} else if(node instanceof POPProcessNode) {
+					playProcessNode((POPProcessNode) node);
+				} else if(node instanceof POPDocumentNode) {
+					playDocumentNode((POPDocumentNode) node);
+				} 
+				
+				if(node instanceof POPDecisionNode) {
+					if(playDecisionNode(node)) {
+						node = ((POPDecisionNode) node).getLeftStartNode().getOutFlowLine().getNextNode();
+					} else {
+						node = ((POPDecisionNode) node).getRightStartNode().getOutFlowLine().getNextNode();
 					}
-				} else {
-					node = node.getOutFlowLine().getNextNode();
-					isLoop = false;
-				}
-			} else if(node instanceof POPLoopEndNode) {
-				node = ((POPLoopEndNode) node).getLoopNode();
-				if(isLoop) {
-					loopCount++;
-					if(loopCount >= MAX_LOOP_COUNT) {
+				} else if(node instanceof POPDecisionEndNode) {
+					node = ((POPDecisionEndNode) node).getDecisionNode().getOutFlowLine().getNextNode();
+				} else if(node instanceof POPLoopNode) {
+					if(playDecisionNode(node)) {
+						node = ((POPLoopNode) node).getLoopStartNode().getOutFlowLine().getNextNode();
+						if(!isLoop) {
+							isLoop = true;
+							loopCount = 0;
+						}
+					} else {
+						node = node.getOutFlowLine().getNextNode();
 						isLoop = false;
-						solvingController.showErrorPopup("무한 루프");
-						break;
 					}
+				} else if(node instanceof POPLoopEndNode) {
+					node = ((POPLoopEndNode) node).getLoopNode();
+					if(isLoop) {
+						loopCount++;
+						if(loopCount >= MAX_LOOP_COUNT) {
+							isLoop = false;
+							solvingController.showErrorPopup("무한 루프");
+							break;
+						}
+					}
+				} else if(!(node instanceof POPStopNode)) {
+					node = node.getOutFlowLine().getNextNode();
+				} else if(node instanceof POPStopNode) {
+					break;
 				}
-			} else if(!(node instanceof POPStopNode)) {
-				node = node.getOutFlowLine().getNextNode();
-			} else if(node instanceof POPStopNode) {
-				break;
 			}
+		} catch(NullPointerException | NumberFormatException e) {
+			if(e.getMessage() == null) {
+				POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
+			} else {
+				POPSolvingLayoutController.showErrorPopup(e.getMessage());
+			}
+			
+			POPSolvingLayoutController.scriptArea.stop();
+			System.out.println("변수 초기화 필요");
 		}
+		
 	}
 	
-	private void playProcessNode(POPProcessNode node) {
+	private void playProcessNode(POPProcessNode node) throws NullPointerException, NumberFormatException {
 		
 		POPOperationSymbol rootSymbol = node.getRootSymbol();
 		rootSymbol.getValueString();
@@ -139,7 +154,7 @@ public class POPFlowchartPlayer {
 		
 	}
 	
-	private void playDocumentNode(POPDocumentNode node) {
+	private void playDocumentNode(POPDocumentNode node) throws NullPointerException {
 		POPOutputSymbol rootSymbol = (POPOutputSymbol) node.getRootSymbol();
 		
 		rootSymbol.playSymbol();
@@ -148,12 +163,22 @@ public class POPFlowchartPlayer {
 		output.append(strResult).append(System.lineSeparator());
 	}
 	
-	private boolean playDecisionNode(POPSymbolNode node) {
+	private boolean playDecisionNode(POPSymbolNode node) throws NullPointerException {
 		POPOperationSymbol rootSymbol = (POPOperationSymbol) node.getRootSymbol().getContents().getChildren().get(0);
 		rootSymbol.playSymbol();
 		boolean result = false;
-		result = Boolean.parseBoolean(rootSymbol.executeSymbol().toString());
+//		try {
+			result = Boolean.parseBoolean(rootSymbol.executeSymbol().toString());
+//		} catch(NullPointerException e) {
+//			POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
+//			POPSolvingLayoutController.scriptArea.stop();
+//		}
+		
 		
 		return result;
+	}
+	
+	public void stop() {
+		isStop = true;
 	}
 }

@@ -56,7 +56,7 @@ public class POPArrayNode extends POPVariableNode {
 		indexBlank.setEditable(true);
 	}
 	
-	public String getValue() {
+	public String getValue() throws NullPointerException {
 		if(indexBlank.getEditor().getText().equals("추가")) {
 			return "";
 		}
