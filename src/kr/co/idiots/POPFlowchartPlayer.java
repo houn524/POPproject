@@ -33,6 +33,8 @@ public class POPFlowchartPlayer {
 	private int loopCount = 0;
 	private final long MAX_LOOP_COUNT = 100000;
 	
+	private POPSymbolNode loopNode;
+	
 	public POPFlowchartPlayer(POPSolvingLayoutController solvingController) {
 		this.solvingController = solvingController;
 	}
@@ -66,11 +68,12 @@ public class POPFlowchartPlayer {
 					node = ((POPDecisionEndNode) node).getDecisionNode().getOutFlowLine().getNextNode();
 				} else if(node instanceof POPLoopNode) {
 					if(playDecisionNode(node)) {
-						node = ((POPLoopNode) node).getLoopStartNode().getOutFlowLine().getNextNode();
 						if(!isLoop) {
 							isLoop = true;
+							loopNode = node;
 							loopCount = 0;
 						}
+						node = ((POPLoopNode) node).getLoopStartNode().getOutFlowLine().getNextNode();
 					} else {
 						node = node.getOutFlowLine().getNextNode();
 						isLoop = false;
@@ -81,6 +84,9 @@ public class POPFlowchartPlayer {
 						loopCount++;
 						if(loopCount >= MAX_LOOP_COUNT) {
 							isLoop = false;
+							System.out.println(loopNode);
+							loopNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
+							loopNode.setException(true);
 							solvingController.showErrorPopup("무한 루프");
 							break;
 						}
@@ -163,16 +169,11 @@ public class POPFlowchartPlayer {
 	}
 	
 	private boolean playDecisionNode(POPSymbolNode node) throws NullPointerException {
-		POPOperationSymbol rootSymbol = (POPOperationSymbol) node.getRootSymbol().getContents().getChildren().get(0);
+		POPOperationSymbol rootSymbol = (POPOperationSymbol) node.getRootSymbol();//.getContents().getChildren().get(0);
 		rootSymbol.playSymbol();
 		boolean result = false;
-//		try {
-			result = Boolean.parseBoolean(rootSymbol.executeSymbol().toString());
-//		} catch(NullPointerException e) {
-//			POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
-//			POPSolvingLayoutController.scriptArea.stop();
-//		}
 		
+		result = Boolean.parseBoolean(rootSymbol.getLeftValue());
 		
 		return result;
 	}

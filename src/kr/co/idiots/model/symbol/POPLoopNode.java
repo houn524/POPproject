@@ -47,7 +47,6 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 	private POPSideFlowLine rightUpFlowLine;
 	private POPSideArrowFlowLine rightInFlowLine;
 	
-	
 	private double initMaxLoopWidth = 200;
 	private DoubleProperty maxLoopWidth = new SimpleDoubleProperty(initMaxLoopWidth);
 	
@@ -93,7 +92,7 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 		outFlowLine.setPrevNode(this);
 		outFlowLine.setRootNode(this);
 		
-		rightOutFlowLine.startXProperty().bind(loopEndNode.layoutXProperty());
+		rightOutFlowLine.startXProperty().bindBidirectional(loopEndNode.layoutXProperty());
 		rightOutFlowLine.startYProperty().bind(loopEndNode.layoutYProperty());
 		rightOutFlowLine.endYProperty().bind(loopEndNode.layoutYProperty());
 		pos = POPBoundManager.getRightCenter(bound);

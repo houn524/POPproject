@@ -356,82 +356,70 @@ public class POPOperationSymbol extends StackPane {
 		leftCode = "";
 		leftValue = "";
 		rightValue = "";
-//		try {
-			if(contents.getChildren().get(0) instanceof POPOperationSymbol) {
-				POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(0);
-				symbol.playSymbol();
-				
-				leftValue = symbol.executeSymbol().toString();
-			} else if(contents.getChildren().get(0) instanceof POPArrayNode) {
-				POPArrayNode array = (POPArrayNode) contents.getChildren().get(0);
-				leftCode += array.getName();
-				if(POPVariableManager.declaredArrs.containsKey(array.getName())) {
-					leftValue = array.getValue();
-				}
-			} else if(contents.getChildren().get(0) instanceof POPVariableNode) {
-				POPVariableNode variable = (POPVariableNode) contents.getChildren().get(0);
-				leftCode += variable.getName();
-				if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
-					leftValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
-				} else if(!(this instanceof POPEqualSymbol)) {
-					this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
-					this.parentNode.setException(true);
-					throw new NullPointerException();
-				}
-//				else {
-//					POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
-//					POPSolvingLayoutController.scriptArea.stop();
-//				}
-			}  else {
-				POPBlank blank = (POPBlank) contents.getChildren().get(0);
-				if(blank.getText().isEmpty()) {
-					this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
-					this.parentNode.setException(true);
-					throw new NullPointerException("빈 칸");
-				}
-				leftValue += blank.getText();
+		
+		if(contents.getChildren().get(0) instanceof POPOperationSymbol) {
+			POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(0);
+			symbol.playSymbol();
+			
+			leftValue = symbol.executeSymbol().toString();
+		} else if(contents.getChildren().get(0) instanceof POPArrayNode) {
+			POPArrayNode array = (POPArrayNode) contents.getChildren().get(0);
+			leftCode += array.getName();
+			if(POPVariableManager.declaredArrs.containsKey(array.getName())) {
+				leftValue = array.getValue();
 			}
-					
-			if(contents.getChildren().get(2) instanceof POPOperationSymbol) {
-				POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(2);
-				symbol.playSymbol();
-				
-				rightValue = symbol.executeSymbol().toString();
-			} else if(contents.getChildren().get(2) instanceof POPArrayNode) {
-				POPArrayNode array = (POPArrayNode) contents.getChildren().get(2);
-				rightCode += array.getName();
-				if(POPVariableManager.declaredArrs.containsKey(array.getName())) {
-					rightValue = array.getValue();
-				}
-			} else if(contents.getChildren().get(2) instanceof POPVariableNode) {
-				POPVariableNode variable = (POPVariableNode) contents.getChildren().get(2);
-				if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
-					rightValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
-				} else {
-					this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
-					this.parentNode.setException(true);
-					throw new NullPointerException();
-				}
-//				else {
-//					POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
-//					POPSolvingLayoutController.scriptArea.stop();
-//				}
-			}  else {
-				POPBlank blank = (POPBlank) contents.getChildren().get(2);
-				if(blank.getText().isEmpty()) {
-					this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
-					this.parentNode.setException(true);
-					throw new NullPointerException("빈 칸");
-				}
-				rightValue += blank.getText();
+		} else if(contents.getChildren().get(0) instanceof POPVariableNode) {
+			POPVariableNode variable = (POPVariableNode) contents.getChildren().get(0);
+			leftCode += variable.getName();
+			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
+				leftValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
+			} else if(!(this instanceof POPEqualSymbol)) {
+				this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
+				this.parentNode.setException(true);
+				throw new NullPointerException();
 			}
-//		} catch(NullPointerException e) {
-//			POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
-//			POPSolvingLayoutController.scriptArea.stop();
-//		} catch(NumberFormatException e) {
-//			POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
-//			POPSolvingLayoutController.scriptArea.stop();
-//		}
+		} else {
+			POPBlank blank = (POPBlank) contents.getChildren().get(0);
+			if(blank.getText().isEmpty()) {
+				this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
+				this.parentNode.setException(true);
+				throw new NullPointerException("빈 칸");
+			}
+			leftValue += blank.getText();
+		}
+		
+		if(contents.getChildren().size() <= 1)
+			return;
+		
+		if(contents.getChildren().get(2) instanceof POPOperationSymbol) {
+			POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(2);
+			symbol.playSymbol();
+			
+			rightValue = symbol.executeSymbol().toString();
+		} else if(contents.getChildren().get(2) instanceof POPArrayNode) {
+			POPArrayNode array = (POPArrayNode) contents.getChildren().get(2);
+			rightCode += array.getName();
+			if(POPVariableManager.declaredArrs.containsKey(array.getName())) {
+				rightValue = array.getValue();
+			}
+		} else if(contents.getChildren().get(2) instanceof POPVariableNode) {
+			POPVariableNode variable = (POPVariableNode) contents.getChildren().get(2);
+			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
+				rightValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
+			} else {
+				this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
+				this.parentNode.setException(true);
+				throw new NullPointerException();
+			}
+		}  else {
+			POPBlank blank = (POPBlank) contents.getChildren().get(2);
+			if(blank.getText().isEmpty()) {
+				this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
+				this.parentNode.setException(true);
+				throw new NullPointerException("빈 칸");
+			}
+			rightValue += blank.getText();
+		}
 		
 		
 		if(symbol.equals(" = ")) {
