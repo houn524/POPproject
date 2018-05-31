@@ -35,6 +35,8 @@ public class MainApp extends Application {
 	private double xOffset = 0;
 	private double yOffset = 0;
 	
+	private POPDatabaseConnector connector;
+	
 //	public static final Set<KeyCode> pressedKeys = new HashSet<>();
 	
 	/*
@@ -46,6 +48,7 @@ public class MainApp extends Application {
 		생성자
 	*/
 	public MainApp() {
+		connector = new POPDatabaseConnector();
 	}
 	
 	/*
