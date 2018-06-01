@@ -13,7 +13,7 @@
          <children>
             <Label style="-fx-border-style: hidden hidden solid hidden; -fx-border-color: black;" text="사용법">
                <font>
-                  <Font name="BM HANNA" size="30.0" />
+                  <Font name="NanumGothic" size="30.0" />
                </font>
             </Label>
          </children>

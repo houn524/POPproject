@@ -32,32 +32,32 @@
                <children>
                   <Label text="이메일 : " GridPane.rowIndex="1">
                      <font>
-                        <Font name="BM HANNA" size="20.0" />
+                        <Font name="NanumGothic" size="20.0" />
                      </font>
                   </Label>
                   <Label text="비밀번호 : " GridPane.rowIndex="2">
                      <font>
-                        <Font name="BM HANNA" size="20.0" />
+                        <Font name="NanumGothic" size="20.0" />
                      </font>
                   </Label>
                   <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="1">
                      <font>
-                        <Font name="BM HANNA" size="14.0" />
+                        <Font name="NanumGothic" size="14.0" />
                      </font>
                   </TextField>
                   <Label text="PoP">
                      <font>
-                        <Font name="BM HANNA" size="40.0" />
+                        <Font name="NanumGothic" size="40.0" />
                      </font>
                   </Label>
                   <PasswordField fx:id="pwField" GridPane.columnIndex="1" GridPane.rowIndex="2">
                      <font>
-                        <Font name="BM HANNA" size="14.0" />
+                        <Font name="NanumGothic" size="14.0" />
                      </font>
                   </PasswordField>
                   <Button fx:id="btnLogin" mnemonicParsing="false" text="로그인" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
                      <font>
-                        <Font name="BM HANNA" size="20.0" />
+                        <Font name="NanumGothic" size="20.0" />
                      </font>
                   </Button>
                </children>

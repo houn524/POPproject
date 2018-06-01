@@ -73,10 +73,7 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 		maxLength.set(Math.max(leftMaxLength, rightMaxLength));
 	}
 	
-	public POPDecisionNode(POPScriptArea scriptArea) {
-		super(scriptArea, POPNodeType.Decision);
-		// TODO Auto-generated constructor stub
-		
+	public void init() {
 		subNodes = new ArrayList<>();
 		
 		Bounds bound = imgView.getBoundsInParent();
@@ -116,6 +113,20 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 		outFlowLine.setRootNode(this);
 		outFlowLine.setPrevNode(this);
 		
+		subNodes.add(leftFlowLine);
+		subNodes.add(rightFlowLine);
+		subNodes.add(leftLabel);
+		subNodes.add(rightLabel);
+		subNodes.add(leftStartNode);
+		subNodes.add(rightStartNode);
+		subNodes.add(leftEndNode);
+		subNodes.add(rightEndNode);
+		subNodes.add(leftEndNode.getSideFlowLine());
+		
+//		invisibleSubNodes();
+	}
+	
+	public void bindSubNodes() {
 		leftFlowLine.startXProperty().bind(component.layoutXProperty());
 		leftFlowLine.startYProperty().bind(Bindings.add(component.layoutYProperty(), Bindings.divide(component.heightProperty(), 2)));
 		leftFlowLine.endXProperty().bind(Bindings.subtract(Bindings.subtract(component.layoutXProperty(), Bindings.divide(Bindings.subtract(leftMaxWidth, component.widthProperty()), 2)), 10));
@@ -126,10 +137,6 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 		rightFlowLine.endXProperty().bind(Bindings.add(Bindings.add(Bindings.add(component.layoutXProperty(), component.widthProperty()), Bindings.divide(Bindings.subtract(rightMaxWidth, component.widthProperty()), 2)), 10));
 		rightFlowLine.endYProperty().bind(rightFlowLine.startYProperty());
 		
-		leftLabel.layoutXProperty().bind(Bindings.subtract(leftStartNode.layoutXProperty(), Bindings.divide(leftLabel.widthProperty(), 2)));
-		leftLabel.layoutYProperty().bind(Bindings.subtract(leftStartNode.layoutYProperty(), 30));
-		rightLabel.layoutXProperty().bind(Bindings.subtract(rightStartNode.layoutXProperty(), Bindings.divide(rightLabel.widthProperty(), 2)));
-		rightLabel.layoutYProperty().bind(Bindings.subtract(rightStartNode.layoutYProperty(), 30));
 		
 		leftStartNode.layoutXProperty().bind(leftFlowLine.endXProperty());
 		leftStartNode.layoutYProperty().bind(leftFlowLine.endYProperty());
@@ -150,6 +157,113 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 		
 		rightEndNode.layoutYProperty().bind(leftEndNode.getSideFlowLine().endYProperty());
 				
+		leftLabel.layoutXProperty().bind(Bindings.subtract(leftStartNode.layoutXProperty(), Bindings.divide(leftLabel.widthProperty(), 2)));
+		leftLabel.layoutYProperty().bind(Bindings.subtract(leftStartNode.layoutYProperty(), 30));
+		rightLabel.layoutXProperty().bind(Bindings.subtract(rightStartNode.layoutXProperty(), Bindings.divide(rightLabel.widthProperty(), 2)));
+		rightLabel.layoutYProperty().bind(Bindings.subtract(rightStartNode.layoutYProperty(), 30));
+	}
+	
+	public void visibleSubNodes() {
+		for(Node subNode : subNodes) {
+			subNode.setVisible(true);
+		}
+	}
+	
+	public void invisibleSubNodes() {
+		for(Node subNode : subNodes) {
+			subNode.setVisible(false);
+		}
+	}
+	
+	public POPDecisionNode(POPScriptArea scriptArea) {
+		super(scriptArea, POPNodeType.Decision);
+		// TODO Auto-generated constructor stub
+		
+//		subNodes = new ArrayList<>();
+//		
+//		Bounds bound = imgView.getBoundsInParent();
+//		Point2D pos = Point2D.ZERO;
+//		
+//		leftFlowLine = new POPSideFlowLine(this);
+//		pos = POPBoundManager.getLeftCenter(bound);
+//		
+//		rightFlowLine = new POPSideFlowLine(this);
+//		pos = POPBoundManager.getRightCenter(bound);
+//		
+//		leftLabel = new Label("예");
+//		rightLabel = new Label("아니오");
+//		
+//		leftStartNode = new POPDecisionStartNode(scriptArea);
+//		leftStartNode.getOutFlowLine().setDecisionNode(this);
+//		leftStartNode.setParentNode(this);
+//		rightStartNode = new POPDecisionStartNode(scriptArea);
+//		rightStartNode.getOutFlowLine().setDecisionNode(this);
+//		rightStartNode.setParentNode(this);
+//		
+//		rightEndNode = new POPDecisionEndNode(scriptArea, this, null);
+//		leftEndNode = new POPDecisionEndNode(scriptArea, this, rightEndNode);
+//		rightEndNode.setSideNode(leftEndNode);
+//		leftEndNode = leftEndNode.createSideFlowLine();
+//		leftEndNode.setParentNode(this);
+//		rightEndNode.setParentNode(this);
+//		
+//		leftStartNode.getOutFlowLine().setNextNode(leftEndNode);
+//		leftEndNode.setInFlowLine(leftStartNode.getOutFlowLine());
+////		leftEndNode.moveCenter();
+//		rightStartNode.getOutFlowLine().setNextNode(rightEndNode);
+//		rightEndNode.setInFlowLine(rightStartNode.getOutFlowLine());
+////		rightEndNode.moveCenter();
+//		
+//		outFlowLine = new POPFlowLine();
+//		outFlowLine.setRootNode(this);
+//		outFlowLine.setPrevNode(this);
+		init();
+		bindSubNodes();
+//		leftFlowLine.startXProperty().bind(component.layoutXProperty());
+//		leftFlowLine.startYProperty().bind(Bindings.add(component.layoutYProperty(), Bindings.divide(component.heightProperty(), 2)));
+//		leftFlowLine.endXProperty().bind(Bindings.subtract(Bindings.subtract(component.layoutXProperty(), Bindings.divide(Bindings.subtract(leftMaxWidth, component.widthProperty()), 2)), 10));
+//		leftFlowLine.endYProperty().bind(leftFlowLine.startYProperty());
+//		
+//		rightFlowLine.startXProperty().bind(Bindings.add(component.layoutXProperty(), component.widthProperty()));
+//		rightFlowLine.startYProperty().bind(Bindings.add(component.layoutYProperty(), Bindings.divide(component.heightProperty(), 2)));
+//		rightFlowLine.endXProperty().bind(Bindings.add(Bindings.add(Bindings.add(component.layoutXProperty(), component.widthProperty()), Bindings.divide(Bindings.subtract(rightMaxWidth, component.widthProperty()), 2)), 10));
+//		rightFlowLine.endYProperty().bind(rightFlowLine.startYProperty());
+//		
+//		
+//		leftStartNode.layoutXProperty().bind(leftFlowLine.endXProperty());
+//		leftStartNode.layoutYProperty().bind(leftFlowLine.endYProperty());
+//		
+//		rightStartNode.layoutXProperty().bind(rightFlowLine.endXProperty());
+//		rightStartNode.layoutYProperty().bind(rightFlowLine.endYProperty());
+//		
+//		leftEndNode.layoutXProperty().bind(leftStartNode.layoutXProperty());
+//		leftEndNode.layoutYProperty().bind(leftEndNode.getSideFlowLine().startYProperty());
+//		
+//		rightEndNode.layoutXProperty().bind(rightStartNode.layoutXProperty());
+//		rightEndNode.layoutYProperty().bind(leftEndNode.getSideFlowLine().endYProperty());
+//		
+//		leftEndNode.getSideFlowLine().startXProperty().bind(leftEndNode.layoutXProperty());
+//		leftEndNode.getSideFlowLine().startYProperty().bind(Bindings.add(component.layoutYProperty(), maxLength));
+//		leftEndNode.getSideFlowLine().endXProperty().bind(rightEndNode.layoutXProperty());
+//		leftEndNode.getSideFlowLine().endYProperty().bind(Bindings.add(component.layoutYProperty(), maxLength));
+//		
+//		rightEndNode.layoutYProperty().bind(leftEndNode.getSideFlowLine().endYProperty());
+//				
+//		leftLabel.layoutXProperty().bind(Bindings.subtract(leftStartNode.layoutXProperty(), Bindings.divide(leftLabel.widthProperty(), 2)));
+//		leftLabel.layoutYProperty().bind(Bindings.subtract(leftStartNode.layoutYProperty(), 30));
+//		rightLabel.layoutXProperty().bind(Bindings.subtract(rightStartNode.layoutXProperty(), Bindings.divide(rightLabel.widthProperty(), 2)));
+//		rightLabel.layoutYProperty().bind(Bindings.subtract(rightStartNode.layoutYProperty(), 30));
+		
+//		subNodes.add(leftFlowLine);
+//		subNodes.add(rightFlowLine);
+//		subNodes.add(leftLabel);
+//		subNodes.add(rightLabel);
+//		subNodes.add(leftStartNode);
+//		subNodes.add(rightStartNode);
+//		subNodes.add(leftEndNode);
+//		subNodes.add(rightEndNode);
+//		subNodes.add(leftEndNode.getSideFlowLine());
+		
 		setOnBoundChangeListener();
 	}
 	
@@ -259,15 +373,15 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 		symbol.setRootSymbol(true);
 		this.setRootSymbol(symbol);
 		
-		subNodes.add(leftFlowLine);
-		subNodes.add(rightFlowLine);
-		subNodes.add(leftLabel);
-		subNodes.add(rightLabel);
-		subNodes.add(leftStartNode);
-		subNodes.add(rightStartNode);
-		subNodes.add(leftEndNode);
-		subNodes.add(rightEndNode);
-		subNodes.add(leftEndNode.getSideFlowLine());
+//		subNodes.add(leftFlowLine);
+//		subNodes.add(rightFlowLine);
+//		subNodes.add(leftLabel);
+//		subNodes.add(rightLabel);
+//		subNodes.add(leftStartNode);
+//		subNodes.add(rightStartNode);
+//		subNodes.add(leftEndNode);
+//		subNodes.add(rightEndNode);
+//		subNodes.add(leftEndNode.getSideFlowLine());
 	}
 	
 	@Override

@@ -8,9 +8,6 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -181,12 +178,7 @@ public class POPFlowLine extends Group {
     			break;
     		} else {
     			subNode.getOutFlowLine().nextNode.setLayoutY(subNode.getOutFlowLine().getStartY() + nodeMinGap);
-    			if(subNode instanceof POPLoopNode) {
-    			}
     		}
-    		
-    		
-    		
     		subNode = subNode.getOutFlowLine().nextNode;
     	}
     	

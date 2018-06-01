@@ -13,6 +13,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
@@ -37,6 +38,7 @@ import javafx.stage.Stage;
 import kr.co.idiots.MainApp;
 import kr.co.idiots.POPFlowchartPlayer;
 import kr.co.idiots.POPVariableManager;
+import kr.co.idiots.SubNodeIF;
 import kr.co.idiots.model.POPArrayNode;
 import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPScriptArea;
@@ -51,8 +53,10 @@ import kr.co.idiots.model.operation.POPMultiplySymbol;
 import kr.co.idiots.model.operation.POPPlusSymbol;
 import kr.co.idiots.model.operation.POPRemainderSymbol;
 import kr.co.idiots.model.operation.POPStringPlusSymbol;
+import kr.co.idiots.model.symbol.POPDecisionEndNode;
 import kr.co.idiots.model.symbol.POPDecisionNode;
 import kr.co.idiots.model.symbol.POPDocumentNode;
+import kr.co.idiots.model.symbol.POPLoopEndNode;
 import kr.co.idiots.model.symbol.POPLoopNode;
 import kr.co.idiots.model.symbol.POPProcessNode;
 import kr.co.idiots.model.symbol.POPStartNode;
@@ -71,8 +75,11 @@ public class POPSolvingLayoutController {
 	@FXML
 	private ImageView node;
 	
+//	@FXML
+//	private AnchorPane symbolArea;
+	
 	@FXML
-	private AnchorPane symbolArea;
+	private Group symbolGroup;
 	
 	@FXML
 	private AnchorPane operationArea;
@@ -155,6 +162,12 @@ public class POPSolvingLayoutController {
 			pressedKeys.add(e.getCode());
 		});
 		mainApp.getPrimaryStage().getScene().setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
+		
+		loopSymbol = new POPLoopNode(scriptArea);
+		loopSymbol.invisibleSubNodes();
+		decisionSymbol = new POPDecisionNode(scriptArea);
+		decisionSymbol.invisibleSubNodes();
+//		loopSymbol.invisibleSubNodes();
 	}
 	
 	@FXML
@@ -204,16 +217,21 @@ public class POPSolvingLayoutController {
 		});
 		
 		processSymbol = new POPProcessNode(scriptArea);
-		symbolArea.getChildren().add(processSymbol.getComponent());
+		symbolGroup.getChildren().add(processSymbol.getComponent());
+		processSymbol.setLayoutX(processSymbol.getLayoutX() + 20);
 		documentSymbol = new POPDocumentNode(scriptArea);
-		symbolArea.getChildren().add(documentSymbol.getComponent());
+		symbolGroup.getChildren().add(documentSymbol.getComponent());
+		documentSymbol.setLayoutX(documentSymbol.getLayoutX() + 20);
 		documentSymbol.getComponent().setLayoutY(70);
-		decisionSymbol = new POPDecisionNode(scriptArea);
-		symbolArea.getChildren().add(decisionSymbol.getComponent());
+		
+		this.add(symbolGroup, decisionSymbol);
+		decisionSymbol.setLayoutX(decisionSymbol.getLayoutX() + 10);
 		decisionSymbol.getComponent().setLayoutY(140);
-		loopSymbol = new POPLoopNode(scriptArea);
-		symbolArea.getChildren().add(loopSymbol.getComponent());
-		loopSymbol.getComponent().setLayoutY(210);
+		
+		this.add(symbolGroup, loopSymbol);
+		
+		loopSymbol.setLayoutX(loopSymbol.getLayoutX() + 10);
+		loopSymbol.getComponent().setLayoutY(250);
 		
 		plusSymbol = new POPPlusSymbol();
 		operationArea.getChildren().add(plusSymbol);
@@ -281,6 +299,47 @@ public class POPSolvingLayoutController {
 			double absProblemDividerPos = scriptSplitPane.getDividerPositions()[0] * oldVal.doubleValue();
 			scriptSplitPane.setDividerPosition(0, absProblemDividerPos / newVal.doubleValue());
 		});
+		
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				PlatformHelper.run(() -> {
+//					while(true) {
+//						ThreadMXBean bean = ManagementFactory.getThreadMXBean();
+//						if(bean.getThreadCount() <= 23) {
+							loopSymbol.visibleSubNodes();
+							decisionSymbol.visibleSubNodes();
+//							break;
+//						}
+//						System.out.println(bean.getThreadCount());
+//					}
+				});
+			}
+		};
+		
+		thread.setDaemon(true);
+		thread.start();
+		
+//		loopSymbol.visibleSubNodes();
+	}
+	
+	public void add(Group pane, Node node) {
+		if(node instanceof SubNodeIF) {
+			pane.getChildren().add(node);
+			
+			for(Node subNode : ((SubNodeIF) node).getSubNodes()) {
+				if(subNode instanceof SubNodeIF) {
+					add(pane, (POPSymbolNode) subNode);
+				} else {
+					pane.getChildren().add(subNode);
+				}
+				if(!(subNode instanceof POPDecisionEndNode) && !(subNode instanceof POPLoopEndNode) && subNode instanceof POPSymbolNode) {
+					pane.getChildren().add(((POPSymbolNode) subNode).getOutFlowLine());
+				}
+			}
+		} else {
+			pane.getChildren().add(node);
+		}
 	}
 	
 	public static void showErrorPopup(String string) {

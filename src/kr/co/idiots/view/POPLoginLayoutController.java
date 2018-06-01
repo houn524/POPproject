@@ -1,14 +1,14 @@
 package kr.co.idiots.view;
 
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import kr.co.idiots.MainApp;
 import lombok.Getter;
 import lombok.Setter;
@@ -34,6 +34,20 @@ public class POPLoginLayoutController {
 				mainApp.initRootLayout();
 			}
 		});
+		
+		pwField.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+	        if (ev.getCode() == KeyCode.ENTER) {
+	           btnLogin.fire();
+	           ev.consume(); 
+	        }
+	    });
+		
+		emailField.addEventHandler(KeyEvent.KEY_PRESSED, ev -> {
+	        if (ev.getCode() == KeyCode.ENTER) {
+	           btnLogin.fire();
+	           ev.consume(); 
+	        }
+	    });
 	}
 	
 	public boolean verifyMember(String id, String pw) {

@@ -88,6 +88,22 @@ public class POPSideArrowFlowLine extends Group {
         updater.invalidated(null);
 	}
 	
+	public final void setStartX(double x) {
+		line.setStartX(x);
+	}
+	
+	public final void setStartY(double y) {
+		line.setStartY(y);
+	}
+	
+	public final void setEndX(double x) {
+		line.setEndX(x);
+	}
+	
+	public final void setEndY(double y) {
+		line.setEndY(y);
+	}
+	
 	public final double getStartX() {
         return line.getStartX();
     }
