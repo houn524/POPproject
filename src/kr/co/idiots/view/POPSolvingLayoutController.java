@@ -37,9 +37,11 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import kr.co.idiots.MainApp;
 import kr.co.idiots.POPFlowchartPlayer;
+import kr.co.idiots.POPNodeFactory;
 import kr.co.idiots.POPVariableManager;
 import kr.co.idiots.SubNodeIF;
 import kr.co.idiots.model.POPArrayNode;
+import kr.co.idiots.model.POPBlank;
 import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPScriptArea;
 import kr.co.idiots.model.POPVariableNode;
@@ -48,8 +50,10 @@ import kr.co.idiots.model.compare.POPLessThanEqualSymbol;
 import kr.co.idiots.model.compare.POPLessThanSymbol;
 import kr.co.idiots.model.compare.POPNotEqualSymbol;
 import kr.co.idiots.model.operation.POPDivideSymbol;
+import kr.co.idiots.model.operation.POPEqualSymbol;
 import kr.co.idiots.model.operation.POPMinusSymbol;
 import kr.co.idiots.model.operation.POPMultiplySymbol;
+import kr.co.idiots.model.operation.POPOperationSymbol;
 import kr.co.idiots.model.operation.POPPlusSymbol;
 import kr.co.idiots.model.operation.POPRemainderSymbol;
 import kr.co.idiots.model.operation.POPStringPlusSymbol;
@@ -139,15 +143,19 @@ public class POPSolvingLayoutController {
 	
 	private POPStringPlusSymbol stringPlusSymbol;
 	
+	private POPSymbolNode startNode;
+	
 	private static Stage popup;
 	
-	private static MainApp mainApp;
+	public static MainApp mainApp;
 	
 	private Bounds frameBounds;
 	
 	public static POPScriptArea scriptArea;
 	
 	private RootLayoutController rootController;
+	
+	private int sigCount = 10;
 	
 	private POPCreateVariableLayoutController createVariableController;
 	private POPCreateArrayLayoutController createArrayController;
@@ -266,7 +274,7 @@ public class POPSolvingLayoutController {
 		stringPlusSymbol.setLayoutY(440);
 		
 		
-		POPSymbolNode startNode = new POPStartNode(scriptArea);
+		startNode = new POPStartNode(scriptArea);
 		POPSymbolNode stopNode = new POPStopNode(scriptArea);
 		
 		startNode.getOutFlowLine().setNextNode(stopNode);
@@ -309,6 +317,8 @@ public class POPSolvingLayoutController {
 //						if(bean.getThreadCount() <= 23) {
 							loopSymbol.visibleSubNodes();
 							decisionSymbol.visibleSubNodes();
+							String content = mainApp.getConnector().loadFlowchart(1);
+							loadFlowchart(content);
 //							break;
 //						}
 //						System.out.println(bean.getThreadCount());
@@ -320,7 +330,214 @@ public class POPSolvingLayoutController {
 		thread.setDaemon(true);
 		thread.start();
 		
+		
+		
 //		loopSymbol.visibleSubNodes();
+	}
+	
+	public void loadFlowchart(String content) {
+		sigCount = 10;
+		
+		loadFlowchartSymbol(startNode, new StringBuilder(content), new String(new char[sigCount]).replace("\0", ":"));
+	}
+	
+	public String loadFlowchartSymbol(POPSymbolNode currNode, StringBuilder content, String sig) {
+		
+		String resContent = content.toString();
+		
+		String[] symbolNode = content.toString().split(sig);
+		for(String str : symbolNode) {
+			if(str.equals("Start") || str.equals("DecisionStart") || str.equals("LoopStart")) {
+				resContent = resContent.substring(str.length() + sig.length());
+			} else if(str.equals("Stop") || str.equals("DecisionEnd") || str.equals("LoopEnd")) {
+				if(resContent.contains(sig))
+					resContent = resContent.substring(str.length() + sig.length());
+				else
+					resContent = resContent.substring(str.length());
+				break;
+			} else {
+				if(resContent.contains(sig))
+					resContent = resContent.substring(str.length() + sig.length());
+				else
+					resContent = resContent.substring(str.length());
+				loadSymbolNode(currNode, str.split("\\(")[0], str);
+				currNode = currNode.getOutFlowLine().getNextNode();
+			}
+			
+		}
+		return resContent;
+	}
+	
+	public String loadSymbolNode(POPSymbolNode prevNode, String typeName, String content) {
+		content = content.substring(typeName.length() + 1);
+		
+		POPSymbolNode node = null;
+		node = (POPSymbolNode) POPNodeFactory.createPOPNode(typeName);
+		node.initialize();
+		prevNode.getOutFlowLine().insertNode(node);
+		if(node instanceof POPLoopNode)
+			((POPLoopNode) node).adjustPosition();
+		else if(node instanceof POPDecisionNode)
+			((POPDecisionNode) node).adjustPosition();
+		scriptArea.addWithOutFlowLine(node);
+		
+		POPOperationSymbol symbol = node.getRootSymbol();
+		
+		content = loadOperationSymbol(symbol, 0, content);
+		
+		if(prevNode.getOutFlowLine().getNextNode() instanceof POPDecisionNode) {
+//			if(content.contains("::"))
+			int count = sigCount;
+				content = content.substring(count);
+//			else
+//				content = content.substring(1);
+			
+			sigCount -= 1;
+			count = sigCount;
+			content = loadFlowchartSymbol(((POPDecisionNode) prevNode.getOutFlowLine().getNextNode()).getLeftStartNode(), new StringBuilder(content), new String(new char[count]).replace("\0", ":"));
+			content = loadFlowchartSymbol(((POPDecisionNode) prevNode.getOutFlowLine().getNextNode()).getRightStartNode(), new StringBuilder(content), new String(new char[count]).replace("\0", ":"));
+		}
+		
+		if(prevNode.getOutFlowLine().getNextNode() instanceof POPLoopNode) {
+			int count = sigCount;
+			content = content.substring(count);
+			
+			sigCount -= 1;
+			count = sigCount;
+			content = loadFlowchartSymbol(((POPLoopNode) prevNode.getOutFlowLine().getNextNode()).getLoopStartNode(), new StringBuilder(content), new String(new char[count]).replace("\0", ":"));
+		}
+		
+		return content;
+	}
+	
+	public String loadOperationSymbol(POPOperationSymbol rootSymbol, int index, String content) {
+		String type = content.split("\\(")[0];
+		content = content.split("\\(", 2)[1];
+		
+		POPOperationSymbol symbol = null;
+		
+		if(!type.equals("Equal") && !type.equals("Compare") && !type.equals("Output") && rootSymbol.getParentArrayNode() == null) {
+			symbol = (POPOperationSymbol) POPNodeFactory.createNode(type, null, null);
+			((POPBlank) rootSymbol.getContents().getChildren().get(index)).insertNode(symbol);
+		} else {
+			symbol = rootSymbol;
+		}
+		
+		if(content.split("\\(")[0].equals("Blank")) {
+			((POPBlank) symbol.getContents().getChildren().get(0)).setText(content.split("\\('")[1].split("'\\)")[0]);
+			content = content.split("\\('", 2)[1].split("'\\)", 2)[1];
+		} else if(content.split("\\(")[0].equals("Arr"))  {
+			content = content.split("\\('", 2)[1];
+			String arrName = content.split("', ")[0];
+			POPArrayNode array = (POPArrayNode) POPNodeFactory.createNode("Array", arrName, "Array");
+			if(symbol.getParentSymbol() instanceof POPEqualSymbol) {
+				if(!array.getIndexBlank().getOptions().contains("추가"))
+					array.getIndexBlank().getOptions().add("추가");
+			} else {
+				array.getIndexBlank().getOptions().remove("추가");
+			}
+			((POPBlank) symbol.getContents().getChildren().get(0)).insertNode(array);
+			content = content.split("', ", 2)[1];
+			if(content.split("\\(")[0].equals("Blank")) {
+				array.getIndexBlank().getEditor().setText(content.split("\\('")[1].split("'\\)")[0]);
+				content = content.split("\\('", 2)[1].split("'\\)", 2)[1];
+			} else if(content.split("\\(")[0].equals("Var")) {
+				content = content.split("\\('", 2)[1];
+				String varName = content.split("'\\)")[0];
+				content = content.split("'\\)", 2)[1];
+				POPVariableNode variable = (POPVariableNode) POPNodeFactory.createNode("IntegerVariable", varName, "IntegerVariable");
+				array.getIndexBlank().insertNode(variable);
+				
+				if(!POPVariableManager.createdVars.contains(variable.getName())) {
+					addVariable(variable.getName(), variable.getType());
+				}
+			} else {
+				String type2 = content.split("\\(")[0];
+				POPOperationSymbol symbol2 = (POPOperationSymbol) POPNodeFactory.createNode(type2, null, null);
+				array.getIndexBlank().insertNode(symbol2);
+				content = loadOperationSymbol(symbol2, 0, content);
+			}
+			content = content.split("\\)", 2)[1];
+			
+			if(!POPVariableManager.createdVars.contains(array.getName())) {
+				addArray(array.getName());
+			}
+		} else if(content.split("\\(")[0].equals("Var")) {
+			content = content.split("\\('", 2)[1];
+			String varName = content.split("'\\)")[0];
+			content = content.split("'\\)", 2)[1];
+			POPVariableNode variable = (POPVariableNode) POPNodeFactory.createNode("IntegerVariable", varName, "IntegerVariable");
+			((POPBlank) symbol.getContents().getChildren().get(0)).insertNode(variable);
+			
+			if(!POPVariableManager.createdVars.contains(variable.getName())) {
+				addVariable(variable.getName(), variable.getType());
+			}
+		} else {
+			content = loadOperationSymbol(symbol, 0, content);
+		}
+		
+		if(content.charAt(0) == ',') {
+			content = content.substring(2);
+		} else {
+			content = content.substring(1);
+			return content;
+		}
+		
+		if(content.split("\\(")[0].equals("Blank")) {
+			((POPBlank) symbol.getContents().getChildren().get(2)).setText(content.split("\\('")[1].split("'\\)")[0]);
+			content = content.split("\\('", 2)[1].split("'\\)", 2)[1].substring(1);
+		} else if(content.split("\\(")[0].equals("Arr"))  {
+			content = content.split("\\('", 2)[1];
+			String arrName = content.split("', ")[0];
+			POPArrayNode array = (POPArrayNode) POPNodeFactory.createNode("Array", arrName, "Array");
+			if(symbol.getParentSymbol() instanceof POPEqualSymbol) {
+				if(!array.getIndexBlank().getOptions().contains("추가"))
+					array.getIndexBlank().getOptions().add("추가");
+			} else {
+				array.getIndexBlank().getOptions().remove("추가");
+			}
+			((POPBlank) symbol.getContents().getChildren().get(2)).insertNode(array);
+			content = content.split("', ", 2)[1];
+			if(content.split("\\(")[0].equals("Blank")) {
+				array.getIndexBlank().getEditor().setText(content.split("\\('")[1].split("'\\)")[0]);
+				content = content.split("\\('", 2)[1].split("'\\)", 2)[1];
+			} else if(content.split("\\(")[0].equals("Var")) {
+				content = content.split("\\('", 2)[1];
+				String varName = content.split("'\\)")[0];
+				content = content.split("'\\)", 2)[1];
+				POPVariableNode variable = (POPVariableNode) POPNodeFactory.createNode("IntegerVariable", varName, "IntegerVariable");
+				array.getIndexBlank().insertNode(variable);
+				
+				if(!POPVariableManager.createdVars.contains(variable.getName())) {
+					addVariable(variable.getName(), variable.getType());
+				}
+			} else {
+				String type2 = content.split("\\(")[0];
+				POPOperationSymbol symbol2 = (POPOperationSymbol) POPNodeFactory.createNode(type2, null, null);
+				array.getIndexBlank().insertNode(symbol2);
+				content = loadOperationSymbol(symbol2, 0, content);
+			}
+			content = content.split("\\)", 2)[1];
+			
+			if(!POPVariableManager.createdVars.contains(array.getName())) {
+				addArray(array.getName());
+			}
+			
+		} else if(content.split("\\(")[0].equals("Var")) {
+			content = content.split("\\('", 2)[1];
+			String varName = content.split("'\\)")[0];
+			content = content.split("'\\)", 2)[1].substring(1);
+			POPVariableNode variable = (POPVariableNode) POPNodeFactory.createNode("IntegerVariable", varName, "IntegerVariable");
+			((POPBlank) symbol.getContents().getChildren().get(2)).insertNode(variable);
+			
+			if(!POPVariableManager.createdVars.contains(variable.getName())) {
+				addVariable(variable.getName(), variable.getType());
+			}
+		} else {
+			loadOperationSymbol(symbol, 2, content);
+		}
+		
+		return content;
 	}
 	
 	public void add(Group pane, Node node) {
@@ -412,7 +629,8 @@ public class POPSolvingLayoutController {
 		POPVariableNode varNode = new POPVariableNode(scriptArea, name, type);
 		variableArea.getChildren().add(varNode);
 		POPVariableManager.createdVars.add(varNode.getName());
-		popup.close();
+		if(popup != null)
+			popup.close();
 	}
 	
 	public void addArray(String name) {
@@ -422,7 +640,8 @@ public class POPSolvingLayoutController {
 		POPVariableManager.createdVars.add(arrayNode.getName());
 		variableArea.getChildren().add(sizeNode);
 		POPVariableManager.createdVars.add(sizeNode.getName());
-		popup.close();
+		if(popup != null)
+			popup.close();
 	}
 	
 	@FXML

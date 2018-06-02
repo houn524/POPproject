@@ -31,7 +31,6 @@ public class POPArrayNode extends POPVariableNode {
 			if(contents.getChildren().get(1) instanceof POPOperationSymbol) {
 				imgView.setFitWidth(TextUtils.computeTextWidth(lbName.getFont(), lbName.getText(), 0.0D) + 
 						 + 20 + ((POPOperationSymbol) contents.getChildren().get(1)).getContents().getPrefWrapLength());
-				System.out.println("operation");
 			} else if(contents.getChildren().get(1) instanceof POPVariableNode){
 				imgView.setFitWidth(TextUtils.computeTextWidth(lbName.getFont(), lbName.getText(), 0.0D) + 
 						20 + ((POPVariableNode) contents.getChildren().get(1)).getWidth());
