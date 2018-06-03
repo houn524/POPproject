@@ -1,17 +1,21 @@
 package kr.co.idiots.view;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -21,9 +25,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TabPane;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.ClipboardContent;
@@ -31,9 +37,11 @@ import javafx.scene.input.DataFormat;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import kr.co.idiots.MainApp;
 import kr.co.idiots.POPFlowchartPlayer;
@@ -43,6 +51,7 @@ import kr.co.idiots.SubNodeIF;
 import kr.co.idiots.model.POPArrayNode;
 import kr.co.idiots.model.POPBlank;
 import kr.co.idiots.model.POPNodeType;
+import kr.co.idiots.model.POPProblem;
 import kr.co.idiots.model.POPScriptArea;
 import kr.co.idiots.model.POPVariableNode;
 import kr.co.idiots.model.compare.POPIsEqualSymbol;
@@ -76,54 +85,39 @@ import lombok.Setter;
 public class POPSolvingLayoutController {
 	Point2D lastXY = null;
 	
-	@FXML
-	private ImageView node;
 	
-//	@FXML
-//	private AnchorPane symbolArea;
+	@FXML private ImageView node;
 	
-	@FXML
-	private Group symbolGroup;
+	@FXML private Group symbolGroup;
 	
-	@FXML
-	private AnchorPane operationArea;
+	@FXML private AnchorPane operationArea;
 	
-	@FXML
-	private FlowPane variableArea;
+	@FXML private FlowPane variableArea;
 	
-	@FXML
-	public AnchorPane rootPane;
+	@FXML public AnchorPane rootPane;
 	
-	@FXML
-	private TabPane tabPane;
+	@FXML private TabPane tabPane;
 	
-	@FXML
-	private AnchorPane scriptPane;
+	@FXML private AnchorPane scriptPane;
 	
-	@FXML
-	private ScrollPane scriptScrollPane;
+	@FXML private ScrollPane scriptScrollPane;
 	
-	@FXML
-	private SplitPane nodeSplitPane;
+	@FXML private SplitPane nodeSplitPane;
 	
-	@FXML
-	private SplitPane scriptSplitPane;
+	@FXML private SplitPane scriptSplitPane;
 	
-	@FXML
-	private AnchorPane consoleFrame;
 	
-	@FXML
-	private Button btnCreateVariable;
+	@FXML private Button btnCreateVariable;
 	
-	@FXML
-	private Button btnCreateArray;
+	@FXML private Button btnCreateArray;
+	
+	@FXML private Label lbTitle;
 	
 	private POPFlowchartPlayer flowchartPlayer;
 	
-	private Label lbConsole;
+	@FXML private Button btnStart;
 	
-	@FXML
-	private Button btnStart;
+	private POPProblem problem;
 	
 	private POPProcessNode processSymbol;
 	private POPDocumentNode documentSymbol;
@@ -160,11 +154,43 @@ public class POPSolvingLayoutController {
 	private POPCreateVariableLayoutController createVariableController;
 	private POPCreateArrayLayoutController createArrayController;
 	private static POPErrorPopupLayoutController errorPopupController;
+	
+	private POPConsoleLayoutController consoleController;
+	private Stage consoleStage;
+	
+	private POPLoadingLayoutController loadingController;
+	
+	private Pane splashLayout;
+	private ProgressBar loadProgress;
+	private Label progressText;
+	private static final int SPLASH_WIDTH = 676;
+    private static final int SPLASH_HEIGHT = 227;
+    
+    private double progressVal = 0;
+    private double progressMax = 0;
+    private double progress = 0;
+    private boolean isLoading = true;
+    
+    private ProgressBar progressBar;
+    
+    private Task<Void> loadTask;
 
 	public static final Set<KeyCode> pressedKeys = new HashSet<>();
 	
-	public POPSolvingLayoutController(MainApp mainApp) {
+	public POPSolvingLayoutController(MainApp mainApp, POPProblem problem) {
 		this.mainApp = mainApp;
+		this.problem = problem;
+		
+//		progress.bind(Bindings.divide(progressVal, progressMax));
+//		progress.addListener(new ChangeListener() {
+//			@Override
+//			public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+//				// TODO Auto-generated method stub
+//				loadingController.getProgress().setProgress((Double) arg2);
+//				System.out.println("progress : " + loadingController.getProgress().getProgress());
+//			}
+//			
+//		});
 		
 		mainApp.getPrimaryStage().getScene().setOnKeyPressed(e -> {
 			pressedKeys.add(e.getCode());
@@ -182,11 +208,33 @@ public class POPSolvingLayoutController {
 	private void initialize() {
 		flowchartPlayer = new POPFlowchartPlayer(this);
 		
-		lbConsole = new Label("출력값 : ");
-		lbConsole.setFont(new Font(20));
-		consoleFrame.getChildren().add(lbConsole);
+		loadProgress = new ProgressBar();
+		loadProgress.setPrefWidth(SPLASH_WIDTH - 20);
+		progressText = new Label("Loading...");
+		splashLayout = new VBox();
+		splashLayout.getChildren().addAll(loadProgress, progressText);
+		progressText.setAlignment(Pos.CENTER);
+        splashLayout.setStyle(
+                "-fx-padding: 5; " +
+                "-fx-background-color: cornsilk; " +
+                "-fx-border-width:5; " +
+                "-fx-border-color: " +
+                    "linear-gradient(" +
+                        "to bottom, " +
+                        "chocolate, " +
+                        "derive(chocolate, 50%)" +
+                    ");"
+        );
+        splashLayout.setEffect(new DropShadow());
+		
+		lbTitle.setText(problem.getTitle());
+		
+//		lbConsole = new Label("출력값 : ");
+//		lbConsole.setFont(new Font(20));
+//		consoleFrame.getChildren().add(lbConsole);
 		
 		scriptArea = new POPScriptArea(scriptPane, scriptScrollPane, this);
+//		scriptArea.getPane().setVisible(false);
 		
 		scriptScrollPane.viewportBoundsProperty().addListener(new ChangeListener<Bounds>() {
 			@Override
@@ -204,7 +252,8 @@ public class POPSolvingLayoutController {
 					@Override
 					public void run() {
 						PlatformHelper.run(() -> {
-							lbConsole.setText(scriptArea.play());
+//							lbConsole.setText(scriptArea.play());
+							showConsolePopup();
 						});
 					}
 				};
@@ -232,14 +281,14 @@ public class POPSolvingLayoutController {
 		documentSymbol.setLayoutX(documentSymbol.getLayoutX() + 20);
 		documentSymbol.getComponent().setLayoutY(70);
 		
-		this.add(symbolGroup, decisionSymbol);
-		decisionSymbol.setLayoutX(decisionSymbol.getLayoutX() + 10);
-		decisionSymbol.getComponent().setLayoutY(140);
-		
-		this.add(symbolGroup, loopSymbol);
-		
-		loopSymbol.setLayoutX(loopSymbol.getLayoutX() + 10);
-		loopSymbol.getComponent().setLayoutY(250);
+//		this.add(symbolGroup, decisionSymbol);
+//		decisionSymbol.setLayoutX(decisionSymbol.getLayoutX() + 10);
+//		decisionSymbol.getComponent().setLayoutY(140);
+//		
+//		this.add(symbolGroup, loopSymbol);
+//		
+//		loopSymbol.setLayoutX(loopSymbol.getLayoutX() + 10);
+//		loopSymbol.getComponent().setLayoutY(250);
 		
 		plusSymbol = new POPPlusSymbol();
 		operationArea.getChildren().add(plusSymbol);
@@ -301,8 +350,8 @@ public class POPSolvingLayoutController {
 			if(Double.isNaN(oldVal.doubleValue())) {
 				return;
 			}
-			double absConsoleDividerPos = oldVal.doubleValue() - (scriptSplitPane.getDividerPositions()[1] * oldVal.doubleValue());
-			scriptSplitPane.setDividerPosition(1, (newVal.doubleValue() - absConsoleDividerPos) / newVal.doubleValue());
+//			double absConsoleDividerPos = oldVal.doubleValue() - (scriptSplitPane.getDividerPositions()[1] * oldVal.doubleValue());
+//			scriptSplitPane.setDividerPosition(1, (newVal.doubleValue() - absConsoleDividerPos) / newVal.doubleValue());
 			
 			double absProblemDividerPos = scriptSplitPane.getDividerPositions()[0] * oldVal.doubleValue();
 			scriptSplitPane.setDividerPosition(0, absProblemDividerPos / newVal.doubleValue());
@@ -312,18 +361,106 @@ public class POPSolvingLayoutController {
 			@Override
 			public void run() {
 				PlatformHelper.run(() -> {
-//					while(true) {
-//						ThreadMXBean bean = ManagementFactory.getThreadMXBean();
-//						if(bean.getThreadCount() <= 23) {
-							loopSymbol.visibleSubNodes();
-							decisionSymbol.visibleSubNodes();
-							String content = mainApp.getConnector().loadFlowchart(1);
-							loadFlowchart(content);
-//							break;
-//						}
-//						System.out.println(bean.getThreadCount());
-//					}
+					showSplash(null, loadTask, () -> showScriptArea());
 				});
+			}
+		};
+		
+		thread.setDaemon(true);
+		thread.start();
+	}
+	
+	private void showSplash(final Stage initStage, Task<?> task, InitCompletionHandler initCompletionHandler) {
+		BorderPane loadingPane = new BorderPane();
+		progressBar = new ProgressBar(ProgressBar.INDETERMINATE_PROGRESS);
+//		progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
+		loadingPane.setCenter(progressBar);
+		
+		rootController.getRootPane().setCenter(loadingPane);
+		
+	}
+	
+	public void showScriptArea() {
+		rootController.getRootPane().setCenter(rootPane);
+		
+		this.add(symbolGroup, decisionSymbol);
+		decisionSymbol.setLayoutX(decisionSymbol.getLayoutX() + 10);
+		decisionSymbol.getComponent().setLayoutY(140);
+		
+		this.add(symbolGroup, loopSymbol);
+		
+		loopSymbol.setLayoutX(loopSymbol.getLayoutX() + 10);
+		loopSymbol.getComponent().setLayoutY(250);
+		
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				PlatformHelper.run(() -> {
+					loopSymbol.visibleSubNodes();
+					decisionSymbol.visibleSubNodes();
+				});
+			}
+		};
+	
+		thread.setDaemon(true);
+		thread.start();
+	}
+	
+	public interface InitCompletionHandler {
+		void complete();
+	}
+	
+	public void loadFlowchart(String content) {
+		
+		POPVariableManager.createdVars = new ArrayList<String>();
+		
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				PlatformHelper.run(() -> {
+					String resContent = content.toString();
+					String sig = new String(new char[sigCount]).replace("\0", ":");
+					POPSymbolNode currNode = startNode;
+					
+					progressMax = resContent.length();
+					
+					String[] symbolNode = content.toString().split(sig);
+					
+					for(String str : symbolNode) {
+						if(str.equals("Start") || str.equals("DecisionStart") || str.equals("LoopStart")) {
+							resContent = resContent.substring(str.length() + sig.length());
+						} else if(str.equals("Stop") || str.equals("DecisionEnd") || str.equals("LoopEnd")) {
+							if(resContent.contains(sig))
+								resContent = resContent.substring(str.length() + sig.length());
+							else
+								resContent = resContent.substring(str.length());
+							break;
+						} else {
+							if(resContent.contains(sig))
+								resContent = resContent.substring(str.length() + sig.length());
+							else
+								resContent = resContent.substring(str.length());
+							loadSymbolNode(currNode, str.split("\\(")[0], str);
+							currNode = currNode.getOutFlowLine().getNextNode();
+						}
+						progressVal = progressMax - resContent.length();
+//						Platform.runLater(() -> {
+						
+						
+//						updateProgress(progressVal, progressMax);
+//							loadingController.getProgress().setProgress(progressVal / progressMax);
+//							System.out.println(progressVal / progressMax);
+//						});
+						
+//						loadingController.getProgress().setProgress(progressVal/ progressMax);
+//						System.out.println(loadingController.getProgress().getProgress());
+						
+					}
+					
+					showScriptArea();
+				});
+				
+				
 			}
 		};
 		
@@ -331,21 +468,126 @@ public class POPSolvingLayoutController {
 		thread.start();
 		
 		
+		loadTask = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				// TODO Auto-generated method stub
+				PlatformHelper.run(() -> {
+//				Platform.runLater(() -> {
+//					for (int i = 1; i <= 100; i++) {
+//		                updateProgress(i, 100);
+//		                try {
+//							Thread.sleep(10);
+//						} catch (InterruptedException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//		            }
+					
+					String resContent = content.toString();
+					String sig = new String(new char[sigCount]).replace("\0", ":");
+					POPSymbolNode currNode = startNode;
+					
+					progressMax = resContent.length();
+					
+					String[] symbolNode = content.toString().split(sig);
+					
+					for(String str : symbolNode) {
+						if(str.equals("Start") || str.equals("DecisionStart") || str.equals("LoopStart")) {
+							resContent = resContent.substring(str.length() + sig.length());
+						} else if(str.equals("Stop") || str.equals("DecisionEnd") || str.equals("LoopEnd")) {
+							if(resContent.contains(sig))
+								resContent = resContent.substring(str.length() + sig.length());
+							else
+								resContent = resContent.substring(str.length());
+							break;
+						} else {
+							if(resContent.contains(sig))
+								resContent = resContent.substring(str.length() + sig.length());
+							else
+								resContent = resContent.substring(str.length());
+							loadSymbolNode(currNode, str.split("\\(")[0], str);
+							currNode = currNode.getOutFlowLine().getNextNode();
+						}
+						progressVal = progressMax - resContent.length();
+//						Platform.runLater(() -> {
+						
+						
+//						updateProgress(progressVal, progressMax);
+//							loadingController.getProgress().setProgress(progressVal / progressMax);
+//							System.out.println(progressVal / progressMax);
+//						});
+						
+//						loadingController.getProgress().setProgress(progressVal/ progressMax);
+//						System.out.println(loadingController.getProgress().getProgress());
+						
+					}
+//				});
+					
+				});
+				return null;
+			}
+			
+		};
 		
-//		loopSymbol.visibleSubNodes();
-	}
-	
-	public void loadFlowchart(String content) {
-		sigCount = 10;
+		loadTask.setOnFailed(new EventHandler<WorkerStateEvent>() {
+		    @Override
+		    public void handle(WorkerStateEvent arg0) {
+		        Throwable throwable = loadTask.getException(); 
+		        throwable.printStackTrace();
+		    }
+		});
 		
-		loadFlowchartSymbol(startNode, new StringBuilder(content), new String(new char[sigCount]).replace("\0", ":"));
+//		Thread thread = new Thread() {
+//			@Override
+//			public void run() {
+////				PlatformHelper.run(() -> {
+//					for (int i = 1; i <= 100; i++) {
+//		                progressBar.setProgress(i / 100);
+//		                System.out.println(progressBar.getProgress());
+//		                try {
+//							Thread.sleep(10);
+//						} catch (InterruptedException e) {
+//							// TODO Auto-generated catch block
+//							e.printStackTrace();
+//						}
+//		            }
+////				});
+//			}
+//		};
+//		
+//		thread.start();
+//		new Thread(loadTask).start();
+		
+//		Task<Void> task = new Task<Void>() {
+//
+//			@Override
+//			protected Void call() throws Exception {
+//				// TODO Auto-generated method stub
+//				while(isLoading) {
+////					progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
+//					System.out.println(progressBar.getProgress());
+//				}
+//					
+//				return null;
+//			}
+//			
+//		};
+//		
+//		new Thread(task).start();
+		
 	}
 	
 	public String loadFlowchartSymbol(POPSymbolNode currNode, StringBuilder content, String sig) {
 		
+		
+		
 		String resContent = content.toString();
 		
+//		progressMax.set(resContent.length());
+		
 		String[] symbolNode = content.toString().split(sig);
+		
 		for(String str : symbolNode) {
 			if(str.equals("Start") || str.equals("DecisionStart") || str.equals("LoopStart")) {
 				resContent = resContent.substring(str.length() + sig.length());
@@ -363,7 +605,7 @@ public class POPSolvingLayoutController {
 				loadSymbolNode(currNode, str.split("\\(")[0], str);
 				currNode = currNode.getOutFlowLine().getNextNode();
 			}
-			
+//			progressVal.set(progressMax.get() - resContent.length());
 		}
 		return resContent;
 	}
@@ -375,8 +617,10 @@ public class POPSolvingLayoutController {
 		node = (POPSymbolNode) POPNodeFactory.createPOPNode(typeName);
 		node.initialize();
 		prevNode.getOutFlowLine().insertNode(node);
-		if(node instanceof POPLoopNode)
+		if(node instanceof POPLoopNode) {
 			((POPLoopNode) node).adjustPosition();
+//			((POPLoopNode) node).adjustSubNodes();
+		}
 		else if(node instanceof POPDecisionNode)
 			((POPDecisionNode) node).adjustPosition();
 		scriptArea.addWithOutFlowLine(node);
@@ -560,35 +804,41 @@ public class POPSolvingLayoutController {
 	}
 	
 	public static void showErrorPopup(String string) {
-//		try {
-//			FXMLLoader loader = new FXMLLoader();
-//			loader.setLocation(MainApp.class.getResource("view/POPErrorPopupLayout.fxml"));
-//			AnchorPane errorPopup = (AnchorPane)loader.load();
-//			
-//			popup = new Stage();
-//			popup.setScene(new Scene(errorPopup));
-////			mainApp.getPrimaryStage().setOnHidden(e -> { popup.show(); });
-////			popup.show();
-//			
-//			errorPopupController = loader.getController();
-//			errorPopupController = errorPopupController.setText(string);
-////			errorPopupController.setSolvingController(this);
-//			errorPopupController.isCommitProperty().addListener((obs, wasCommit, isCommit) -> {
-//	            if (isCommit) {
-//	                popup.close();
-//	            }
-//	        });
-			
-//			popup.showAndWait();
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle("실행 오류");
 			alert.setHeaderText("순서도를 실행할 수 없습니다.");
 			alert.setContentText(string);
 
 			alert.showAndWait();
-//		} catch(IOException e) {
-//			e.printStackTrace();
-//		}
+	}
+	
+	public void showConsolePopup() {
+		try {
+			if(consoleController == null)
+				consoleController = new POPConsoleLayoutController();
+			
+			if(consoleStage == null || !consoleStage.isShowing()) {
+				
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(MainApp.class.getResource("view/POPConsoleLayout.fxml"));
+				loader.setControllerFactory(c -> {
+					return consoleController;
+				});
+				AnchorPane consolePane = (AnchorPane)loader.load();
+				
+				consoleStage = new Stage();
+				consoleStage.setScene(new Scene(consolePane));
+				consoleStage.show();
+				
+				consoleController.setController(this);
+			} else {
+				consoleStage.requestFocus();
+			}
+			consoleController.setOutput(scriptArea.play());
+			
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void showCreateVariablePopup() {

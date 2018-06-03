@@ -6,7 +6,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
+import kr.co.idiots.model.POPProblem;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,7 +22,7 @@ public class POPDatabaseConnector {
 		connection = null;
         Statement st = null;
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+//            Class.forName("com.mysql.jdbc.Driver");
             connection = DriverManager.getConnection("jdbc:mysql://popmysqlinstance.cbmkycbel6rd.ap-northeast-2.rds.amazonaws.com:3306/popdb" , "houn524", "tmdgns12");
             st = connection.createStatement();
  
@@ -97,5 +99,31 @@ public class POPDatabaseConnector {
 		
 		System.out.println(content);
 		return content;
+	}
+	
+	public ArrayList<POPProblem> loadProblems(String difficulty) {
+		PreparedStatement st = null;
+		String sql = "select * from problem where difficulty=?;";
+		
+		ArrayList<POPProblem> list = new ArrayList<>();
+		
+		boolean result = false;
+		
+		try {
+            st = connection.prepareStatement(sql);
+            st.setString(1, difficulty);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()) {
+            	POPProblem problem = new POPProblem(rs.getInt("number"), rs.getString("title"), rs.getString("content"), rs.getString("input"), rs.getString("output"), rs.getString("difficulty"));
+            	System.out.println(problem.getTitle());
+            	list.add(problem);
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException se1) {
+            se1.printStackTrace();
+        }
+		
+		return list;
 	}
 }

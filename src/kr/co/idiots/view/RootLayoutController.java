@@ -12,6 +12,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import kr.co.idiots.MainApp;
 import kr.co.idiots.model.POPNodeType;
+import kr.co.idiots.model.POPProblem;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,6 +35,7 @@ public class RootLayoutController {
 	private POPSelectProblemLayoutController selectProblemLayoutController;
 	private POPSolvingLayoutController solvingLayoutController;
 	private POPCreateVariableLayoutController createVariableController;
+	private POPLoadingLayoutController loadingController;
 	
 	public RootLayoutController() {
 	}
@@ -117,9 +119,10 @@ public class RootLayoutController {
 	/*
 	상위 레이아웃 안에 메인화면(기호들을 배치할 수 있는 페이지)을 보여준다.
 	 */
-	public void showPOPMainLayout() {
+	public void showPOPMainLayout(POPProblem problem) {
 		try {
-			solvingLayoutController = new POPSolvingLayoutController(mainApp);
+			solvingLayoutController = new POPSolvingLayoutController(mainApp, problem);
+			solvingLayoutController.setRootController(this);
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/POPSolvingLayout.fxml"));
 			loader.setControllerFactory(c -> {
@@ -127,13 +130,18 @@ public class RootLayoutController {
 			});
 			AnchorPane popMainLayout = (AnchorPane)loader.load();
 			
-			rootLayout.setCenter(popMainLayout);
+			
+			String content = mainApp.getConnector().loadFlowchart(1);
+			
+			solvingLayoutController.loadFlowchart(content);
+			
+//			solvingLayoutController.showScriptArea();
+//			rootLayout.setCenter(popMainLayout);
 			
 			//loader.getController();
 			
 //			loader.setController(solvingLayoutController);
 			
-			solvingLayoutController.setRootController(this);
 //			solvingLayoutController.setMainApp(mainApp);
 			
 			
@@ -142,6 +150,26 @@ public class RootLayoutController {
 			e.printStackTrace();
 		}
 	}
+	
+//	public void showPOPLoadingLayout() {
+//		try {
+//			if(loadingController == null)
+//				loadingController = new POPLoadingLayoutController();
+//			
+//				
+//			FXMLLoader loader = new FXMLLoader();
+//			loader.setLocation(MainApp.class.getResource("view/POPLoadingLayout.fxml"));
+//			loader.setControllerFactory(c -> {
+//				return loadingController;
+//			});
+//			BorderPane loadingPane = (BorderPane)loader.load();
+//			
+//			rootLayout.setCenter(loadingController.getRootPane());
+//			
+//		} catch(IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 	
 	public void showCreateVariablePopup() {
 		try {

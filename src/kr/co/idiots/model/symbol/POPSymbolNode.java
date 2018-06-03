@@ -21,6 +21,7 @@ import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPScriptArea;
 import kr.co.idiots.util.ClipboardUtil;
 import kr.co.idiots.util.DragManager;
+import kr.co.idiots.util.PlatformHelper;
 import kr.co.idiots.view.POPSolvingLayoutController;
 import lombok.Getter;
 import lombok.Setter;
@@ -126,6 +127,18 @@ public class POPSymbolNode extends POPNode {
 		});
 		
 		isInitialized = true;
+		
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				PlatformHelper.run(() -> {
+					outFlowLine.setVisible(true);
+				});
+			}
+		};
+		
+		thread.setDaemon(true);
+		thread.start();
 	}
 	
 	public void moveCenter() {

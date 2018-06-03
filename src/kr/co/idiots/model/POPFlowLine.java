@@ -258,8 +258,9 @@ public class POPFlowLine extends Group {
 				node = (POPSymbolNode) POPNodeFactory.createPOPNode(db.getString());
 				node.initialize();
 				insertNode(node);
-				if(node instanceof POPLoopNode)
+				if(node instanceof POPLoopNode) {
 					((POPLoopNode) node).adjustPosition();
+				}
 				else if(node instanceof POPDecisionNode)
 					((POPDecisionNode) node).adjustPosition();
 				getPrevNode().getScriptArea().addWithOutFlowLine(node);
@@ -398,6 +399,8 @@ public class POPFlowLine extends Group {
     		}
     	}
     	root.getOutFlowLine().pullNodesThread();
+    	
+    	
     }
     
     public void removeNodeOfDecision() {

@@ -32,7 +32,6 @@ public class POPIndexBlank extends ComboBox {
 		options = FXCollections.observableArrayList("마지막");
 		
 		this.setItems(options);
-//		this.getItems().addAll("마지막" , "마지막 다음");
 		
 		setOnIndexBlankDrag();
 		setOnIndexBlankChange();

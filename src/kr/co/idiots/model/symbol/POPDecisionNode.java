@@ -123,7 +123,7 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 		subNodes.add(rightEndNode);
 		subNodes.add(leftEndNode.getSideFlowLine());
 		
-//		invisibleSubNodes();
+		invisibleSubNodes();
 	}
 	
 	public void bindSubNodes() {
@@ -167,12 +167,18 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 		for(Node subNode : subNodes) {
 			subNode.setVisible(true);
 		}
+		leftStartNode.getOutFlowLine().setVisible(true);
+		rightStartNode.getOutFlowLine().setVisible(true);
+		outFlowLine.setVisible(true);
 	}
 	
 	public void invisibleSubNodes() {
 		for(Node subNode : subNodes) {
 			subNode.setVisible(false);
 		}
+		leftStartNode.getOutFlowLine().setVisible(false);
+		rightStartNode.getOutFlowLine().setVisible(false);
+		outFlowLine.setVisible(false);
 	}
 	
 	public POPDecisionNode(POPScriptArea scriptArea) {
@@ -373,6 +379,17 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 		symbol.setRootSymbol(true);
 		this.setRootSymbol(symbol);
 		
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				PlatformHelper.run(() -> {
+					visibleSubNodes();
+				});
+			}
+		};
+		
+		thread.setDaemon(true);
+		thread.start();
 //		subNodes.add(leftFlowLine);
 //		subNodes.add(rightFlowLine);
 //		subNodes.add(leftLabel);

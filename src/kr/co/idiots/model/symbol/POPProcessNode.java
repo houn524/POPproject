@@ -16,6 +16,8 @@ public class POPProcessNode extends POPSymbolNode {
 		
 		outFlowLine = new POPFlowLine();
 		outFlowLine.setPrevNode(this);
+		
+		outFlowLine.setVisible(false);
 	}
 	
 	@Override
