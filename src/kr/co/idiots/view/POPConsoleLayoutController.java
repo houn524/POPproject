@@ -19,13 +19,7 @@ public class POPConsoleLayoutController {
 		
 	}
 	
-	@FXML
-	private void initialize() {
-		
-	}
-	
 	public void setOutput(String output) {
 		txtOutput.setText(output);
 	}
-	
 }

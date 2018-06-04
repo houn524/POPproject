@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.SplitPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.POPProblemDetailLayoutController">
+   <children>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <top>
+            <Label text="문제 내용 :" BorderPane.alignment="CENTER_LEFT">
+               <BorderPane.margin>
+                  <Insets bottom="10.0" left="10.0" />
+               </BorderPane.margin>
+            </Label>
+         </top>
+         <center>
+            <SplitPane dividerPositions="0.5" orientation="VERTICAL" prefHeight="200.0" prefWidth="160.0" BorderPane.alignment="CENTER">
+               <items>
+                  <TextArea fx:id="txtContent" editable="false" prefHeight="228.0" prefWidth="600.0" />
+                  <GridPane>
+                    <columnConstraints>
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" percentWidth="3.0" prefWidth="10.0" />
+                      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                      <RowConstraints maxHeight="30.0" minHeight="-Infinity" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                      <RowConstraints vgrow="SOMETIMES" />
+                    </rowConstraints>
+                     <children>
+                        <Label text="입력 예시 :">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                        <TextArea fx:id="txtInputExample" editable="false" GridPane.rowIndex="1" />
+                        <Label text="출력 예시 :" GridPane.columnIndex="2">
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </Label>
+                        <TextArea fx:id="txtOutputExample" editable="false" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                     </children>
+                  </GridPane>
+               </items>
+            </SplitPane>
+         </center>
+      </BorderPane>
+   </children>
+</AnchorPane>

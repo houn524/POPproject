@@ -114,7 +114,8 @@ public class POPDatabaseConnector {
             st.setString(1, difficulty);
             ResultSet rs = st.executeQuery();
             if(rs.next()) {
-            	POPProblem problem = new POPProblem(rs.getInt("number"), rs.getString("title"), rs.getString("content"), rs.getString("input"), rs.getString("output"), rs.getString("difficulty"));
+            	POPProblem problem = new POPProblem(rs.getInt("number"), rs.getString("title"), rs.getString("content"), rs.getString("input_example"), rs.getString("output_example"), 
+            			rs.getString("input_case"), rs.getString("output_case"), rs.getString("difficulty"));
             	System.out.println(problem.getTitle());
             	list.add(problem);
             }

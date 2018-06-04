@@ -131,12 +131,12 @@ public class RootLayoutController {
 			AnchorPane popMainLayout = (AnchorPane)loader.load();
 			
 			
-			String content = mainApp.getConnector().loadFlowchart(1);
-			
-			solvingLayoutController.loadFlowchart(content);
+//			String content = mainApp.getConnector().loadFlowchart(1);
+//			
+//			solvingLayoutController.loadFlowchart(content);
 			
 //			solvingLayoutController.showScriptArea();
-//			rootLayout.setCenter(popMainLayout);
+			rootLayout.setCenter(popMainLayout);
 			
 			//loader.getController();
 			

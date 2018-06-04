@@ -111,6 +111,8 @@ public class POPSolvingLayoutController {
 	
 	@FXML private Button btnCreateArray;
 	
+	@FXML private Button btnProblemDetail;
+	
 	@FXML private Label lbTitle;
 	
 	private POPFlowchartPlayer flowchartPlayer;
@@ -153,10 +155,12 @@ public class POPSolvingLayoutController {
 	
 	private POPCreateVariableLayoutController createVariableController;
 	private POPCreateArrayLayoutController createArrayController;
-	private static POPErrorPopupLayoutController errorPopupController;
 	
 	private POPConsoleLayoutController consoleController;
 	private Stage consoleStage;
+	
+	private POPProblemDetailLayoutController problemDetailController;
+	private Stage problemDetailStage;
 	
 	private POPLoadingLayoutController loadingController;
 	
@@ -229,12 +233,7 @@ public class POPSolvingLayoutController {
 		
 		lbTitle.setText(problem.getTitle());
 		
-//		lbConsole = new Label("출력값 : ");
-//		lbConsole.setFont(new Font(20));
-//		consoleFrame.getChildren().add(lbConsole);
-		
 		scriptArea = new POPScriptArea(scriptPane, scriptScrollPane, this);
-//		scriptArea.getPane().setVisible(false);
 		
 		scriptScrollPane.viewportBoundsProperty().addListener(new ChangeListener<Bounds>() {
 			@Override
@@ -265,6 +264,10 @@ public class POPSolvingLayoutController {
 			
 		});
 		
+		btnProblemDetail.setOnAction(event -> {
+			showProblemDetailPopup();
+		});
+		
 		btnCreateVariable.setOnAction(event-> {
 			showCreateVariablePopup();
 		});
@@ -281,14 +284,14 @@ public class POPSolvingLayoutController {
 		documentSymbol.setLayoutX(documentSymbol.getLayoutX() + 20);
 		documentSymbol.getComponent().setLayoutY(70);
 		
-//		this.add(symbolGroup, decisionSymbol);
-//		decisionSymbol.setLayoutX(decisionSymbol.getLayoutX() + 10);
-//		decisionSymbol.getComponent().setLayoutY(140);
-//		
-//		this.add(symbolGroup, loopSymbol);
-//		
-//		loopSymbol.setLayoutX(loopSymbol.getLayoutX() + 10);
-//		loopSymbol.getComponent().setLayoutY(250);
+		this.add(symbolGroup, decisionSymbol);
+		decisionSymbol.setLayoutX(decisionSymbol.getLayoutX() + 10);
+		decisionSymbol.getComponent().setLayoutY(140);
+		
+		this.add(symbolGroup, loopSymbol);
+		
+		loopSymbol.setLayoutX(loopSymbol.getLayoutX() + 10);
+		loopSymbol.getComponent().setLayoutY(250);
 		
 		plusSymbol = new POPPlusSymbol();
 		operationArea.getChildren().add(plusSymbol);
@@ -329,7 +332,7 @@ public class POPSolvingLayoutController {
 		startNode.getOutFlowLine().setNextNode(stopNode);
 		startNode.getOutFlowLine().setStartNode((POPStartNode) startNode); 
 		stopNode.setParentNode(startNode);
-		startNode.getOutFlowLine().pullNodesThread();
+//		startNode.getOutFlowLine().pullNodes();
 		
 		scriptArea.setStartNode(startNode);
 		scriptArea.addWithOutFlowLine(startNode);
@@ -357,17 +360,28 @@ public class POPSolvingLayoutController {
 			scriptSplitPane.setDividerPosition(0, absProblemDividerPos / newVal.doubleValue());
 		});
 		
+		String content = mainApp.getConnector().loadFlowchart(1);
+		
+//	    loadFlowchart(content);
+	    
+	    
+		
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
 				PlatformHelper.run(() -> {
-					showSplash(null, loadTask, () -> showScriptArea());
+					loopSymbol.visibleSubNodes();
+					decisionSymbol.visibleSubNodes();
+					loadFlowchart(content);
+//					showSplash(null, loadTask, () -> showScriptArea());
 				});
 			}
 		};
 		
 		thread.setDaemon(true);
 		thread.start();
+		
+//		showScriptArea();
 	}
 	
 	private void showSplash(final Stage initStage, Task<?> task, InitCompletionHandler initCompletionHandler) {
@@ -392,18 +406,19 @@ public class POPSolvingLayoutController {
 		loopSymbol.setLayoutX(loopSymbol.getLayoutX() + 10);
 		loopSymbol.getComponent().setLayoutY(250);
 		
-		Thread thread = new Thread() {
-			@Override
-			public void run() {
-				PlatformHelper.run(() -> {
+//		Thread thread = new Thread() {
+//			@Override
+//			public void run() {
+//				PlatformHelper.run(() -> {
 					loopSymbol.visibleSubNodes();
 					decisionSymbol.visibleSubNodes();
-				});
-			}
-		};
-	
-		thread.setDaemon(true);
-		thread.start();
+//				});
+//			}
+//		};
+//	
+//		thread.setDaemon(true);
+//		thread.start();
+					startNode.getOutFlowLine().pullNodes();
 	}
 	
 	public interface InitCompletionHandler {
@@ -414,58 +429,63 @@ public class POPSolvingLayoutController {
 		
 		POPVariableManager.createdVars = new ArrayList<String>();
 		
-		Thread thread = new Thread() {
-			@Override
-			public void run() {
-				PlatformHelper.run(() -> {
-					String resContent = content.toString();
-					String sig = new String(new char[sigCount]).replace("\0", ":");
-					POPSymbolNode currNode = startNode;
-					
-					progressMax = resContent.length();
-					
-					String[] symbolNode = content.toString().split(sig);
-					
-					for(String str : symbolNode) {
-						if(str.equals("Start") || str.equals("DecisionStart") || str.equals("LoopStart")) {
-							resContent = resContent.substring(str.length() + sig.length());
-						} else if(str.equals("Stop") || str.equals("DecisionEnd") || str.equals("LoopEnd")) {
-							if(resContent.contains(sig))
-								resContent = resContent.substring(str.length() + sig.length());
-							else
-								resContent = resContent.substring(str.length());
-							break;
-						} else {
-							if(resContent.contains(sig))
-								resContent = resContent.substring(str.length() + sig.length());
-							else
-								resContent = resContent.substring(str.length());
-							loadSymbolNode(currNode, str.split("\\(")[0], str);
-							currNode = currNode.getOutFlowLine().getNextNode();
-						}
-						progressVal = progressMax - resContent.length();
-//						Platform.runLater(() -> {
-						
-						
-//						updateProgress(progressVal, progressMax);
-//							loadingController.getProgress().setProgress(progressVal / progressMax);
-//							System.out.println(progressVal / progressMax);
-//						});
-						
-//						loadingController.getProgress().setProgress(progressVal/ progressMax);
-//						System.out.println(loadingController.getProgress().getProgress());
-						
-					}
-					
-					showScriptArea();
-				});
-				
-				
-			}
-		};
+		int count = sigCount;
 		
-		thread.setDaemon(true);
-		thread.start();
+		this.loadFlowchartSymbol(startNode, new StringBuilder(content), new String(new char[count]).replace("\0", ":"));
+		
+//		showScriptArea();
+//		Thread thread = new Thread() {
+//			@Override
+//			public void run() {
+////				PlatformHelper.run(() -> {
+//					String resContent = content.toString();
+//					String sig = new String(new char[sigCount]).replace("\0", ":");
+//					POPSymbolNode currNode = startNode;
+//					
+//					progressMax = resContent.length();
+//					
+//					String[] symbolNode = content.toString().split(sig);
+//					
+//					for(String str : symbolNode) {
+//						if(str.equals("Start") || str.equals("DecisionStart") || str.equals("LoopStart")) {
+//							resContent = resContent.substring(str.length() + sig.length());
+//						} else if(str.equals("Stop") || str.equals("DecisionEnd") || str.equals("LoopEnd")) {
+//							if(resContent.contains(sig))
+//								resContent = resContent.substring(str.length() + sig.length());
+//							else
+//								resContent = resContent.substring(str.length());
+//							break;
+//						} else {
+//							if(resContent.contains(sig))
+//								resContent = resContent.substring(str.length() + sig.length());
+//							else
+//								resContent = resContent.substring(str.length());
+//							loadSymbolNode(currNode, str.split("\\(")[0], str);
+//							currNode = currNode.getOutFlowLine().getNextNode();
+//						}
+//						progressVal = progressMax - resContent.length();
+////						Platform.runLater(() -> {
+//						
+//						
+////						updateProgress(progressVal, progressMax);
+////							loadingController.getProgress().setProgress(progressVal / progressMax);
+////							System.out.println(progressVal / progressMax);
+////						});
+//						
+////						loadingController.getProgress().setProgress(progressVal/ progressMax);
+////						System.out.println(loadingController.getProgress().getProgress());
+//						
+//					}
+//					
+//					showScriptArea();
+////				});
+//				
+//				
+//			}
+//		};
+//		
+//		thread.setDaemon(true);
+//		thread.start();
 		
 		
 		loadTask = new Task<Void>() {
@@ -835,6 +855,37 @@ public class POPSolvingLayoutController {
 				consoleStage.requestFocus();
 			}
 			consoleController.setOutput(scriptArea.play());
+			
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void showProblemDetailPopup() {
+		try {
+			if(problemDetailController == null)
+				problemDetailController = new POPProblemDetailLayoutController();
+			
+			if(problemDetailStage == null || !problemDetailStage.isShowing()) {
+				
+				FXMLLoader loader = new FXMLLoader();
+				loader.setLocation(MainApp.class.getResource("view/POPProblemDetailLayout.fxml"));
+				loader.setControllerFactory(c -> {
+					return problemDetailController;
+				});
+				AnchorPane problemDetailPane = (AnchorPane)loader.load();
+				
+				problemDetailStage = new Stage();
+				problemDetailStage.setScene(new Scene(problemDetailPane));
+				problemDetailStage.show();
+				
+				problemDetailController.getTxtContent().setText(problem.getContent());
+				problemDetailController.getTxtInputExample().setText(problem.getInputExample());
+				problemDetailController.getTxtOutputExample().setText(problem.getOutputExample());
+			} else {
+				problemDetailStage.requestFocus();
+			}
+			
 			
 		} catch(IOException e) {
 			e.printStackTrace();

@@ -152,8 +152,6 @@ public class POPSymbolNode extends POPNode {
 			
 			if(!component.layoutXProperty().isBound())
 				component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2));
-			
-			
 		}
 	}
 

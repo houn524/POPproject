@@ -181,7 +181,6 @@ public class POPFlowLine extends Group {
     		}
     		subNode = subNode.getOutFlowLine().nextNode;
     	}
-    	
     }
     
     public void pullNodesThread() {
@@ -338,6 +337,9 @@ public class POPFlowLine extends Group {
     
     public void insertNode(POPSymbolNode node) {    
     	
+    	node.getOutFlowLine().setPrevNode(node);
+    	node.getOutFlowLine().setNextNode(nextNode);
+    	
     	if(nextNode.getParentNode() != null) {
     		node.setParentNode(nextNode.getParentNode());
     	}
@@ -350,8 +352,7 @@ public class POPFlowLine extends Group {
     		node.getComponent().setLayoutY(prevNode.getComponent().getBoundsInParent().getMaxY() + nodeMinGap);
     	}
     	
-    	node.getOutFlowLine().setPrevNode(node);
-    	node.getOutFlowLine().setNextNode(nextNode);
+    	
     	if(decisionNode != null) {
     		node.getOutFlowLine().setDecisionNode(decisionNode);
     		
