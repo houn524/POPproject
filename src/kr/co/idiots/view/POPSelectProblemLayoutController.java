@@ -83,10 +83,6 @@ public class POPSelectProblemLayoutController {
 			return row;
 		});
 		
-//		problemData.add(new POPProblem(1, "구구단"));
-//		problemData.add(new POPProblem(2, "문제1"));
-//		problemData.add(new POPProblem(3, "문제2"));
-//		problemData.add(new POPProblem(4, "문제3"));
 		problemData.addAll(mainApp.getConnector().loadProblems("초급"));
 		
 		tableView.setItems(problemData);

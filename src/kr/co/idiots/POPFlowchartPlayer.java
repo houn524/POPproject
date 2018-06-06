@@ -42,7 +42,7 @@ public class POPFlowchartPlayer {
 		this.solvingController = solvingController;
 	}
 	
-	public void playFlowChart(POPSymbolNode node) {
+	public void playFlowChart(POPSymbolNode node) throws NullPointerException, NumberFormatException {
 		POPVariableManager.declaredVars = new HashMap<>();
 		POPVariableManager.declaredArrs = new HashMap<>();
 		playNode(node);
@@ -179,18 +179,20 @@ public class POPFlowchartPlayer {
 			node = node.getOutFlowLine().getNextNode();
 		}
 		
-		POPSolvingLayoutController.mainApp.getConnector().saveFlowchart(content.toString());
+//		POPSolvingLayoutController.mainApp.getConnector().saveFlowchart(content.toString());
 		
 		return content;
 	}
 	
-	public void playNode(POPSymbolNode node) {
+	public void playNode(POPSymbolNode node) throws NullPointerException, NumberFormatException {
 		isStop = false;
 		
 		try {
 			while(!isStop) { 
+				if(node.getImgView() != null)
+					node.getImgView().setStyle("");
 				if(node instanceof POPStartNode) {
-					saveFlowchart((POPStartNode) node);
+//					saveFlowchart((POPStartNode) node);
 					output = new StringBuilder();
 				} else if(node instanceof POPProcessNode) {
 					playProcessNode((POPProcessNode) node);
@@ -245,6 +247,7 @@ public class POPFlowchartPlayer {
 			}
 			POPSolvingLayoutController.scriptArea.stop();
 			System.out.println(e);
+			throw e;
 		}
 		
 		

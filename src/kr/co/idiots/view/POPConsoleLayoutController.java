@@ -19,7 +19,7 @@ public class POPConsoleLayoutController {
 		
 	}
 	
-	public void setOutput(String output) {
+	public void setOutput(String output) throws NullPointerException, NumberFormatException {
 		txtOutput.setText(output);
 	}
 }

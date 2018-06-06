@@ -18,7 +18,6 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
 import kr.co.idiots.CodeGenerator;
-import kr.co.idiots.MainApp;
 import kr.co.idiots.POPFlowchartPlayer;
 import kr.co.idiots.POPNodeFactory;
 import kr.co.idiots.SubNodeIF;
@@ -27,6 +26,7 @@ import kr.co.idiots.model.symbol.POPDecisionEndNode;
 import kr.co.idiots.model.symbol.POPDecisionNode;
 import kr.co.idiots.model.symbol.POPLoopEndNode;
 import kr.co.idiots.model.symbol.POPLoopNode;
+import kr.co.idiots.model.symbol.POPStartNode;
 import kr.co.idiots.model.symbol.POPSymbolNode;
 import kr.co.idiots.util.DragManager;
 import kr.co.idiots.util.POPNodeDataFormat;
@@ -306,10 +306,15 @@ public class POPScriptArea {
 		return generator.generate(startNode);
 	}
 	
-	public String play() {
+	public String play() throws NullPointerException, NumberFormatException {
 		
 		flowchartPlayer.playFlowChart(startNode);
 		return flowchartPlayer.getOutput().toString();
+	}
+	
+	public void saveFlowchart(String user_id, int problem_number) {
+		solvingController.mainApp.getConnector().saveFlowchartByUserIdAndProblemNumber(user_id, problem_number, 
+				flowchartPlayer.saveFlowchart((POPStartNode) startNode).toString());
 	}
 	
 	public void stop() {

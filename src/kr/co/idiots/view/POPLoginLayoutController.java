@@ -10,6 +10,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import kr.co.idiots.MainApp;
+import kr.co.idiots.model.POPLoggedInMember;
+import kr.co.idiots.model.POPMember;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -31,6 +33,7 @@ public class POPLoginLayoutController {
 	private void initialize() {
 		btnLogin.setOnAction(event -> {
 			if(verifyMember(emailField.getText(), pwField.getText())) {
+				POPLoggedInMember.getInstance().setMember(new POPMember(emailField.getText(), pwField.getText()));
 				mainApp.initRootLayout();
 			}
 		});

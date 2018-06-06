@@ -50,6 +50,7 @@ import kr.co.idiots.POPVariableManager;
 import kr.co.idiots.SubNodeIF;
 import kr.co.idiots.model.POPArrayNode;
 import kr.co.idiots.model.POPBlank;
+import kr.co.idiots.model.POPLoggedInMember;
 import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPProblem;
 import kr.co.idiots.model.POPScriptArea;
@@ -253,6 +254,7 @@ public class POPSolvingLayoutController {
 						PlatformHelper.run(() -> {
 //							lbConsole.setText(scriptArea.play());
 							showConsolePopup();
+							scriptArea.saveFlowchart(POPLoggedInMember.getInstance().getMember().getId(), problem.getNumber());
 						});
 					}
 				};
@@ -360,7 +362,7 @@ public class POPSolvingLayoutController {
 			scriptSplitPane.setDividerPosition(0, absProblemDividerPos / newVal.doubleValue());
 		});
 		
-		String content = mainApp.getConnector().loadFlowchart(1);
+		String content = mainApp.getConnector().loadFlowchartByUserIdAndProblemNumber(POPLoggedInMember.getInstance().getMember().getId(), problem.getNumber());
 		
 //	    loadFlowchart(content);
 	    
@@ -834,6 +836,8 @@ public class POPSolvingLayoutController {
 	
 	public void showConsolePopup() {
 		try {
+			String output = "";
+			
 			if(consoleController == null)
 				consoleController = new POPConsoleLayoutController();
 			
@@ -848,13 +852,27 @@ public class POPSolvingLayoutController {
 				
 				consoleStage = new Stage();
 				consoleStage.setScene(new Scene(consolePane));
+				try {
+					output = scriptArea.play();
+				} catch (NullPointerException | NumberFormatException e) {
+					return;
+				}
+				
 				consoleStage.show();
 				
 				consoleController.setController(this);
+				consoleController.setOutput(output);
 			} else {
 				consoleStage.requestFocus();
 			}
-			consoleController.setOutput(scriptArea.play());
+			
+//			try {
+//				consoleController.setOutput(scriptArea.play());
+//			} catch (NullPointerException | NumberFormatException e) {
+//				System.out.println("??");
+//				consoleStage.hide();
+//			}
+			
 			
 		} catch(IOException e) {
 			e.printStackTrace();
