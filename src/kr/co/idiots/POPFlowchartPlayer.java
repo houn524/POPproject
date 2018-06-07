@@ -3,6 +3,7 @@ package kr.co.idiots;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javafx.scene.control.Alert.AlertType;
 import kr.co.idiots.model.POPArrayNode;
 import kr.co.idiots.model.POPBlank;
 import kr.co.idiots.model.POPVariableNode;
@@ -42,9 +43,10 @@ public class POPFlowchartPlayer {
 		this.solvingController = solvingController;
 	}
 	
-	public void playFlowChart(POPSymbolNode node) throws NullPointerException, NumberFormatException {
+	public void playFlowChart(POPSymbolNode node, int index) throws NullPointerException, NumberFormatException, IndexOutOfBoundsException {
 		POPVariableManager.declaredVars = new HashMap<>();
 		POPVariableManager.declaredArrs = new HashMap<>();
+		solvingController.initVariableValues(index);
 		playNode(node);
 	}
 	
@@ -184,7 +186,7 @@ public class POPFlowchartPlayer {
 		return content;
 	}
 	
-	public void playNode(POPSymbolNode node) throws NullPointerException, NumberFormatException {
+	public void playNode(POPSymbolNode node) throws NullPointerException, NumberFormatException, IndexOutOfBoundsException {
 		isStop = false;
 		
 		try {
@@ -228,7 +230,7 @@ public class POPFlowchartPlayer {
 							isLoop = false;
 							loopNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
 							loopNode.setException(true);
-							solvingController.showErrorPopup("무한 루프");
+							solvingController.showAlertPopup("실행 오류", "순서도를 실행할 수 없습니다.", "무한 루프", AlertType.ERROR);
 							break;
 						}
 					}
@@ -238,12 +240,12 @@ public class POPFlowchartPlayer {
 					break;
 				}
 			}
-		} catch(NullPointerException | NumberFormatException e) {
+		} catch(NullPointerException | NumberFormatException | IndexOutOfBoundsException e) {
 			if(e.getMessage() == null) {
 				e.printStackTrace();
-				POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
+				POPSolvingLayoutController.showAlertPopup("실행 오류", "순서도를 실행할 수 없습니다.", "변수 초기화 필요", AlertType.ERROR);
 			} else {
-				POPSolvingLayoutController.showErrorPopup(e.getMessage());
+				POPSolvingLayoutController.showAlertPopup("실행 오류", "순서도를 실행할 수 없습니다.", e.getMessage(), AlertType.ERROR);
 			}
 			POPSolvingLayoutController.scriptArea.stop();
 			System.out.println(e);
@@ -302,7 +304,7 @@ public class POPFlowchartPlayer {
 		
 	}
 	
-	private void playDocumentNode(POPDocumentNode node) throws NullPointerException {
+	private void playDocumentNode(POPDocumentNode node) throws NullPointerException, IndexOutOfBoundsException {
 		POPOutputSymbol rootSymbol = (POPOutputSymbol) node.getRootSymbol();
 		
 		rootSymbol.playSymbol();

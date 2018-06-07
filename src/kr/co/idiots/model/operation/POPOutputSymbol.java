@@ -52,7 +52,7 @@ public class POPOutputSymbol extends POPOperationSymbol {
 	}
 	
 	@Override
-	public void playSymbol() throws NullPointerException {
+	public void playSymbol() throws NullPointerException, IndexOutOfBoundsException {
 		if(contents.getChildren().get(0) instanceof POPOperationSymbol) {
 			POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(0);
 			symbol.playSymbol();

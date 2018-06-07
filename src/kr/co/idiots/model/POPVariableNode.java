@@ -124,6 +124,11 @@ public class POPVariableNode extends POPNode {
 				if(contextMenu != null)
 					contextMenu.hide();
 			}
+			
+			if(parentSymbol != null && parentSymbol.getParentNode() != null && parentSymbol.getParentNode().isException()) {
+				parentSymbol.getParentNode().getImgView().setStyle("");
+				parentSymbol.getParentNode().setException(false);
+			}
 		});
 		
 		getComponent().setOnMouseDragged(event -> {

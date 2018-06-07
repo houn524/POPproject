@@ -41,7 +41,7 @@ public class POPSymbolNode extends POPNode {
 	protected DoubleProperty bottomCenterX = new SimpleDoubleProperty(0);
 	protected DoubleProperty bottomY = new SimpleDoubleProperty(0);
 	
-	protected boolean isException = false;
+	private boolean isException = false;
 	
 	public DoubleProperty topCenterXProperty() {
     	return topCenterX;

@@ -55,24 +55,31 @@ public class POPArrayNode extends POPVariableNode {
 		indexBlank.setEditable(true);
 	}
 	
-	public String getValue() throws NullPointerException {
+	public String getValue() throws IndexOutOfBoundsException, NullPointerException {
 		if(indexBlank.getEditor().getText().equals("추가")) {
 			return "";
 		}
-		
-		if(indexBlank.getEditor().getText().equals("마지막")) {
-			return POPVariableManager.declaredArrs.get(name).get(POPVariableManager.declaredArrs.get(name).size() - 1).toString();
-		} else if(contents.getChildren().get(1) instanceof POPOperationSymbol) {
-			((POPOperationSymbol) contents.getChildren().get(1)).playSymbol();
-			return POPVariableManager.declaredArrs.get(name).get(Integer.parseInt(((POPOperationSymbol) contents.getChildren().get(1)).executeSymbol().toString())).toString();
-		} else if(contents.getChildren().get(1) instanceof POPVariableNode) {
-			POPVariableNode variable = (POPVariableNode) contents.getChildren().get(1);
-			return POPVariableManager.declaredArrs.get(name).get(Integer.parseInt(POPVariableManager.declaredVars.get(variable.getName()))).toString();
-		} else if(contents.getChildren().get(1) instanceof POPArrayNode) {
-			POPArrayNode array = (POPArrayNode) contents.getChildren().get(1);
-			return POPVariableManager.declaredArrs.get(name).get(Integer.parseInt(array.getValue())).toString();
-		} else {
-			return POPVariableManager.declaredArrs.get(name).get(Integer.parseInt(indexBlank.getEditor().getText())).toString();
+		try {
+			if(indexBlank.getEditor().getText().equals("마지막")) {
+				return POPVariableManager.declaredArrs.get(name).get(POPVariableManager.declaredArrs.get(name).size() - 1).toString();
+			} else if(contents.getChildren().get(1) instanceof POPOperationSymbol) {
+				((POPOperationSymbol) contents.getChildren().get(1)).playSymbol();
+				return POPVariableManager.declaredArrs.get(name).get(Integer.parseInt(((POPOperationSymbol) contents.getChildren().get(1)).executeSymbol().toString())).toString();
+			} else if(contents.getChildren().get(1) instanceof POPVariableNode) {
+				POPVariableNode variable = (POPVariableNode) contents.getChildren().get(1);
+				return POPVariableManager.declaredArrs.get(name).get(Integer.parseInt(POPVariableManager.declaredVars.get(variable.getName()))).toString();
+			} else if(contents.getChildren().get(1) instanceof POPArrayNode) {
+				POPArrayNode array = (POPArrayNode) contents.getChildren().get(1);
+				return POPVariableManager.declaredArrs.get(name).get(Integer.parseInt(array.getValue())).toString();
+			} else {
+				return POPVariableManager.declaredArrs.get(name).get(Integer.parseInt(indexBlank.getEditor().getText())).toString();
+			}
+		} catch(IndexOutOfBoundsException e) {
+			parentSymbol.getParentNode().getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
+			parentSymbol.getParentNode().setException(true);
+			IndexOutOfBoundsException exception = new IndexOutOfBoundsException("배열 인덱스가 존재하지 않습니다.");
+			throw exception;
 		}
+		
 	}
 }

@@ -306,9 +306,9 @@ public class POPScriptArea {
 		return generator.generate(startNode);
 	}
 	
-	public String play() throws NullPointerException, NumberFormatException {
+	public String play(int index) throws NullPointerException, NumberFormatException, IndexOutOfBoundsException {
 		
-		flowchartPlayer.playFlowChart(startNode);
+		flowchartPlayer.playFlowChart(startNode, index);
 		return flowchartPlayer.getOutput().toString();
 	}
 	

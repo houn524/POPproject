@@ -48,12 +48,17 @@ public class POPIndexBlank extends ComboBox {
 				else
 					setPrefWidth(TextUtils.computeTextWidth(getEditor().getFont(), getEditor().getText(), 0.0D) + 50);
 				
+				if(parentNode.getParentSymbol() != null && parentNode.getParentSymbol().getParentNode() != null && parentNode.getParentSymbol().getParentNode().isException()) {
+					parentNode.getParentSymbol().getParentNode().getImgView().setStyle("");
+					parentNode.getParentSymbol().getParentNode().setException(false);
+				}
 				parentNode.resizeContents();
 			}
 		});
 	}
 
 	private void setOnIndexBlankDrag() {
+		
 		setOnDragOver(event -> {
 			Dragboard db = event.getDragboard();
 			if(db.hasImage() && POPNodeType.variableGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
