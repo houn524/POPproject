@@ -30,6 +30,9 @@ public class MainApp extends Application {
 	private Stage primaryStage;
 	private Stage popup;
 	
+	private AnchorPane loginLayout;
+	private POPLoginLayoutController loginController;
+	
 	private Font f;
 	
 	private double xOffset = 0;
@@ -75,6 +78,7 @@ public class MainApp extends Application {
 //		this.primaryStage.initStyle(StageStyle.UNDECORATED);
 		
 		showLoginLayout();
+		primaryStage.show();
 //		initRootLayout();
 		
 //		showPersonOverview();
@@ -84,21 +88,22 @@ public class MainApp extends Application {
 	public void showLoginLayout() {
 		
 		try {
-			POPLoginLayoutController controller = new POPLoginLayoutController(this);
-			
+			if(loginController == null) 
+				loginController = new POPLoginLayoutController(this);
+				
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/POPLoginLayout.fxml"));
 			loader.setControllerFactory(c -> {
-				return controller;
+				return loginController;
 			});
 			
-			AnchorPane loginLayout = (AnchorPane) loader.load();
+			loginLayout = (AnchorPane) loader.load();
 			
 			Scene scene = new Scene(loginLayout);
 			
 			primaryStage.setScene(scene);
 //			primaryStage.setResizable(false);
-			primaryStage.show();
+//			primaryStage.show();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -109,7 +114,7 @@ public class MainApp extends Application {
 	public void initRootLayout() {
 		try {
 			// fxml 파일에서 상위 레이아웃을 가져온다.
-			RootLayoutController controller = new RootLayoutController();
+			RootLayoutController controller = new RootLayoutController(this);
 			
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/RootLayout.fxml"));

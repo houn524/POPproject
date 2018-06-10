@@ -18,6 +18,7 @@ import kr.co.idiots.model.symbol.POPProcessNode;
 import kr.co.idiots.model.symbol.POPStartNode;
 import kr.co.idiots.model.symbol.POPStopNode;
 import kr.co.idiots.model.symbol.POPSymbolNode;
+import kr.co.idiots.util.POPPopupManager;
 import kr.co.idiots.view.POPSolvingLayoutController;
 import lombok.Getter;
 import lombok.Setter;
@@ -230,7 +231,7 @@ public class POPFlowchartPlayer {
 							isLoop = false;
 							loopNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
 							loopNode.setException(true);
-							solvingController.showAlertPopup("실행 오류", "순서도를 실행할 수 없습니다.", "무한 루프", AlertType.ERROR);
+							POPPopupManager.showAlertPopup("실행 오류", "순서도를 실행할 수 없습니다.", "무한 루프", AlertType.ERROR);
 							break;
 						}
 					}
@@ -243,9 +244,9 @@ public class POPFlowchartPlayer {
 		} catch(NullPointerException | NumberFormatException | IndexOutOfBoundsException e) {
 			if(e.getMessage() == null) {
 				e.printStackTrace();
-				POPSolvingLayoutController.showAlertPopup("실행 오류", "순서도를 실행할 수 없습니다.", "변수 초기화 필요", AlertType.ERROR);
+				POPPopupManager.showAlertPopup("실행 오류", "순서도를 실행할 수 없습니다.", "변수 초기화 필요", AlertType.ERROR);
 			} else {
-				POPSolvingLayoutController.showAlertPopup("실행 오류", "순서도를 실행할 수 없습니다.", e.getMessage(), AlertType.ERROR);
+				POPPopupManager.showAlertPopup("실행 오류", "순서도를 실행할 수 없습니다.", e.getMessage(), AlertType.ERROR);
 			}
 			POPSolvingLayoutController.scriptArea.stop();
 			System.out.println(e);

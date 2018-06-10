@@ -21,7 +21,6 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -77,6 +76,7 @@ import kr.co.idiots.model.symbol.POPStartNode;
 import kr.co.idiots.model.symbol.POPStopNode;
 import kr.co.idiots.model.symbol.POPSymbolNode;
 import kr.co.idiots.util.DragManager;
+import kr.co.idiots.util.POPPopupManager;
 import kr.co.idiots.util.PlatformHelper;
 import lombok.Getter;
 import lombok.Setter;
@@ -366,16 +366,17 @@ public class POPSolvingLayoutController {
 		
 //	    loadFlowchart(content);
 	    
-	    
+		
 		
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
 				PlatformHelper.run(() -> {
-					loopSymbol.visibleSubNodes();
-					decisionSymbol.visibleSubNodes();
+					
 					initVariables();
 					loadFlowchart(content);
+					loopSymbol.visibleSubNodes();
+					decisionSymbol.visibleSubNodes();
 //					showSplash(null, loadTask, () -> showScriptArea());
 				});
 			}
@@ -890,41 +891,23 @@ public class POPSolvingLayoutController {
 			
 			if(!str.trim().equals(output.trim())) {
 				
-				showAlertPopup("정답 확인", "정답 확인", "틀렸습니다!", AlertType.ERROR);
+				POPPopupManager.showAlertPopup("정답 확인", "정답 확인", "틀렸습니다!", AlertType.ERROR);
 				return;
 			}
 			i += 1;
 		}
 		
-		showAlertPopup("정답 확인", "정답 확인", "정답입니다!", AlertType.INFORMATION);
+		POPPopupManager.showAlertPopup("정답 확인", "정답 확인", "정답입니다!", AlertType.INFORMATION);
 	}
 	
-	public static void showAlertPopup(String title, String header, String content, AlertType type) {
-		Alert alert = new Alert(type);
-		alert.setTitle(title);
-		alert.setHeaderText(header);
-		alert.setContentText(content);
-
-		alert.showAndWait();
-	}
-	
-	public static void showCheckPopup(String string) {
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("정답 확인");
-		alert.setHeaderText("정답 확인");
-		alert.setContentText(string);
-
-		alert.showAndWait();
-	}
-	
-	public static void showErrorPopup(String string) {
-			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("실행 오류");
-			alert.setHeaderText("순서도를 실행할 수 없습니다.");
-			alert.setContentText(string);
-
-			alert.showAndWait();
-	}
+//	public static void showAlertPopup(String title, String header, String content, AlertType type) {
+//		Alert alert = new Alert(type);
+//		alert.setTitle(title);
+//		alert.setHeaderText(header);
+//		alert.setContentText(content);
+//
+//		alert.showAndWait();
+//	}
 	
 	public void showConsolePopup() {
 		try {

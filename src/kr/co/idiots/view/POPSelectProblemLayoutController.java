@@ -111,6 +111,11 @@ public class POPSelectProblemLayoutController {
 			easyBox.setStyle("-fx-background-color: lightblue; -fx-background-insets: 0 20 0 20;");
 		});
 		
+		easyBox.setOnMouseClicked(event -> {
+			problemData.clear();
+			problemData.addAll(mainApp.getConnector().loadProblems("초급"));
+		});
+		
 		easyBox.setOnMouseExited(event -> {
 			mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT);
 			easyBox.setStyle("");
@@ -121,6 +126,11 @@ public class POPSelectProblemLayoutController {
 			mediumBox.setStyle("-fx-background-color: lightblue; -fx-background-insets: 0 20 0 20;");
 		});
 		
+		mediumBox.setOnMouseClicked(event -> {
+			problemData.clear();
+			problemData.addAll(mainApp.getConnector().loadProblems("중급"));
+		});
+		
 		mediumBox.setOnMouseExited(event -> {
 			mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT);
 			mediumBox.setStyle("");
@@ -129,6 +139,11 @@ public class POPSelectProblemLayoutController {
 		hardBox.setOnMouseEntered(event -> {
 			mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND);
 			hardBox.setStyle("-fx-background-color: lightblue; -fx-background-insets: 0 20 0 20;");
+		});
+		
+		hardBox.setOnMouseClicked(event -> {
+			problemData.clear();
+			problemData.addAll(mainApp.getConnector().loadProblems("고급"));
 		});
 		
 		hardBox.setOnMouseExited(event -> {

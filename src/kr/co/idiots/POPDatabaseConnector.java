@@ -194,4 +194,101 @@ public class POPDatabaseConnector {
 		
 		return list;
 	}
+	
+	public boolean checkOverlapID(String id) {
+		PreparedStatement st = null;
+		String sql = "select * from member where id=?;";
+		
+		boolean result = false;
+		
+		try {
+            st = connection.prepareStatement(sql);
+            st.setString(1, id);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()) {
+            	result = true;
+            } else {
+            	result = false;
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException se1) {
+            se1.printStackTrace();
+        }
+		
+		return result;
+	}
+	
+	public void insertMember(String id, String pw) {
+		PreparedStatement st = null;
+		String sql = "insert into member values(?, password(?));";
+		String mp5 = "";
+		boolean result = false;
+		
+		try {
+//			MessageDigest md = MessageDigest.getInstance("MD5");
+//			md.update(pw.getBytes());
+//			byte byteData[] = md.digest();
+//			StringBuffer sb = new StringBuffer();
+//			for (int i = 0; i < byteData.length; i++) {
+//	            sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+//	        }
+//			mp5 = sb.toString();
+			
+            st = connection.prepareStatement(sql);
+            st.setString(1, id);
+            st.setString(2, pw);
+//            System.out.println(mp5);
+            st.executeUpdate();
+            
+            st.close();
+        } catch (SQLException se1) {
+            se1.printStackTrace();
+        }
+	}
+	
+	public boolean verifyMember(String id, String pw) {
+//		String inputId = emailField.getText();
+//		String inputPw = pwField.getText();
+		
+		PreparedStatement st = null;
+		
+		String sql = "select * from member where id=?";
+		String actualPw = "";
+		String encPw = "";
+		boolean result = false;
+		
+		try {
+            st = connection.prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
+            st.setString(1, id);
+            
+            ResultSet rs = st.executeQuery();
+            if(!rs.next()) {
+            	result = false;
+            } else { 
+            	actualPw = rs.getString("pw");
+            	sql = "select password(?)";
+            	st = connection.prepareStatement(sql);
+            	st.setString(1, pw);
+            	rs = st.executeQuery();
+            	if(rs.next()) {
+            		encPw = rs.getString(1);
+            		if(encPw.equals(actualPw)) {
+                		result = true;
+                	} else {
+                		result = false;
+                	}
+            	}
+            }
+ 
+            rs.close();
+            st.close();
+            
+            
+        } catch (SQLException se1) {
+            se1.printStackTrace();
+        }
+		
+		return result;
+	}
 }

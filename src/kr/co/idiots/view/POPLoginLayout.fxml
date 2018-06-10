@@ -10,6 +10,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
@@ -55,11 +56,20 @@
                         <Font name="NanumGothic" size="14.0" />
                      </font>
                   </PasswordField>
-                  <Button fx:id="btnLogin" mnemonicParsing="false" text="로그인" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
-                     <font>
-                        <Font name="NanumGothic" size="20.0" />
-                     </font>
-                  </Button>
+                  <HBox alignment="CENTER_RIGHT" spacing="20.0" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
+                     <children>
+                        <Button fx:id="btnJoin" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="회원가입" textAlignment="CENTER">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                        <Button fx:id="btnLogin" mnemonicParsing="false" text="로그인" textAlignment="CENTER">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
                </children>
                <padding>
                   <Insets top="20.0" />

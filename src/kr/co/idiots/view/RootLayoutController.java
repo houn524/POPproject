@@ -5,12 +5,14 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Bloom;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import kr.co.idiots.MainApp;
+import kr.co.idiots.model.POPLoggedInMember;
 import kr.co.idiots.model.POPNodeType;
 import kr.co.idiots.model.POPProblem;
 import lombok.Getter;
@@ -32,12 +34,16 @@ public class RootLayoutController {
 	@FXML
 	private BorderPane rootPane;
 	
+	@FXML
+	private Button btnLogout;
+	
 	private POPSelectProblemLayoutController selectProblemLayoutController;
 	private POPSolvingLayoutController solvingLayoutController;
 	private POPCreateVariableLayoutController createVariableController;
 	private POPLoadingLayoutController loadingController;
 	
-	public RootLayoutController() {
+	public RootLayoutController(MainApp mainApp) {
+		this.mainApp = mainApp;
 	}
 	
 	@FXML
@@ -72,6 +78,11 @@ public class RootLayoutController {
 		
 		lbSolving.setOnMouseClicked(event -> {
 			showPOPSelectProblemLayout();
+		});
+		
+		btnLogout.setOnAction(event -> {
+			POPLoggedInMember.getInstance().setMember(null);
+			mainApp.showLoginLayout();
 		});
 		
 	}
