@@ -829,6 +829,7 @@ public class POPSolvingLayoutController {
 	}
 	
 	public void initVariables() {
+		POPVariableManager.createdVars = new ArrayList<>();
 		String content = problem.getInputCase();
 		
 		content = content.split(";;")[0];
@@ -843,6 +844,7 @@ public class POPSolvingLayoutController {
 	}
 	
 	public void initVariableValues(int index) {
+		
 		String content = problem.getInputCase();
 		content = content.split(";;")[index];
 		
@@ -863,8 +865,10 @@ public class POPSolvingLayoutController {
 				}
 				
 			} else if(node instanceof POPVariableNode) {
-				if(content.contains("(" + ((POPVariableNode) node).getName() + "("))
+				if(content.contains("(" + ((POPVariableNode) node).getName() + "(")) {
 					POPVariableManager.declaredVars.put(((POPVariableNode) node).getName(), content.split("\\(" + ((POPVariableNode) node).getName() + "\\(")[1].split("\\)")[0]);
+				}
+					
 			}
 		}
 	}
