@@ -201,11 +201,31 @@ public class POPSolvingLayoutController {
 			pressedKeys.add(e.getCode());
 		});
 		mainApp.getPrimaryStage().getScene().setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				PlatformHelper.run(() -> {
+					loopSymbol = new POPLoopNode(scriptArea);
+					decisionSymbol = new POPDecisionNode(scriptArea);
+					
+					add(symbolGroup, decisionSymbol);
+					decisionSymbol.setLayoutX(decisionSymbol.getLayoutX() + 10);
+					decisionSymbol.getComponent().setLayoutY(140);
+					
+					add(symbolGroup, loopSymbol);
+					
+					loopSymbol.setLayoutX(loopSymbol.getLayoutX() + 10);
+					loopSymbol.getComponent().setLayoutY(250);
+				});
+			}
+		};
 		
-		loopSymbol = new POPLoopNode(scriptArea);
-		loopSymbol.invisibleSubNodes();
-		decisionSymbol = new POPDecisionNode(scriptArea);
-		decisionSymbol.invisibleSubNodes();
+		thread.setDaemon(true);
+		thread.start();
+//		loopSymbol = new POPLoopNode(scriptArea);
+//		loopSymbol.invisibleSubNodes();
+//		decisionSymbol = new POPDecisionNode(scriptArea);
+//		decisionSymbol.invisibleSubNodes();
 //		loopSymbol.invisibleSubNodes();
 	}
 	
@@ -286,14 +306,14 @@ public class POPSolvingLayoutController {
 		documentSymbol.setLayoutX(documentSymbol.getLayoutX() + 20);
 		documentSymbol.getComponent().setLayoutY(70);
 		
-		this.add(symbolGroup, decisionSymbol);
-		decisionSymbol.setLayoutX(decisionSymbol.getLayoutX() + 10);
-		decisionSymbol.getComponent().setLayoutY(140);
-		
-		this.add(symbolGroup, loopSymbol);
-		
-		loopSymbol.setLayoutX(loopSymbol.getLayoutX() + 10);
-		loopSymbol.getComponent().setLayoutY(250);
+//		this.add(symbolGroup, decisionSymbol);
+//		decisionSymbol.setLayoutX(decisionSymbol.getLayoutX() + 10);
+//		decisionSymbol.getComponent().setLayoutY(140);
+//		
+//		this.add(symbolGroup, loopSymbol);
+//		
+//		loopSymbol.setLayoutX(loopSymbol.getLayoutX() + 10);
+//		loopSymbol.getComponent().setLayoutY(250);
 		
 		plusSymbol = new POPPlusSymbol();
 		operationArea.getChildren().add(plusSymbol);

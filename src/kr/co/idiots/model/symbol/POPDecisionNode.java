@@ -164,6 +164,22 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 	}
 	
 	public void visibleSubNodes() {
+//		Thread thread = new Thread() {
+//			@Override
+//			public void run() {
+//				PlatformHelper.run(() -> {
+//					for(Node subNode : subNodes) {
+//						subNode.setVisible(true);
+//					}
+//					leftStartNode.getOutFlowLine().setVisible(true);
+//					rightStartNode.getOutFlowLine().setVisible(true);
+//					outFlowLine.setVisible(true);
+//				});
+//			}
+//		};
+//		
+//		thread.setDaemon(true);
+//		thread.start();
 		for(Node subNode : subNodes) {
 			subNode.setVisible(true);
 		}
@@ -173,6 +189,22 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 	}
 	
 	public void invisibleSubNodes() {
+//		Thread thread = new Thread() {
+//			@Override
+//			public void run() {
+//				PlatformHelper.run(() -> {
+//					for(Node subNode : subNodes) {
+//						subNode.setVisible(false);
+//					}
+//					leftStartNode.getOutFlowLine().setVisible(false);
+//					rightStartNode.getOutFlowLine().setVisible(false);
+//					outFlowLine.setVisible(false);
+//				});
+//			}
+//		};
+//		
+//		thread.setDaemon(true);
+//		thread.start();
 		for(Node subNode : subNodes) {
 			subNode.setVisible(false);
 		}

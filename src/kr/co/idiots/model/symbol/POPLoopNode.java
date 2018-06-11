@@ -104,6 +104,21 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 	}
 	
 	public void visibleSubNodes() {
+//		Thread thread = new Thread() {
+//			@Override
+//			public void run() {
+//				PlatformHelper.run(() -> {
+//					for(Node subNode : subNodes) {
+//						subNode.setVisible(true);
+//					}
+//					loopStartNode.getOutFlowLine().setVisible(true);
+//					outFlowLine.setVisible(true);
+//				});
+//			}
+//		};
+//		
+//		thread.setDaemon(true);
+//		thread.start();
 		for(Node subNode : subNodes) {
 			subNode.setVisible(true);
 		}
@@ -112,6 +127,21 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 	}
 	
 	public void invisibleSubNodes() {
+//		Thread thread = new Thread() {
+//			@Override
+//			public void run() {
+//				PlatformHelper.run(() -> {
+//					for(Node subNode : subNodes) {
+//						subNode.setVisible(false);
+//					}
+//					loopStartNode.getOutFlowLine().setVisible(false);
+//					outFlowLine.setVisible(false);
+//				});
+//			}
+//		};
+//		
+//		thread.setDaemon(true);
+//		thread.start();
 		for(Node subNode : subNodes) {
 			subNode.setVisible(false);
 		}
