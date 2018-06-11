@@ -7,11 +7,11 @@
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="600.0" prefWidth="1280.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <left>
       <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Label style="-fx-border-style: hidden hidden solid hidden; -fx-border-color: black;" text="사용법">
+            <Label text="사용법">
                <font>
                   <Font name="NanumGothic" size="30.0" />
                </font>
@@ -28,7 +28,7 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-effect: dropshadow(three-pass-box, derive(grey, -20%), 10, 0, 4, 4);" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-effect: dropshadow(three-pass-box, derive(grey, -20%), 10, 0, 4, 4);" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                <center>
                   <Label text="내용" BorderPane.alignment="CENTER">
                      <font>

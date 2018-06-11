@@ -316,11 +316,13 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 			if(subNode instanceof POPDecisionEndNode)
 				break;
 			
-			if(subNode instanceof POPLoopNode) {
+			if(subNode instanceof POPDecisionStartNode) {
+				leftMaxWidth.set(30);
+			} else if(subNode instanceof POPLoopNode) {
 				leftMaxWidth.set(Math.max(((POPLoopNode) subNode).getLoopWidth(), leftMaxWidth.get()));
 			} else if(subNode instanceof POPDecisionNode) {
 				leftMaxWidth.set(Math.max(((POPDecisionNode) subNode).getDecisionWidth(), leftMaxWidth.get()));
-			} else if(subNode instanceof POPSymbolNode) {
+			} else if(!(subNode instanceof POPDecisionStartNode) && subNode instanceof POPSymbolNode) {
 				leftMaxWidth.set(Math.max(((POPSymbolNode) subNode).getComponent().getWidth(), leftMaxWidth.get()));
 			}
 			
@@ -332,11 +334,13 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 			if(subNode instanceof POPDecisionEndNode)
 				break;
 			
-			if(subNode instanceof POPLoopNode) {
+			if(subNode instanceof POPDecisionStartNode) {
+				rightMaxWidth.set(30);
+			} else if(subNode instanceof POPLoopNode) {
 				rightMaxWidth.set(Math.max(((POPLoopNode) subNode).getLoopWidth(), rightMaxWidth.get()));
 			} else if(subNode instanceof POPDecisionNode) {
 				rightMaxWidth.set(Math.max(((POPDecisionNode) subNode).getDecisionWidth(), rightMaxWidth.get()));
-			} else if(subNode instanceof POPSymbolNode) {
+			} else if(!(subNode instanceof POPDecisionStartNode) && subNode instanceof POPSymbolNode) {
 				rightMaxWidth.set(Math.max(((POPSymbolNode) subNode).getComponent().getWidth(), rightMaxWidth.get()));
 			}
 			
@@ -454,11 +458,12 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 			@Override
 			public void changed(ObservableValue<? extends Bounds> arg0, Bounds oldBound, Bounds newBound) {
 				// TODO Auto-generated method stub
-				
+				initMaxWidth = newBound.getWidth();
 				adjustPositionThread();
 				outFlowLine.pullNodesThread();
 				
-				initMaxWidth += newBound.getWidth() - oldBound.getWidth();
+//				initMaxWidth += (newBound.getWidth() - oldBound.getWidth()) / 2;
+				
 			}
 		});
 	}

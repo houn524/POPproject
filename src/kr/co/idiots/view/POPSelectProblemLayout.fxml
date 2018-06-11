@@ -11,11 +11,11 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.POPSelectProblemLayoutController">
+<BorderPane prefHeight="600.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.POPSelectProblemLayoutController">
    <center>
       <AnchorPane BorderPane.alignment="CENTER">
          <children>
-            <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" style="-fx-effect: innershadow( gaussian, rgba( 0, 0, 0, 0.5 ), 10, 0, 2, 2 );" stylesheets="@../../../../../../css/tableViewStyle.css" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <TableView fx:id="tableView" prefHeight="200.0" prefWidth="200.0" style="-fx-effect: innershadow( gaussian, rgba( 0, 0, 0, 0.5 ), 10, 0, 2, 2 );" stylesheets="@../../../../../../css/tableViewStyle.css" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
               <columns>
                 <TableColumn fx:id="numberColumn" editable="false" prefWidth="113.599853515625" resizable="false" sortable="false" text="번호" />
                 <TableColumn fx:id="titleColumn" editable="false" minWidth="0.0" prefWidth="945.5999755859375" resizable="false" sortable="false" text="제목" />
