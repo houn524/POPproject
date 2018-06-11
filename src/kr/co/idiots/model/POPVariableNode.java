@@ -16,6 +16,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.TextAlignment;
+import kr.co.idiots.POPVariableManager;
 import kr.co.idiots.model.operation.POPEqualSymbol;
 import kr.co.idiots.model.operation.POPOperationSymbol;
 import kr.co.idiots.util.ClipboardUtil;
@@ -38,6 +39,17 @@ public class POPVariableNode extends POPNode {
 	protected int lastIndex = -1;
 	private POPArrayNode parentNode;
 	private POPArrayNode parentArrayNode;
+	protected boolean isInitVariable = false;
+	protected Label lbDefault;
+	
+//	public POPVariableNode(POPScriptArea scriptArea, String name, POPNodeType type, boolean isInitVariable) {
+//		this(scriptArea, name, type);
+//		
+//		this.isInitVariable = isInitVariable;
+//		
+//		if(isInitVariable)
+//			imgView.setStyle("-fx-effect: dropshadow(three-pass-box, blue, 3, 0.5, 1, 1);");
+//	}
 	
 	public POPVariableNode(POPScriptArea scriptArea, String name, POPNodeType type) {
 		super(scriptArea, type);
@@ -60,6 +72,10 @@ public class POPVariableNode extends POPNode {
 		lbName.setTextAlignment(TextAlignment.CENTER);
 		
 		imgView.setFitWidth(TextUtils.computeTextWidth(lbName.getFont(), lbName.getText(), 0.0D) + 20);
+		if(POPVariableManager.initVars.contains(name)) {
+			imgView.setStyle("-fx-effect: dropshadow(three-pass-box, blue, 3, 0.5, 1, 1);");
+			lbDefault = new Label("test");
+		}
 		
 		lbName.setAlignment(Pos.CENTER);
 		

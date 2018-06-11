@@ -201,6 +201,6 @@ public class RootLayoutController {
 	}
 	
 	public void createVariable(String name, POPNodeType type) {
-		solvingLayoutController.addVariable(name, type);
+		solvingLayoutController.addVariable(name, type, "");
 	}
 }

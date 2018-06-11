@@ -5,6 +5,7 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -14,6 +15,7 @@ import javafx.stage.Stage;
 import kr.co.idiots.MainApp;
 import kr.co.idiots.model.POPLoggedInMember;
 import kr.co.idiots.model.POPMember;
+import kr.co.idiots.util.POPPopupManager;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -41,6 +43,8 @@ public class POPLoginLayoutController {
 			if(mainApp.getConnector().verifyMember(emailField.getText(), pwField.getText())) {
 				POPLoggedInMember.getInstance().setMember(new POPMember(emailField.getText(), pwField.getText()));
 				mainApp.initRootLayout();
+			} else {
+				POPPopupManager.showAlertPopup("로그인", "로그인", "아이디가 존재하지 않거나 입력한 아이디와 비밀번호가 일치하지 않습니다.", AlertType.ERROR);
 			}
 		});
 		

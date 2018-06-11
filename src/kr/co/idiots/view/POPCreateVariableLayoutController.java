@@ -38,6 +38,6 @@ public class POPCreateVariableLayoutController {
 //			break;
 //		}
 		
-		controller.addVariable(textField.getText(), type);
+		controller.addVariable(textField.getText(), type, "");
 	}
 }

@@ -1,6 +1,8 @@
 package kr.co.idiots.model;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -15,12 +17,13 @@ public class POPProblem {
 	private final StringProperty input_case;
 	private final StringProperty output_case;
 	private final StringProperty difficulty;
+	private final BooleanProperty solved;
 	
 	public POPProblem() {
-		this(null, null, null, null, null, null, null, null);
+		this(null, null, null, null, null, null, null, null, false);
 	}
 	
-	public POPProblem(Integer number, String title, String content, String input_example, String output_example, String input_case, String output_case, String difficulty) {
+	public POPProblem(Integer number, String title, String content, String input_example, String output_example, String input_case, String output_case, String difficulty, boolean solved) {
 		this.number = new SimpleIntegerProperty(number);
 		this.title = new SimpleStringProperty(title);
 		this.content = new SimpleStringProperty(content);
@@ -29,6 +32,7 @@ public class POPProblem {
 		this.input_case = new SimpleStringProperty(input_case);
 		this.output_case = new SimpleStringProperty(output_case);
 		this.difficulty = new SimpleStringProperty(difficulty);
+		this.solved = new SimpleBooleanProperty(solved);
 	}
 	
 	public int getNumber() {
@@ -125,6 +129,18 @@ public class POPProblem {
 	
 	public StringProperty difficultyProperty() {
 		return difficulty;
+	}
+	
+	public Boolean getSolved() {
+		return solved.get();
+	}
+	
+	public void setSolved(Boolean solved) {
+		this.solved.set(solved);
+	}
+	
+	public BooleanProperty solvedProperty() {
+		return solved;
 	}
 	
 }

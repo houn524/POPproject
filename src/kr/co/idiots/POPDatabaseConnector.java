@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import kr.co.idiots.model.POPLoggedInMember;
 import kr.co.idiots.model.POPProblem;
 import lombok.Getter;
 import lombok.Setter;
@@ -181,8 +182,9 @@ public class POPDatabaseConnector {
             st.setString(1, difficulty);
             ResultSet rs = st.executeQuery();
             while(rs.next()) {
+            	boolean solved = checkSolved(POPLoggedInMember.getInstance().getMember().getId(), rs.getInt("number"));
             	POPProblem problem = new POPProblem(rs.getInt("number"), rs.getString("title"), rs.getString("content"), rs.getString("input_example"), rs.getString("output_example"), 
-            			rs.getString("input_case"), rs.getString("output_case"), rs.getString("difficulty"));
+            			rs.getString("input_case"), rs.getString("output_case"), rs.getString("difficulty"), solved);
             	System.out.println(problem.getTitle());
             	list.add(problem);
             }
@@ -193,6 +195,51 @@ public class POPDatabaseConnector {
         }
 		
 		return list;
+	}
+	
+	public boolean checkSolved(String id, int number) {
+		PreparedStatement st = null;
+		String sql = "select solved from solving where user_id=? and problem_number=?;";
+		
+		boolean result = false;
+		
+		try {
+            st = connection.prepareStatement(sql);
+            st.setString(1, id);
+            st.setInt(2, number);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()) {
+            	result = rs.getBoolean(1);
+            } else {
+            	result = false;
+            }
+            rs.close();
+            st.close();
+        } catch (SQLException se1) {
+            se1.printStackTrace();
+        }
+		
+		return result;
+	}
+	
+	public void setSolved(String id, int number, boolean solved) {
+		PreparedStatement st = null;
+		String sql = "update solving set solved=? where user_id=? and problem_number=?";
+		boolean result = false;
+		
+		try {
+            
+        	st = connection.prepareStatement(sql);
+            st.setBoolean(1, solved);
+            st.setString(2, id);
+            st.setInt(3, number);
+            
+            st.executeUpdate();
+ 
+            st.close();
+        } catch (SQLException se1) {
+            se1.printStackTrace();
+        }
 	}
 	
 	public boolean checkOverlapID(String id) {

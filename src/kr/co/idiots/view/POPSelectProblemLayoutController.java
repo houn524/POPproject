@@ -37,6 +37,9 @@ public class POPSelectProblemLayoutController {
 	private TableColumn<POPProblem, String> titleColumn;
 	
 	@FXML
+	private TableColumn<POPProblem, Boolean> solvedColumn;
+	
+	@FXML
 	private HBox easyBox;
 	
 	@FXML
@@ -59,6 +62,7 @@ public class POPSelectProblemLayoutController {
 	private void initialize() {
 		numberColumn.setCellValueFactory(cellData -> cellData.getValue().numberProperty().asObject());
 		titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
+		solvedColumn.setCellValueFactory(cellData -> cellData.getValue().solvedProperty());
 		
 		tableView.setRowFactory(tv -> {
 			TableRow<POPProblem> row = new TableRow<>();

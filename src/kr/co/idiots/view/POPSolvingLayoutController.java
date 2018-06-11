@@ -38,6 +38,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -201,31 +202,11 @@ public class POPSolvingLayoutController {
 			pressedKeys.add(e.getCode());
 		});
 		mainApp.getPrimaryStage().getScene().setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
-		Thread thread = new Thread() {
-			@Override
-			public void run() {
-				PlatformHelper.run(() -> {
-					loopSymbol = new POPLoopNode(scriptArea);
-					decisionSymbol = new POPDecisionNode(scriptArea);
-					
-					add(symbolGroup, decisionSymbol);
-					decisionSymbol.setLayoutX(decisionSymbol.getLayoutX() + 10);
-					decisionSymbol.getComponent().setLayoutY(140);
-					
-					add(symbolGroup, loopSymbol);
-					
-					loopSymbol.setLayoutX(loopSymbol.getLayoutX() + 10);
-					loopSymbol.getComponent().setLayoutY(250);
-				});
-			}
-		};
 		
-		thread.setDaemon(true);
-		thread.start();
-//		loopSymbol = new POPLoopNode(scriptArea);
-//		loopSymbol.invisibleSubNodes();
-//		decisionSymbol = new POPDecisionNode(scriptArea);
-//		decisionSymbol.invisibleSubNodes();
+		loopSymbol = new POPLoopNode(scriptArea);
+		loopSymbol.invisibleSubNodes();
+		decisionSymbol = new POPDecisionNode(scriptArea);
+		decisionSymbol.invisibleSubNodes();
 //		loopSymbol.invisibleSubNodes();
 	}
 	
@@ -306,14 +287,14 @@ public class POPSolvingLayoutController {
 		documentSymbol.setLayoutX(documentSymbol.getLayoutX() + 20);
 		documentSymbol.getComponent().setLayoutY(70);
 		
-//		this.add(symbolGroup, decisionSymbol);
-//		decisionSymbol.setLayoutX(decisionSymbol.getLayoutX() + 10);
-//		decisionSymbol.getComponent().setLayoutY(140);
-//		
-//		this.add(symbolGroup, loopSymbol);
-//		
-//		loopSymbol.setLayoutX(loopSymbol.getLayoutX() + 10);
-//		loopSymbol.getComponent().setLayoutY(250);
+		this.add(symbolGroup, decisionSymbol);
+		decisionSymbol.setLayoutX(decisionSymbol.getLayoutX() + 10);
+		decisionSymbol.getComponent().setLayoutY(140);
+		
+		this.add(symbolGroup, loopSymbol);
+		
+		loopSymbol.setLayoutX(loopSymbol.getLayoutX() + 10);
+		loopSymbol.getComponent().setLayoutY(250);
 		
 		plusSymbol = new POPPlusSymbol();
 		operationArea.getChildren().add(plusSymbol);
@@ -738,7 +719,7 @@ public class POPSolvingLayoutController {
 				
 				if(!POPVariableManager.createdVars.contains(variable.getName())) {
 					System.out.println("?? : " + variable.getName());
-					addVariable(variable.getName(), variable.getType());
+					addVariable(variable.getName(), variable.getType(), "");
 				}
 			} else {
 				String type2 = content.split("\\(")[0];
@@ -760,7 +741,7 @@ public class POPSolvingLayoutController {
 			
 			if(!POPVariableManager.createdVars.contains(variable.getName())) {
 				System.out.println("?? : " + variable.getName());
-				addVariable(variable.getName(), variable.getType());
+				addVariable(variable.getName(), variable.getType(), "");
 			}
 		} else {
 			content = loadOperationSymbol(symbol, 0, content);
@@ -799,7 +780,7 @@ public class POPSolvingLayoutController {
 				array.getIndexBlank().insertNode(variable);
 				
 				if(!POPVariableManager.createdVars.contains(variable.getName())) {
-					addVariable(variable.getName(), variable.getType());
+					addVariable(variable.getName(), variable.getType(), "");
 				}
 			} else {
 				String type2 = content.split("\\(")[0];
@@ -821,7 +802,7 @@ public class POPSolvingLayoutController {
 			((POPBlank) symbol.getContents().getChildren().get(2)).insertNode(variable);
 			
 			if(!POPVariableManager.createdVars.contains(variable.getName())) {
-				addVariable(variable.getName(), variable.getType());
+				addVariable(variable.getName(), variable.getType(), "");
 			}
 		} else {
 			loadOperationSymbol(symbol, 2, content);
@@ -850,6 +831,7 @@ public class POPSolvingLayoutController {
 	}
 	
 	public void initVariables() {
+		POPVariableManager.initVars = new ArrayList<>();
 		POPVariableManager.createdVars = new ArrayList<>();
 		String content = problem.getInputCase();
 		
@@ -857,8 +839,11 @@ public class POPSolvingLayoutController {
 		
 		for(String str : content.split("[\\r\\n]+")) {
 			if(str.split("\\(")[0].equals("Var")) {
-				addVariable(str.split("\\(")[1].toString(), POPNodeType.IntegerVariable);
+				POPVariableManager.initVars.add(str.split("Var\\(")[1].split("\\(")[0].toString());
+				addVariable(str.split("\\(")[1].toString(), POPNodeType.IntegerVariable, str.split("Var\\(")[1].split("\\(")[1].split("\\)\\)")[0].toString());
 			} else if(str.split("\\(")[0].equals("Arr")) {
+				POPVariableManager.initVars.add(str.split("\\(")[1].toString());
+				POPVariableManager.initVars.add(str.split("\\(")[1].toString() + "의 크기");
 				addArray(str.split("\\(")[1].toString());
 			}
 		}
@@ -869,28 +854,31 @@ public class POPSolvingLayoutController {
 		String content = problem.getInputCase();
 		content = content.split(";;")[index];
 		
-		for(Node node : variableArea.getChildren()) {
-			if(node instanceof POPArrayNode) {
-				POPArrayNode array = (POPArrayNode) node;
-				if(!POPVariableManager.declaredArrs.containsKey(array.getName())) {
-					ArrayList<Object> list = new ArrayList<>();
-					POPVariableManager.declaredArrs.put(array.getName(), list);
-					POPVariableManager.declaredVars.put(array.getName() + "의 크기", "0");
-				}
-				
-				String str = content;
-				while(str.contains("(" + array.getName() + "(")) {
-					POPVariableManager.declaredArrs.get(array.getName()).add(str.split("\\(" + array.getName() + "\\(")[1].split("\\)")[0]);
-					POPVariableManager.declaredVars.put(array.getName() + "의 크기", String.valueOf(Integer.parseInt(POPVariableManager.declaredVars.get(array.getName() + "의 크기")) + 1));
-					str = str.split("\\(" + array.getName() + "\\(", 2)[1].split("\\)", 2)[1];
-				}
-				
-			} else if(node instanceof POPVariableNode) {
-				if(content.contains("(" + ((POPVariableNode) node).getName() + "(")) {
-					POPVariableManager.declaredVars.put(((POPVariableNode) node).getName(), content.split("\\(" + ((POPVariableNode) node).getName() + "\\(")[1].split("\\)")[0]);
-				}
+		for(Node box : variableArea.getChildren()) {
+			if(box instanceof HBox) {
+				Node node = ((HBox) box).getChildren().get(0);
+				if(node instanceof POPArrayNode) {
+					POPArrayNode array = (POPArrayNode) node;
+					if(!POPVariableManager.declaredArrs.containsKey(array.getName())) {
+						ArrayList<Object> list = new ArrayList<>();
+						POPVariableManager.declaredArrs.put(array.getName(), list);
+						POPVariableManager.declaredVars.put(array.getName() + "의 크기", "0");
+					}
 					
+					String str = content;
+					while(str.contains("(" + array.getName() + "(")) {
+						POPVariableManager.declaredArrs.get(array.getName()).add(str.split("\\(" + array.getName() + "\\(")[1].split("\\)")[0]);
+						POPVariableManager.declaredVars.put(array.getName() + "의 크기", String.valueOf(Integer.parseInt(POPVariableManager.declaredVars.get(array.getName() + "의 크기")) + 1));
+						str = str.split("\\(" + array.getName() + "\\(", 2)[1].split("\\)", 2)[1];
+					}
+					
+				} else if(node instanceof POPVariableNode) {
+					if(content.contains("(" + ((POPVariableNode) node).getName() + "(")) {
+						POPVariableManager.declaredVars.put(((POPVariableNode) node).getName(), content.split("\\(" + ((POPVariableNode) node).getName() + "\\(")[1].split("\\)")[0]);
+					}
+				}
 			}
+			
 		}
 	}
 	
@@ -918,6 +906,7 @@ public class POPSolvingLayoutController {
 		}
 		
 		POPPopupManager.showAlertPopup("정답 확인", "정답 확인", "정답입니다!", AlertType.INFORMATION);
+		mainApp.getConnector().setSolved(POPLoggedInMember.getInstance().getMember().getId(), problem.getNumber(), true);
 	}
 	
 //	public static void showAlertPopup(String title, String header, String content, AlertType type) {
@@ -1039,10 +1028,22 @@ public class POPSolvingLayoutController {
 		}
 	}
 	
-	public void addVariable(String name, POPNodeType type) {
+	public void addVariable(String name, POPNodeType type, String value) {
 		if(!POPVariableManager.createdVars.contains(name)) {
 			POPVariableNode varNode = new POPVariableNode(scriptArea, name, type);
-			variableArea.getChildren().add(varNode);
+			if(POPVariableManager.initVars.contains(name)) {
+				HBox box = new HBox();
+				
+				box.getChildren().add(varNode);
+				varNode.getLbDefault().setText(" : " + value);
+				box.getChildren().add(varNode.getLbDefault());
+				box.setSpacing(10);
+				box.setAlignment(Pos.CENTER);
+				variableArea.getChildren().add(box);
+			} else {
+				variableArea.getChildren().add(varNode);
+			}
+			
 			POPVariableManager.createdVars.add(varNode.getName());
 		}
 		

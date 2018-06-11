@@ -13,6 +13,16 @@ public class POPArrayNode extends POPVariableNode {
 	private POPIndexBlank indexBlank;
 	private final double hgap = 3;
 	
+	public POPArrayNode(POPScriptArea scriptArea, String name, boolean isInitVariable) {
+		this(scriptArea, name);
+		
+		this.isInitVariable = isInitVariable;
+		
+		if(isInitVariable) {
+			imgView.setStyle("-fx-effect: dropshadow(three-pass-box, blue, 3, 0.5, 1, 1);");
+		}
+	}
+	
 	public POPArrayNode(POPScriptArea scriptArea, String name) {
 		super(scriptArea, name, POPNodeType.Array);
 		
