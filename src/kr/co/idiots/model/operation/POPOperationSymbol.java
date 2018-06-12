@@ -63,6 +63,7 @@ public class POPOperationSymbol extends StackPane {
 		InputStream stream = getClass().getResourceAsStream("/images/Operation.png");
 		Image img = new Image(stream);
 		imgShape = new ImageView(img);
+		imgShape.setStyle("-fx-effect: dropshadow(three-pass-box, black, 3, 0, 0, 1);");
 		
 		getChildren().add(imgShape);
 		StackPane.setAlignment(imgShape, Pos.CENTER);

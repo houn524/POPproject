@@ -244,7 +244,7 @@ public class POPFlowLine extends Group {
 				Node node = null;
 				
 				node = (POPSymbolNode) DragManager.draggedNode;
-				insertNode((POPSymbolNode) node);
+				insertNode((POPSymbolNode) node, 1.5);
 				
 				DragManager.dragMoving = false;
 				DragManager.draggedNode = null;
@@ -256,7 +256,7 @@ public class POPFlowLine extends Group {
 				POPSymbolNode node = null;
 				node = (POPSymbolNode) POPNodeFactory.createPOPNode(db.getString());
 				node.initialize();
-				insertNode(node);
+				insertNode(node, 0);
 				if(node instanceof POPLoopNode) {
 					((POPLoopNode) node).adjustPosition();
 				}
@@ -335,7 +335,7 @@ public class POPFlowLine extends Group {
     }
         
     
-    public void insertNode(POPSymbolNode node) {    
+    public void insertNode(POPSymbolNode node, double val) {    
     	
     	node.getOutFlowLine().setPrevNode(node);
     	node.getOutFlowLine().setNextNode(nextNode);
@@ -344,7 +344,7 @@ public class POPFlowLine extends Group {
     		node.setParentNode(nextNode.getParentNode());
     	}
     	
-    	node.getComponent().setLayoutX(line.getStartX() - (node.getComponent().getBoundsInParent().getWidth() / 2));
+    	node.getComponent().setLayoutX(line.getStartX() - (node.getComponent().getBoundsInLocal().getWidth() / 2) + val);
     	
     	if(prevNode instanceof POPDecisionStartNode) {
     		node.getComponent().setLayoutY(prevNode.getComponent().getBoundsInParent().getMaxY() + nodeMinGap + 30);
@@ -400,8 +400,6 @@ public class POPFlowLine extends Group {
     		}
     	}
     	root.getOutFlowLine().pullNodesThread();
-    	
-    	
     }
     
     public void removeNodeOfDecision() {

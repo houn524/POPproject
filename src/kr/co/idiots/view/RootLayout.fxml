@@ -18,7 +18,7 @@
          <children>
             <FlowPane hgap="30.0" nodeOrientation="LEFT_TO_RIGHT" prefWrapLength="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <StackPane prefHeight="81.0" prefWidth="200.0">
+                  <StackPane prefHeight="80.0" prefWidth="200.0">
                      <children>
                         <ImageView fitHeight="150.0" fitWidth="150.0" pickOnBounds="true" preserveRatio="true">
                            <image>
@@ -34,7 +34,7 @@
                      <children>
                         <Label fx:id="lbHome" alignment="CENTER" contentDisplay="CENTER" text="홈" textAlignment="CENTER">
                            <font>
-                              <Font name="NanumGothicBold" size="20.0" />
+                              <Font name="NanumGothic" size="20.0" />
                            </font>
                         </Label>
                         <Line endX="-100.0" startX="-100.0" startY="20.0" />

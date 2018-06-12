@@ -1,68 +1,59 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="480.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.POPJoinLayoutController">
+<AnchorPane prefHeight="400.0" prefWidth="400.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.POPJoinLayoutController">
    <children>
-      <GridPane AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="50.0">
+      <GridPane AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
         <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.199951171875" minWidth="10.0" prefWidth="141.9999267578125" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.199951171875" minWidth="10.0" prefWidth="40.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="195.199951171875" minWidth="10.0" prefWidth="60.0" />
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="272.0" minWidth="10.0" prefWidth="184.80000000000004" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="264.800048828125" minWidth="10.0" prefWidth="58.4000244140625" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="264.800048828125" minWidth="10.0" prefWidth="60.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="71.8000244140625" minHeight="10.0" prefHeight="18.39999771118164" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="125.60000228881836" minHeight="10.0" prefHeight="76.79999389648438" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="80.80000610351561" minHeight="10.0" prefHeight="20.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="95.00000610351563" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="50.599951171875006" minHeight="4.199987792968727" prefHeight="12.999975585937477" vgrow="SOMETIMES" />
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Label text="아이디 :" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
-               <font>
-                  <Font name="NanumGothic" size="18.0" />
-               </font>
-            </Label>
-            <Label text="비밀번호 :" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
-               <font>
-                  <Font name="NanumGothic" size="18.0" />
-               </font>
-            </Label>
-            <Label text="비밀번호 확인 :" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
-               <font>
-                  <Font name="NanumGothic" size="18.0" />
-               </font>
-            </Label>
-            <TextField fx:id="txtId" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <TextField fx:id="txtId" promptText="아이디" GridPane.columnIndex="1" GridPane.rowIndex="3">
             	<font>
                    <Font name="NanumGothic" size="14.0" />
                 </font>
             </TextField>
-            <PasswordField fx:id="txtPw" GridPane.columnIndex="2" GridPane.rowIndex="2">
+            <PasswordField fx:id="txtPw" promptText="비밀번호" GridPane.columnIndex="1" GridPane.rowIndex="4">
             	<font>
                    <Font name="NanumGothic" size="14.0" />
                 </font>
             </PasswordField>
-            <PasswordField fx:id="txtPwConfirm" GridPane.columnIndex="2" GridPane.rowIndex="3">
+            <PasswordField fx:id="txtPwConfirm" promptText="비밀번호 확인" GridPane.columnIndex="1" GridPane.rowIndex="5">
             	<font>
                    <Font name="NanumGothic" size="14.0" />
                 </font>
             </PasswordField>
-            <Button fx:id="btnJoin" mnemonicParsing="false" text="가입" GridPane.columnIndex="2" GridPane.halignment="RIGHT" GridPane.rowIndex="5">
+            <Button fx:id="btnJoin" mnemonicParsing="false" text="가입하기" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="6">
                <font>
                   <Font name="NanumGothic" size="18.0" />
                </font>
             </Button>
+            <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <image>
+                  <Image url="@../../../../images/Logo.png" />
+               </image>
+            </ImageView>
          </children>
       </GridPane>
    </children>

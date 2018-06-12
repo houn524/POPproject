@@ -28,7 +28,7 @@
    <center>
       <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-effect: dropshadow(three-pass-box, derive(grey, -20%), 10, 0, 4, 4);" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <BorderPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-color: black; -fx-effect: dropshadow(three-pass-box, derive(grey, -20%), 10, 0, 4, 4);" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="10.0">
                <center>
                   <Label text="내용" BorderPane.alignment="CENTER">
                      <font>

@@ -18,6 +18,9 @@ public class POPProcessNode extends POPSymbolNode {
 		outFlowLine.setPrevNode(this);
 		
 		outFlowLine.setVisible(false);
+		
+		imgView.setStyle("-fx-effect: dropshadow(three-pass-box, black, 2, 0, 0, 1);");
+//		imgView.setStyle("-fx-border-color: black -fx-border-width: 3;");
 	}
 	
 	@Override

@@ -61,7 +61,7 @@ public class POPSymbolNode extends POPNode {
 	
 	public POPSymbolNode(POPScriptArea scriptArea, POPNodeType type) {
 		super(scriptArea, type);
-				
+		
 		if(type != POPNodeType.Start && type != POPNodeType.Stop && type != POPNodeType.DecisionSub)
 			setOnNodeDrag();
 		// TODO Auto-generated constructor stub
@@ -151,7 +151,7 @@ public class POPSymbolNode extends POPNode {
 			prevBound = inFlowLine.getPrevNode().getBoundsInParent();
 			
 			if(!component.layoutXProperty().isBound())
-				component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2));
+				component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2) + 1.5);
 		}
 	}
 
@@ -195,7 +195,7 @@ public class POPSymbolNode extends POPNode {
 			if (DragManager.isAllocatedNode && event.getTransferMode() != TransferMode.MOVE) {
 				POPSolvingLayoutController.scriptArea.addWithOutFlowLine(this);
 				
-				this.inFlowLine.insertNode(this);
+				this.inFlowLine.insertNode(this , 1.5);
 			} else if(DragManager.dragMoving && event.getTransferMode() != TransferMode.MOVE) {
 				POPSolvingLayoutController.scriptArea.add(this);
 			}

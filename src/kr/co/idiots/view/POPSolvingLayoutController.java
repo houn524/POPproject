@@ -328,35 +328,46 @@ public class POPSolvingLayoutController {
 		
 		plusSymbol = new POPPlusSymbol();
 		operationArea.getChildren().add(plusSymbol);
+		plusSymbol.setTranslateX(40);
+		plusSymbol.setTranslateY(40);
 		minusSymbol = new POPMinusSymbol();
 		operationArea.getChildren().add(minusSymbol);
+		minusSymbol.setTranslateX(140);
 		minusSymbol.setTranslateY(40);
 		multiplySymbol = new POPMultiplySymbol();
 		operationArea.getChildren().add(multiplySymbol);
+		multiplySymbol.setTranslateX(40);
 		multiplySymbol.setTranslateY(80);
 		divideSymbol = new POPDivideSymbol();
 		operationArea.getChildren().add(divideSymbol);
-		divideSymbol.setTranslateY(120);
+		divideSymbol.setTranslateX(140);
+		divideSymbol.setTranslateY(80);
 		remainderSymbol = new POPRemainderSymbol();
 		operationArea.getChildren().add(remainderSymbol);
-		remainderSymbol.setTranslateY(160);
+		remainderSymbol.setTranslateX(40);
+		remainderSymbol.setTranslateY(120);
 		
 		isEqualSymbol = new POPIsEqualSymbol();
 		operationArea.getChildren().add(isEqualSymbol);
-		isEqualSymbol.setTranslateY(240);
+		isEqualSymbol.setTranslateX(40);
+		isEqualSymbol.setTranslateY(200);
 		lessThanSymbol = new POPLessThanSymbol();
 		operationArea.getChildren().add(lessThanSymbol);
-		lessThanSymbol.setTranslateY(280);
+		lessThanSymbol.setTranslateX(140);
+		lessThanSymbol.setTranslateY(200);
 		lessThanEqualSymbol = new POPLessThanEqualSymbol();
 		operationArea.getChildren().add(lessThanEqualSymbol);
-		lessThanEqualSymbol.setTranslateY(320);
+		lessThanEqualSymbol.setTranslateX(40);
+		lessThanEqualSymbol.setTranslateY(240);
 		notEqualSymbol = new POPNotEqualSymbol();
 		operationArea.getChildren().add(notEqualSymbol);
-		notEqualSymbol.setTranslateY(360);
+		notEqualSymbol.setTranslateX(140);
+		notEqualSymbol.setTranslateY(240);
 		
 		stringPlusSymbol = new POPStringPlusSymbol();
 		operationArea.getChildren().add(stringPlusSymbol);
-		stringPlusSymbol.setLayoutY(440);
+		stringPlusSymbol.setTranslateX(40);
+		stringPlusSymbol.setLayoutY(320);
 		
 		
 		startNode = new POPStartNode(scriptArea);
