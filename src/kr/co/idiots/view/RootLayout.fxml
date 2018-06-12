@@ -12,11 +12,11 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="rootPane" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0); -fx-background-color: FFFFFF;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.RootLayoutController">
+<BorderPane fx:id="rootPane" style="-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0.5, 0.0, 0.0); -fx-background-color: FFFFFF;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.RootLayoutController">
    <top>
       <AnchorPane BorderPane.alignment="TOP_LEFT">
          <children>
-            <FlowPane nodeOrientation="LEFT_TO_RIGHT" prefWrapLength="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <FlowPane hgap="30.0" nodeOrientation="LEFT_TO_RIGHT" prefWrapLength="1000.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <StackPane prefHeight="81.0" prefWidth="200.0">
                      <children>
@@ -34,19 +34,19 @@
                      <children>
                         <Label fx:id="lbHome" alignment="CENTER" contentDisplay="CENTER" text="홈" textAlignment="CENTER">
                            <font>
-                              <Font name="NanumGothic" size="30.0" />
+                              <Font name="NanumGothicBold" size="20.0" />
                            </font>
                         </Label>
                         <Line endX="-100.0" startX="-100.0" startY="20.0" />
                         <Label fx:id="lbSolving" alignment="CENTER" contentDisplay="CENTER" layoutX="60.0" layoutY="36.0" text="문제 풀기" textAlignment="CENTER">
                            <font>
-                              <Font name="NanumGothic" size="30.0" />
+                              <Font name="NanumGothic" size="20.0" />
                            </font>
                         </Label>
                         <Line endX="-100.0" layoutX="242.0" layoutY="45.0" startX="-100.0" startY="20.0" />
                         <Label alignment="CENTER" contentDisplay="CENTER" layoutX="270.0" layoutY="42.0" text="문제 공유" textAlignment="CENTER">
                            <font>
-                              <Font name="NanumGothic" size="30.0" />
+                              <Font name="NanumGothic" size="20.0" />
                            </font>
                         </Label>
                      </children>
@@ -59,9 +59,9 @@
                   </FlowPane>
                </children>
             </FlowPane>
-            <Button fx:id="btnLogout" mnemonicParsing="false" text="로그아웃" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <Button fx:id="btnLogout" mnemonicParsing="false" text="로그아웃" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="35.0">
             	<font>
-                	<Font name="NanumGothic" size="12.0" style="-font-weight: bolder;"/>
+                	<Font name="NanumGothic" size="12.0" style="-font-weight: bolder;" />
                 </font>
             </Button>
          </children>

@@ -70,6 +70,7 @@ public class MainApp extends Application {
 //		Font.loadFont(getClass().getResourceAsStream("Roboto-Regular.ttf"), 14);
 		try {
 			Font.loadFont(new FileInputStream(new File("src/Fonts/NanumGothic.ttf")), 14);
+			Font.loadFont(new FileInputStream(new File("src/Fonts/NanumGothicBold.ttf")), 14);
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -35,7 +35,7 @@
                <children>
                   <Label text="문제 선택">
                      <font>
-                        <Font name="NanumGothic" size="30.0" />
+                        <Font name="NanumGothic" size="20.0" />
                      </font>
                      <HBox.margin>
                         <Insets left="20.0" />
@@ -51,7 +51,7 @@
                <children>
                   <Label text="초급">
                      <font>
-                        <Font name="NanumGothic" size="24.0" />
+                        <Font name="NanumGothic" size="18.0" />
                      </font>
                      <HBox.margin>
                         <Insets left="30.0" />
@@ -67,7 +67,7 @@
                <children>
                   <Label text="중급">
                      <font>
-                        <Font name="NanumGothic" size="24.0" />
+                        <Font name="NanumGothic" size="18.0" />
                      </font>
                      <HBox.margin>
                         <Insets left="30.0" />
@@ -80,7 +80,7 @@
                <children>
                   <Label text="고급">
                      <font>
-                        <Font name="NanumGothic" size="24.0" />
+                        <Font name="NanumGothic" size="18.0" />
                      </font>
                      <HBox.margin>
                         <Insets left="30.0" />
