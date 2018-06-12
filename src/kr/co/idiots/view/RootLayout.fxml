@@ -61,7 +61,7 @@
             </FlowPane>
             <Button fx:id="btnLogout" mnemonicParsing="false" text="로그아웃" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
             	<font>
-                	<Font name="NanumGothic" size="12.0" />
+                	<Font name="NanumGothic" size="12.0" style="-font-weight: bolder;"/>
                 </font>
             </Button>
          </children>
