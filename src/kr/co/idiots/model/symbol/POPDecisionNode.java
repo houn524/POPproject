@@ -121,7 +121,7 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 		subNodes.add(rightEndNode);
 		subNodes.add(leftEndNode.getSideFlowLine());
 		
-		invisibleSubNodes();
+//		invisibleSubNodes();
 	}
 	
 	public void bindSubNodes() {

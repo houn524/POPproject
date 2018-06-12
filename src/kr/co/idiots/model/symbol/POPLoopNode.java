@@ -103,7 +103,7 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 		subNodes.add(rightUpFlowLine);
 		subNodes.add(rightInFlowLine);
 		
-		invisibleSubNodes();
+//		invisibleSubNodes();
 	}
 	
 	public void visibleSubNodes() {

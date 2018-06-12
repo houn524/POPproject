@@ -203,10 +203,24 @@ public class POPSolvingLayoutController {
 		});
 		mainApp.getPrimaryStage().getScene().setOnKeyReleased(e -> pressedKeys.remove(e.getCode()));
 		
-		loopSymbol = new POPLoopNode(scriptArea);
-		loopSymbol.invisibleSubNodes();
-		decisionSymbol = new POPDecisionNode(scriptArea);
-		decisionSymbol.invisibleSubNodes();
+//		Thread thread = new Thread() {
+//			@Override
+//			public void run() {
+//				PlatformHelper.run(() -> {
+//					loopSymbol = new POPLoopNode(scriptArea);
+//					loopSymbol.invisibleSubNodes();
+//					decisionSymbol = new POPDecisionNode(scriptArea);
+//					decisionSymbol.invisibleSubNodes();
+//				});
+//			}
+//		};
+//		
+//		thread.setDaemon(true);
+//		thread.start();
+//		loopSymbol = new POPLoopNode(scriptArea);
+//		loopSymbol.invisibleSubNodes();
+//		decisionSymbol = new POPDecisionNode(scriptArea);
+//		decisionSymbol.invisibleSubNodes();
 //		loopSymbol.invisibleSubNodes();
 	}
 	
@@ -286,15 +300,31 @@ public class POPSolvingLayoutController {
 		symbolGroup.getChildren().add(documentSymbol.getComponent());
 		documentSymbol.setLayoutX(documentSymbol.getLayoutX() + 20);
 		documentSymbol.getComponent().setLayoutY(70);
+		Thread thread = new Thread() {
+			@Override
+			public void run() {
+				PlatformHelper.run(() -> {
+					loopSymbol = new POPLoopNode(scriptArea);
+					loopSymbol.invisibleSubNodes();
+					decisionSymbol = new POPDecisionNode(scriptArea);
+					decisionSymbol.invisibleSubNodes();
+					
+					add(symbolGroup, decisionSymbol);
+					decisionSymbol.setLayoutX(decisionSymbol.getLayoutX() + 10);
+					decisionSymbol.getComponent().setLayoutY(140);
+					
+					add(symbolGroup, loopSymbol);
+					loopSymbol.setLayoutX(loopSymbol.getLayoutX() + 10);
+					loopSymbol.getComponent().setLayoutY(250);
+				});
+			}
+		};
 		
-		this.add(symbolGroup, decisionSymbol);
-		decisionSymbol.setLayoutX(decisionSymbol.getLayoutX() + 10);
-		decisionSymbol.getComponent().setLayoutY(140);
+		thread.setDaemon(true);
+		thread.start();
 		
-		this.add(symbolGroup, loopSymbol);
 		
-		loopSymbol.setLayoutX(loopSymbol.getLayoutX() + 10);
-		loopSymbol.getComponent().setLayoutY(250);
+		
 		
 		plusSymbol = new POPPlusSymbol();
 		operationArea.getChildren().add(plusSymbol);
@@ -369,7 +399,7 @@ public class POPSolvingLayoutController {
 	    
 		
 		
-		Thread thread = new Thread() {
+		Thread loadThread = new Thread() {
 			@Override
 			public void run() {
 				PlatformHelper.run(() -> {
@@ -383,8 +413,8 @@ public class POPSolvingLayoutController {
 			}
 		};
 		
-		thread.setDaemon(true);
-		thread.start();
+		loadThread.setDaemon(true);
+		loadThread.start();
 		
 //		showScriptArea();
 	}
