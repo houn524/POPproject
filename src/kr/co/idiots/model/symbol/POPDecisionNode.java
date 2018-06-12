@@ -65,8 +65,6 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 		double leftMaxLength;		
 		leftMaxLength = leftEndNode.getInFlowLine().getStartY() + POPFlowLine.nodeMinGap + 30 - getLayoutY();
 		
-		
-		
 		double rightMaxLength;
 		rightMaxLength = rightEndNode.getInFlowLine().getStartY() + POPFlowLine.nodeMinGap + 30 - getLayoutY();
 		

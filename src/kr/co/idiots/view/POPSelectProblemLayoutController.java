@@ -11,9 +11,12 @@ import javafx.scene.Cursor;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import kr.co.idiots.MainApp;
+import kr.co.idiots.model.POPCheckImage;
 import kr.co.idiots.model.POPProblem;
 import lombok.Getter;
 import lombok.Setter;
@@ -37,7 +40,7 @@ public class POPSelectProblemLayoutController {
 	private TableColumn<POPProblem, String> titleColumn;
 	
 	@FXML
-	private TableColumn<POPProblem, Boolean> solvedColumn;
+	private TableColumn<POPProblem, ImageView> solvedColumn;
 	
 	@FXML
 	private HBox easyBox;
@@ -62,7 +65,7 @@ public class POPSelectProblemLayoutController {
 	private void initialize() {
 		numberColumn.setCellValueFactory(cellData -> cellData.getValue().numberProperty().asObject());
 		titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
-		solvedColumn.setCellValueFactory(cellData -> cellData.getValue().solvedProperty());
+		solvedColumn.setCellValueFactory(new PropertyValueFactory<>("checkImage"));
 		
 		tableView.setRowFactory(tv -> {
 			TableRow<POPProblem> row = new TableRow<>();

@@ -71,7 +71,7 @@ public class POPDatabaseConnector {
             	if(rs.next()) 
             		autoincrement = rs.getInt(1) - 1;
             	
-            	sql = "insert into solving values(?, ?, ?);";
+            	sql = "insert into solving(user_id, problem_number, flowchart_id) values(?, ?, ?);";
             	
             	st = connection.prepareStatement(sql);
             	st.setString(1, user_id);
@@ -235,7 +235,7 @@ public class POPDatabaseConnector {
             st.setInt(3, number);
             
             st.executeUpdate();
- 
+            System.out.println("set");
             st.close();
         } catch (SQLException se1) {
             se1.printStackTrace();

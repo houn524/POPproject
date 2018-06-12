@@ -1,11 +1,15 @@
 package kr.co.idiots.model;
 
+import java.io.InputStream;
+
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class POPProblem {
 	
@@ -18,7 +22,16 @@ public class POPProblem {
 	private final StringProperty output_case;
 	private final StringProperty difficulty;
 	private final BooleanProperty solved;
+	private ImageView checkImage;
 	
+	public ImageView getCheckImage() {
+		return checkImage;
+	}
+
+	public void setCheckImage(ImageView checkImage) {
+		this.checkImage = checkImage;
+	}
+
 	public POPProblem() {
 		this(null, null, null, null, null, null, null, null, false);
 	}
@@ -33,6 +46,14 @@ public class POPProblem {
 		this.output_case = new SimpleStringProperty(output_case);
 		this.difficulty = new SimpleStringProperty(difficulty);
 		this.solved = new SimpleBooleanProperty(solved);
+		
+		if(this.solved.get()) {
+			InputStream stream = getClass().getResourceAsStream("/images/Check.png");
+			Image img = new Image(stream);
+			checkImage = new ImageView(img);
+		} else {
+			checkImage = new ImageView();
+		}
 	}
 	
 	public int getNumber() {
@@ -142,5 +163,4 @@ public class POPProblem {
 	public BooleanProperty solvedProperty() {
 		return solved;
 	}
-	
 }
