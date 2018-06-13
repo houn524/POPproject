@@ -193,7 +193,7 @@ public class POPFlowchartPlayer {
 		try {
 			while(!isStop) { 
 				if(node.getImgView() != null)
-					node.getImgView().setStyle("");
+					node.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, black, 2, 0, 0, 1);");;
 				if(node instanceof POPStartNode) {
 //					saveFlowchart((POPStartNode) node);
 					output = new StringBuilder();

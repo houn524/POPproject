@@ -8,7 +8,6 @@ import java.util.Set;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -415,10 +414,12 @@ public class POPSolvingLayoutController {
 			public void run() {
 				PlatformHelper.run(() -> {
 					
-					initVariables();
-					loadFlowchart(content);
+//					initVariables();
+//					loadFlowchart(content);
 					loopSymbol.visibleSubNodes();
 					decisionSymbol.visibleSubNodes();
+					initVariables();
+					loadFlowchart(content);
 //					showSplash(null, loadTask, () -> showScriptArea());
 				});
 			}
@@ -426,6 +427,8 @@ public class POPSolvingLayoutController {
 		
 		loadThread.setDaemon(true);
 		loadThread.start();
+		
+		
 		
 //		showScriptArea();
 	}
@@ -534,75 +537,75 @@ public class POPSolvingLayoutController {
 //		thread.start();
 		
 		
-		loadTask = new Task<Void>() {
-			@Override
-			protected Void call() throws Exception {
-				// TODO Auto-generated method stub
-				PlatformHelper.run(() -> {
-//				Platform.runLater(() -> {
-//					for (int i = 1; i <= 100; i++) {
-//		                updateProgress(i, 100);
-//		                try {
-//							Thread.sleep(10);
-//						} catch (InterruptedException e) {
-//							// TODO Auto-generated catch block
-//							e.printStackTrace();
+//		loadTask = new Task<Void>() {
+//			@Override
+//			protected Void call() throws Exception {
+//				// TODO Auto-generated method stub
+//				PlatformHelper.run(() -> {
+////				Platform.runLater(() -> {
+////					for (int i = 1; i <= 100; i++) {
+////		                updateProgress(i, 100);
+////		                try {
+////							Thread.sleep(10);
+////						} catch (InterruptedException e) {
+////							// TODO Auto-generated catch block
+////							e.printStackTrace();
+////						}
+////		            }
+//					
+//					String resContent = content.toString();
+//					String sig = new String(new char[sigCount]).replace("\0", ":");
+//					POPSymbolNode currNode = startNode;
+//					
+//					progressMax = resContent.length();
+//					
+//					String[] symbolNode = content.toString().split(sig);
+//					
+//					for(String str : symbolNode) {
+//						if(str.equals("Start") || str.equals("DecisionStart") || str.equals("LoopStart")) {
+//							resContent = resContent.substring(str.length() + sig.length());
+//						} else if(str.equals("Stop") || str.equals("DecisionEnd") || str.equals("LoopEnd")) {
+//							if(resContent.contains(sig))
+//								resContent = resContent.substring(str.length() + sig.length());
+//							else
+//								resContent = resContent.substring(str.length());
+//							break;
+//						} else {
+//							if(resContent.contains(sig))
+//								resContent = resContent.substring(str.length() + sig.length());
+//							else
+//								resContent = resContent.substring(str.length());
+//							loadSymbolNode(currNode, str.split("\\(")[0], str);
+//							currNode = currNode.getOutFlowLine().getNextNode();
 //						}
-//		            }
-					
-					String resContent = content.toString();
-					String sig = new String(new char[sigCount]).replace("\0", ":");
-					POPSymbolNode currNode = startNode;
-					
-					progressMax = resContent.length();
-					
-					String[] symbolNode = content.toString().split(sig);
-					
-					for(String str : symbolNode) {
-						if(str.equals("Start") || str.equals("DecisionStart") || str.equals("LoopStart")) {
-							resContent = resContent.substring(str.length() + sig.length());
-						} else if(str.equals("Stop") || str.equals("DecisionEnd") || str.equals("LoopEnd")) {
-							if(resContent.contains(sig))
-								resContent = resContent.substring(str.length() + sig.length());
-							else
-								resContent = resContent.substring(str.length());
-							break;
-						} else {
-							if(resContent.contains(sig))
-								resContent = resContent.substring(str.length() + sig.length());
-							else
-								resContent = resContent.substring(str.length());
-							loadSymbolNode(currNode, str.split("\\(")[0], str);
-							currNode = currNode.getOutFlowLine().getNextNode();
-						}
-						progressVal = progressMax - resContent.length();
-//						Platform.runLater(() -> {
-						
-						
-//						updateProgress(progressVal, progressMax);
-//							loadingController.getProgress().setProgress(progressVal / progressMax);
-//							System.out.println(progressVal / progressMax);
-//						});
-						
-//						loadingController.getProgress().setProgress(progressVal/ progressMax);
-//						System.out.println(loadingController.getProgress().getProgress());
-						
-					}
+//						progressVal = progressMax - resContent.length();
+////						Platform.runLater(() -> {
+//						
+//						
+////						updateProgress(progressVal, progressMax);
+////							loadingController.getProgress().setProgress(progressVal / progressMax);
+////							System.out.println(progressVal / progressMax);
+////						});
+//						
+////						loadingController.getProgress().setProgress(progressVal/ progressMax);
+////						System.out.println(loadingController.getProgress().getProgress());
+//						
+//					}
+////				});
+//					
 //				});
-					
-				});
-				return null;
-			}
-			
-		};
-		
-		loadTask.setOnFailed(new EventHandler<WorkerStateEvent>() {
-		    @Override
-		    public void handle(WorkerStateEvent arg0) {
-		        Throwable throwable = loadTask.getException(); 
-		        throwable.printStackTrace();
-		    }
-		});
+//				return null;
+//			}
+//			
+//		};
+//		
+//		loadTask.setOnFailed(new EventHandler<WorkerStateEvent>() {
+//		    @Override
+//		    public void handle(WorkerStateEvent arg0) {
+//		        Throwable throwable = loadTask.getException(); 
+//		        throwable.printStackTrace();
+//		    }
+//		});
 		
 //		Thread thread = new Thread() {
 //			@Override
@@ -668,21 +671,27 @@ public class POPSolvingLayoutController {
 					resContent = resContent.substring(str.length() + sig.length());
 				else
 					resContent = resContent.substring(str.length());
-				loadSymbolNode(currNode, str.split("\\(")[0], str);
-				currNode = currNode.getOutFlowLine().getNextNode();
+				
+				POPSymbolNode node = null;
+				node = (POPSymbolNode) POPNodeFactory.createPOPNode(str.split("\\(")[0]);
+				
+				loadSymbolNode(currNode, node, str.split("\\(")[0], str);
+//				currNode = currNode.getOutFlowLine().getNextNode();
+				currNode = node;
 			}
 //			progressVal.set(progressMax.get() - resContent.length());
 		}
 		return resContent;
 	}
 	
-	public String loadSymbolNode(POPSymbolNode prevNode, String typeName, String content) {
+	public String loadSymbolNode(POPSymbolNode prevNode, POPSymbolNode node, String typeName, String content) {
 		content = content.substring(typeName.length() + 1);
 		
-		POPSymbolNode node = null;
-		node = (POPSymbolNode) POPNodeFactory.createPOPNode(typeName);
+//		POPSymbolNode node = null;
+//		node = (POPSymbolNode) POPNodeFactory.createPOPNode(typeName);
 		node.initialize();
-		prevNode.getOutFlowLine().insertNode(node);
+		if(!(prevNode instanceof POPStopNode))
+			prevNode.getOutFlowLine().insertNodeThread(node, 2);
 		if(node instanceof POPLoopNode) {
 			((POPLoopNode) node).adjustPosition();
 //			((POPLoopNode) node).adjustSubNodes();
@@ -695,7 +704,7 @@ public class POPSolvingLayoutController {
 		
 		content = loadOperationSymbol(symbol, 0, content);
 		
-		if(prevNode.getOutFlowLine().getNextNode() instanceof POPDecisionNode) {
+		if(node instanceof POPDecisionNode) {
 //			if(content.contains("::"))
 			int count = sigCount;
 				content = content.substring(count);
@@ -704,17 +713,17 @@ public class POPSolvingLayoutController {
 			
 			sigCount -= 1;
 			count = sigCount;
-			content = loadFlowchartSymbol(((POPDecisionNode) prevNode.getOutFlowLine().getNextNode()).getLeftStartNode(), new StringBuilder(content), new String(new char[count]).replace("\0", ":"));
-			content = loadFlowchartSymbol(((POPDecisionNode) prevNode.getOutFlowLine().getNextNode()).getRightStartNode(), new StringBuilder(content), new String(new char[count]).replace("\0", ":"));
+			content = loadFlowchartSymbol(((POPDecisionNode) node).getLeftStartNode(), new StringBuilder(content), new String(new char[count]).replace("\0", ":"));
+			content = loadFlowchartSymbol(((POPDecisionNode) node).getRightStartNode(), new StringBuilder(content), new String(new char[count]).replace("\0", ":"));
 		}
 		
-		if(prevNode.getOutFlowLine().getNextNode() instanceof POPLoopNode) {
+		if(node instanceof POPLoopNode) {
 			int count = sigCount;
 			content = content.substring(count);
 			
 			sigCount -= 1;
 			count = sigCount;
-			content = loadFlowchartSymbol(((POPLoopNode) prevNode.getOutFlowLine().getNextNode()).getLoopStartNode(), new StringBuilder(content), new String(new char[count]).replace("\0", ":"));
+			content = loadFlowchartSymbol(((POPLoopNode) node).getLoopStartNode(), new StringBuilder(content), new String(new char[count]).replace("\0", ":"));
 		}
 		
 		return content;
@@ -759,7 +768,6 @@ public class POPSolvingLayoutController {
 				array.getIndexBlank().insertNode(variable);
 				
 				if(!POPVariableManager.createdVars.contains(variable.getName())) {
-					System.out.println("?? : " + variable.getName());
 					addVariable(variable.getName(), variable.getType(), "");
 				}
 			} else {
@@ -781,7 +789,6 @@ public class POPSolvingLayoutController {
 			((POPBlank) symbol.getContents().getChildren().get(0)).insertNode(variable);
 			
 			if(!POPVariableManager.createdVars.contains(variable.getName())) {
-				System.out.println("?? : " + variable.getName());
 				addVariable(variable.getName(), variable.getType(), "");
 			}
 		} else {

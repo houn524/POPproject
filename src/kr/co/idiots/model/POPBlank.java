@@ -50,7 +50,7 @@ public class POPBlank extends TextField {
 		setOnMousePressed(event -> {
 			if(parentSymbol.getParentNode() != null) {
 				if(parentSymbol.getParentNode().isException()) {
-					parentSymbol.getParentNode().getImgView().setStyle("");
+					parentSymbol.getParentNode().getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, black, 2, 0, 0, 1);");;
 					parentSymbol.getParentNode().setException(false);
 				}
 			}
@@ -84,7 +84,7 @@ public class POPBlank extends TextField {
 		setOnDragDropped(event -> {
 			if(parentSymbol.getParentNode() != null) {
 				if(parentSymbol.getParentNode().isException()) {
-					parentSymbol.getParentNode().getImgView().setStyle("");
+					parentSymbol.getParentNode().getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, black, 2, 0, 0, 1);");;
 					parentSymbol.getParentNode().setException(false);
 				}
 			}

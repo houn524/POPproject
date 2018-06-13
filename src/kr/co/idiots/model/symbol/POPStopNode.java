@@ -11,5 +11,7 @@ public class POPStopNode extends POPSymbolNode {
 		
 		component.setLayoutX(50d);
 		component.setLayoutY(135d);
+		
+		imgView.setStyle("-fx-effect: dropshadow(three-pass-box, black, 2, 0, 0, 1);");
 	}
 }

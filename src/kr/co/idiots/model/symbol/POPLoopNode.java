@@ -103,7 +103,7 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 		subNodes.add(rightUpFlowLine);
 		subNodes.add(rightInFlowLine);
 		
-//		invisibleSubNodes();
+		invisibleSubNodes();
 	}
 	
 	public void visibleSubNodes() {
@@ -354,7 +354,7 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 //		subNodes.add(rightInFlowLine);
 		bindSubNodes();
 //		adjustSubNodes();
-		
+		imgView.setStyle("-fx-effect: dropshadow(three-pass-box, black, 2, 0, 0, 1);");
 		setOnBoundChangeListener();
 	}
 	
@@ -463,13 +463,12 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 			newBound = component.getBoundsInParent();
 			prevBound = inFlowLine.getPrevNode().getBoundsInParent();
 			
-			component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2));
+			component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2) + 2);
 		}
 	}
 	
 	public void resizeLoopNode() {
 		maxLoopWidth.set(initMaxLoopWidth);
-		System.out.println(maxLoopWidth.get());
 		for(Node subNode : subNodes) {
 			if(subNode instanceof POPDecisionNode) {
 				maxLoopWidth.set(Math.max(((POPDecisionNode) subNode).getDecisionWidth(), maxLoopWidth.get()));

@@ -299,7 +299,7 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 //		subNodes.add(leftEndNode);
 //		subNodes.add(rightEndNode);
 //		subNodes.add(leftEndNode.getSideFlowLine());
-		
+		imgView.setStyle("-fx-effect: dropshadow(three-pass-box, black, 2, 0, 0, 1);");
 		setOnBoundChangeListener();
 	}
 	
@@ -350,7 +350,7 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 	public void adjustPosition() {
 		resizeDecisionNode();
     	
-    	Node subNode = leftStartNode;
+    	Node subNode = leftStartNode.getOutFlowLine().getNextNode();
 		
 		while(true) {
 			if(subNode instanceof POPDecisionEndNode) {
@@ -363,7 +363,7 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 			subNode = ((POPSymbolNode) subNode).getOutFlowLine().getNextNode();
 		}
 		
-		subNode = rightStartNode;
+		subNode = rightStartNode.getOutFlowLine().getNextNode();
 		while(true) {
 			if(subNode instanceof POPDecisionEndNode) {
 				break;
@@ -444,7 +444,7 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 			newBound = component.getBoundsInParent();
 			prevBound = inFlowLine.getPrevNode().getBoundsInParent();
 			
-			component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2));
+			component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2) + 2);
 			
 		}
 	}

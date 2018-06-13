@@ -145,13 +145,17 @@ public class POPSymbolNode extends POPNode {
 		if(inFlowLine != null && (isAllocated || this instanceof POPDecisionEndNode || this instanceof POPLoopEndNode)) {
 			Bounds newBound = null;
 			Bounds prevBound = null;
+			int val = 0;
 			
+			if(!(this instanceof POPDecisionEndNode) && !(this instanceof POPLoopEndNode)) {
+				val = 2;
+			}
 			newBound = component.getBoundsInParent();
 			
 			prevBound = inFlowLine.getPrevNode().getBoundsInParent();
 			
 			if(!component.layoutXProperty().isBound())
-				component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2) + 1.5);
+				component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2) + val);
 		}
 	}
 
@@ -178,7 +182,7 @@ public class POPSymbolNode extends POPNode {
 			}
 			
 			if(isException) {
-				this.imgView.setStyle("");
+				this.imgView.setStyle("-fx-effect: dropshadow(three-pass-box, black, 2, 0, 0, 1);");
 				isException = false;
 			}
 		});
@@ -195,7 +199,7 @@ public class POPSymbolNode extends POPNode {
 			if (DragManager.isAllocatedNode && event.getTransferMode() != TransferMode.MOVE) {
 				POPSolvingLayoutController.scriptArea.addWithOutFlowLine(this);
 				
-				this.inFlowLine.insertNode(this , 1.5);
+				this.inFlowLine.insertNodeThread(this , 2);
 			} else if(DragManager.dragMoving && event.getTransferMode() != TransferMode.MOVE) {
 				POPSolvingLayoutController.scriptArea.add(this);
 			}

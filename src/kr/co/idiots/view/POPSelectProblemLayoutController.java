@@ -16,7 +16,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import kr.co.idiots.MainApp;
-import kr.co.idiots.model.POPCheckImage;
 import kr.co.idiots.model.POPProblem;
 import lombok.Getter;
 import lombok.Setter;

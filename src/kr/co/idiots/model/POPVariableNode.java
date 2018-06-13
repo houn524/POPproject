@@ -142,7 +142,7 @@ public class POPVariableNode extends POPNode {
 			}
 			
 			if(parentSymbol != null && parentSymbol.getParentNode() != null && parentSymbol.getParentNode().isException()) {
-				parentSymbol.getParentNode().getImgView().setStyle("");
+				parentSymbol.getParentNode().getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, black, 2, 0, 0, 1);");;
 				parentSymbol.getParentNode().setException(false);
 			}
 		});

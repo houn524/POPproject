@@ -18,6 +18,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 import kr.co.idiots.POPNodeFactory;
+import kr.co.idiots.SubNodeIF;
 import kr.co.idiots.model.symbol.POPDecisionEndNode;
 import kr.co.idiots.model.symbol.POPDecisionNode;
 import kr.co.idiots.model.symbol.POPDecisionStartNode;
@@ -244,7 +245,7 @@ public class POPFlowLine extends Group {
 				Node node = null;
 				
 				node = (POPSymbolNode) DragManager.draggedNode;
-				insertNode((POPSymbolNode) node, 1.5);
+				insertNodeThread((POPSymbolNode) node, 2);
 				
 				DragManager.dragMoving = false;
 				DragManager.draggedNode = null;
@@ -252,17 +253,39 @@ public class POPFlowLine extends Group {
 				getPrevNode().getScriptArea().addWithOutFlowLine((POPSymbolNode) node);
 				DragManager.isAllocatedNode = false;
 			} else if(db.hasImage() && POPNodeType.symbolGroup.contains(Enum.valueOf(POPNodeType.class, db.getString()))) {
-				Class<? extends POPSymbolNode> nodeClass = null;
-				POPSymbolNode node = null;
-				node = (POPSymbolNode) POPNodeFactory.createPOPNode(db.getString());
-				node.initialize();
-				insertNode(node, 0);
-				if(node instanceof POPLoopNode) {
-					((POPLoopNode) node).adjustPosition();
-				}
-				else if(node instanceof POPDecisionNode)
-					((POPDecisionNode) node).adjustPosition();
-				getPrevNode().getScriptArea().addWithOutFlowLine(node);
+				String typeName = db.getString();
+				
+				Thread thread = new Thread() {
+					@Override
+					public void run() {
+						PlatformHelper.run(() -> {
+							POPSymbolNode node = null;
+							node = (POPSymbolNode) POPNodeFactory.createPOPNode(typeName);
+							if(node instanceof SubNodeIF) {
+								((SubNodeIF) node).invisibleSubNodes();
+							}
+							
+							
+							insertNode(node, 0);
+							if(node instanceof POPLoopNode) {
+								((POPLoopNode) node).adjustPosition();
+							}
+							else if(node instanceof POPDecisionNode)
+								((POPDecisionNode) node).adjustPosition();
+							getPrevNode().getScriptArea().addWithOutFlowLine(node);
+							
+							node.initialize();
+//							if(node instanceof SubNodeIF) {
+//								((SubNodeIF) node).visibleSubNodes();
+//							}
+						});
+						
+					}
+				};
+				
+				thread.setDaemon(true);
+				thread.start();
+				
 			}
 			event.consume();
 		});
@@ -334,6 +357,19 @@ public class POPFlowLine extends Group {
     		
     }
         
+    public void insertNodeThread(POPSymbolNode node, double val) {
+    	Thread thread = new Thread() {
+    		@Override
+    		public void run() {
+    			PlatformHelper.run(() -> {
+    				insertNode(node, val);
+    			});
+    		}
+    	};
+    	
+    	thread.setDaemon(true);
+    	thread.start();
+    }
     
     public void insertNode(POPSymbolNode node, double val) {    
     	
@@ -344,7 +380,10 @@ public class POPFlowLine extends Group {
     		node.setParentNode(nextNode.getParentNode());
     	}
     	
-    	node.getComponent().setLayoutX(line.getStartX() - (node.getComponent().getBoundsInLocal().getWidth() / 2) + val);
+    	if(decisionNode == null && loopNode == null) {
+    		node.getComponent().setLayoutX(line.getStartX() - (node.getComponent().getBoundsInLocal().getWidth() / 2) + val);
+    	}
+    		
     	
     	if(prevNode instanceof POPDecisionStartNode) {
     		node.getComponent().setLayoutY(prevNode.getComponent().getBoundsInParent().getMaxY() + nodeMinGap + 30);
@@ -377,7 +416,7 @@ public class POPFlowLine extends Group {
     			
     	if(decisionNode != null) {
     		decisionNode.adjustPositionThread();
-    		node.getComponent().setLayoutX(line.getStartX() - (node.getComponent().getBoundsInParent().getWidth() / 2));
+//    		node.getComponent().setLayoutX(line.getStartX() - (node.getComponent().getBoundsInParent().getWidth() / 2) + val);
     	} else if(loopNode != null) {
     		loopNode.adjustPositionThread();
     	}

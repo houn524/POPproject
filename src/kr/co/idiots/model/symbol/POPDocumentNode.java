@@ -18,6 +18,8 @@ public class POPDocumentNode extends POPSymbolNode {
 		outFlowLine.setPrevNode(this);
 		
 		outFlowLine.setVisible(false);
+		
+		imgView.setStyle("-fx-effect: dropshadow(three-pass-box, black, 2, 0, 0, 1);");
 	}
 	
 	@Override

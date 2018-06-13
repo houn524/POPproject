@@ -49,7 +49,7 @@ public class POPIndexBlank extends ComboBox {
 					setPrefWidth(TextUtils.computeTextWidth(getEditor().getFont(), getEditor().getText(), 0.0D) + 50);
 				
 				if(parentNode.getParentSymbol() != null && parentNode.getParentSymbol().getParentNode() != null && parentNode.getParentSymbol().getParentNode().isException()) {
-					parentNode.getParentSymbol().getParentNode().getImgView().setStyle("");
+					parentNode.getParentSymbol().getParentNode().getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, black, 2, 0, 0, 1);");;
 					parentNode.getParentSymbol().getParentNode().setException(false);
 				}
 				parentNode.resizeContents();
