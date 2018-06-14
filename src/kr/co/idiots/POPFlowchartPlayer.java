@@ -7,6 +7,7 @@ import javafx.scene.control.Alert.AlertType;
 import kr.co.idiots.model.POPArrayNode;
 import kr.co.idiots.model.POPBlank;
 import kr.co.idiots.model.POPVariableNode;
+import kr.co.idiots.model.operation.POPLineSymbol;
 import kr.co.idiots.model.operation.POPOperationSymbol;
 import kr.co.idiots.model.operation.POPOutputSymbol;
 import kr.co.idiots.model.symbol.POPDecisionEndNode;
@@ -53,8 +54,10 @@ public class POPFlowchartPlayer {
 	
 	public void saveOperationSymbol(StringBuilder content, POPOperationSymbol symbol) {
 		content.append(symbol.getType()).append("(");
-		
-		if(symbol.getContents().getChildren().get(0) instanceof POPOperationSymbol) {
+
+		if(symbol.getContents().getChildren().get(0) instanceof POPLineSymbol) {
+			content.append("Line()");
+		} else if(symbol.getContents().getChildren().get(0) instanceof POPOperationSymbol) {
 			POPOperationSymbol leftSymbol = (POPOperationSymbol) symbol.getContents().getChildren().get(0);
 			saveOperationSymbol(content, leftSymbol);
 		} else if(symbol.getContents().getChildren().get(0) instanceof POPArrayNode) {
@@ -84,12 +87,13 @@ public class POPFlowchartPlayer {
 			content.append(")");
 			return;
 		}
-		
-		if(symbol.getContents().getChildren().get(2) instanceof POPOperationSymbol) {
+
+		if(symbol.getContents().getChildren().get(0) instanceof POPLineSymbol) {
+			content.append("Line()");
+		} else if(symbol.getContents().getChildren().get(2) instanceof POPOperationSymbol) {
 			POPOperationSymbol leftSymbol = (POPOperationSymbol) symbol.getContents().getChildren().get(2);
 			saveOperationSymbol(content, leftSymbol);
 		} else if(symbol.getContents().getChildren().get(2) instanceof POPArrayNode) {
-			System.out.println("배열");
 			POPArrayNode array = (POPArrayNode) symbol.getContents().getChildren().get(2);
 			content.append("Arr('").append(array.getName()).append("', ");
 			if(array.getContents().getChildren().get(1) instanceof POPOperationSymbol) {
@@ -314,7 +318,7 @@ public class POPFlowchartPlayer {
 		rootSymbol.playSymbol();
 		String strResult = rootSymbol.getValueString();
 		
-		output.append(strResult).append(System.lineSeparator());
+		output.append(strResult);
 	}
 	
 	private boolean playDecisionNode(POPSymbolNode node) throws NullPointerException {

@@ -58,14 +58,7 @@ import kr.co.idiots.model.compare.POPIsEqualSymbol;
 import kr.co.idiots.model.compare.POPLessThanEqualSymbol;
 import kr.co.idiots.model.compare.POPLessThanSymbol;
 import kr.co.idiots.model.compare.POPNotEqualSymbol;
-import kr.co.idiots.model.operation.POPDivideSymbol;
-import kr.co.idiots.model.operation.POPEqualSymbol;
-import kr.co.idiots.model.operation.POPMinusSymbol;
-import kr.co.idiots.model.operation.POPMultiplySymbol;
-import kr.co.idiots.model.operation.POPOperationSymbol;
-import kr.co.idiots.model.operation.POPPlusSymbol;
-import kr.co.idiots.model.operation.POPRemainderSymbol;
-import kr.co.idiots.model.operation.POPStringPlusSymbol;
+import kr.co.idiots.model.operation.*;
 import kr.co.idiots.model.symbol.POPDecisionEndNode;
 import kr.co.idiots.model.symbol.POPDecisionNode;
 import kr.co.idiots.model.symbol.POPDocumentNode;
@@ -76,6 +69,7 @@ import kr.co.idiots.model.symbol.POPStartNode;
 import kr.co.idiots.model.symbol.POPStopNode;
 import kr.co.idiots.model.symbol.POPSymbolNode;
 import kr.co.idiots.util.DragManager;
+import kr.co.idiots.util.POPCaptureHelper;
 import kr.co.idiots.util.POPPopupManager;
 import kr.co.idiots.util.PlatformHelper;
 import lombok.Getter;
@@ -139,6 +133,7 @@ public class POPSolvingLayoutController {
 	private POPNotEqualSymbol notEqualSymbol;
 	
 	private POPStringPlusSymbol stringPlusSymbol;
+	private POPLineSymbol lineSymbol;
 	
 	private POPSymbolNode startNode;
 	
@@ -269,6 +264,11 @@ public class POPSolvingLayoutController {
 //							lbConsole.setText(scriptArea.play());
 							showConsolePopup();
 							scriptArea.saveFlowchart(POPLoggedInMember.getInstance().getMember().getId(), problem.getNumber());
+							mainApp.getConnector().saveImageByUserIdAndProblemNumber(
+									POPLoggedInMember.getInstance().getMember().getId(),
+									problem.getNumber(),
+									POPCaptureHelper.doSave(mainApp.getPrimaryStage(), scriptArea.getComponent())
+							);
 						});
 					}
 				};
@@ -367,6 +367,10 @@ public class POPSolvingLayoutController {
 		operationArea.getChildren().add(stringPlusSymbol);
 		stringPlusSymbol.setTranslateX(40);
 		stringPlusSymbol.setLayoutY(320);
+		lineSymbol = new POPLineSymbol();
+		operationArea.getChildren().add(lineSymbol);
+		lineSymbol.setTranslateX(140);
+		lineSymbol.setLayoutY(320);
 		
 		
 		startNode = new POPStartNode(scriptArea);
@@ -407,29 +411,45 @@ public class POPSolvingLayoutController {
 		
 //	    loadFlowchart(content);
 	    
-		
-		
 		Thread loadThread = new Thread() {
 			@Override
 			public void run() {
 				PlatformHelper.run(() -> {
-					
-//					initVariables();
-//					loadFlowchart(content);
-					loopSymbol.visibleSubNodes();
-					decisionSymbol.visibleSubNodes();
 					initVariables();
 					loadFlowchart(content);
-//					showSplash(null, loadTask, () -> showScriptArea());
+					Thread visibleThread = new Thread() {
+						@Override
+						public void run() {
+							PlatformHelper.run(() -> {
+								loopSymbol.visibleSubNodes();
+								decisionSymbol.visibleSubNodes();
+							});
+						}
+					};
+
+					visibleThread.setDaemon(true);
+					visibleThread.start();
 				});
 			}
 		};
 		
 		loadThread.setDaemon(true);
 		loadThread.start();
-		
-		
-		
+
+		Thread scaleThread = new Thread() {
+			@Override
+			public void run() {
+				PlatformHelper.run(() -> {
+					scriptArea.getZoomScale().set(0.8);
+				});
+			}
+		};
+
+		scaleThread.setDaemon(true);
+		scaleThread.start();
+
+
+
 //		showScriptArea();
 	}
 	
@@ -691,7 +711,7 @@ public class POPSolvingLayoutController {
 //		node = (POPSymbolNode) POPNodeFactory.createPOPNode(typeName);
 		node.initialize();
 		if(!(prevNode instanceof POPStopNode))
-			prevNode.getOutFlowLine().insertNodeThread(node, 2);
+			prevNode.getOutFlowLine().insertNode(node, 2);
 		if(node instanceof POPLoopNode) {
 			((POPLoopNode) node).adjustPosition();
 //			((POPLoopNode) node).adjustSubNodes();
@@ -730,6 +750,7 @@ public class POPSolvingLayoutController {
 	}
 	
 	public String loadOperationSymbol(POPOperationSymbol rootSymbol, int index, String content) {
+		System.out.println(content);
 		String type = content.split("\\(")[0];
 		content = content.split("\\(", 2)[1];
 		
@@ -766,7 +787,7 @@ public class POPSolvingLayoutController {
 				content = content.split("'\\)", 2)[1];
 				POPVariableNode variable = (POPVariableNode) POPNodeFactory.createNode("IntegerVariable", varName, "IntegerVariable");
 				array.getIndexBlank().insertNode(variable);
-				
+
 				if(!POPVariableManager.createdVars.contains(variable.getName())) {
 					addVariable(variable.getName(), variable.getType(), "");
 				}
@@ -777,7 +798,7 @@ public class POPSolvingLayoutController {
 				content = loadOperationSymbol(symbol2, 0, content);
 			}
 			content = content.split("\\)", 2)[1];
-			
+
 			if(!POPVariableManager.createdVars.contains(array.getName())) {
 				addArray(array.getName());
 			}
@@ -787,10 +808,14 @@ public class POPSolvingLayoutController {
 			content = content.split("'\\)", 2)[1];
 			POPVariableNode variable = (POPVariableNode) POPNodeFactory.createNode("IntegerVariable", varName, "IntegerVariable");
 			((POPBlank) symbol.getContents().getChildren().get(0)).insertNode(variable);
-			
+
 			if(!POPVariableManager.createdVars.contains(variable.getName())) {
 				addVariable(variable.getName(), variable.getType(), "");
 			}
+		} else if(content.split("\\(")[0].equals("Line")) {
+			POPLineSymbol lineSymbol = (POPLineSymbol) POPNodeFactory.createNode("Line", null, null);
+			((POPBlank) symbol.getContents().getChildren().get(0)).insertNode(lineSymbol);
+			content = content.split("\\)", 2)[1];
 		} else {
 			content = loadOperationSymbol(symbol, 0, content);
 		}
@@ -852,6 +877,10 @@ public class POPSolvingLayoutController {
 			if(!POPVariableManager.createdVars.contains(variable.getName())) {
 				addVariable(variable.getName(), variable.getType(), "");
 			}
+		} else if(content.split("\\(")[0].equals("Line")) {
+			POPLineSymbol lineSymbol = (POPLineSymbol) POPNodeFactory.createNode("Line", null, null);
+			((POPBlank) symbol.getContents().getChildren().get(2)).insertNode(lineSymbol);
+			content = content.split("\\)", 2)[1].substring(1);
 		} else {
 			loadOperationSymbol(symbol, 2, content);
 		}
@@ -1114,6 +1143,9 @@ public class POPSolvingLayoutController {
 				sizeBox.setAlignment(Pos.CENTER);
 				variableArea.getChildren().add(arrayBox);
 				variableArea.getChildren().add(sizeBox);
+			} else {
+				variableArea.getChildren().add(arrayNode);
+				variableArea.getChildren().add(sizeNode);
 			}
 			POPVariableManager.createdVars.add(arrayNode.getName());
 			POPVariableManager.createdVars.add(sizeNode.getName());

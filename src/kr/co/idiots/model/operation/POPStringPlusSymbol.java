@@ -46,8 +46,10 @@ public class POPStringPlusSymbol extends POPOperationSymbol {
 		leftCode = "";
 		leftValue = "";
 		rightValue = "";
-		
-		if(contents.getChildren().get(0) instanceof POPOperationSymbol) {
+
+		if(contents.getChildren().get(0) instanceof  POPLineSymbol) {
+			leftValue += System.lineSeparator();
+		} else if(contents.getChildren().get(0) instanceof POPOperationSymbol) {
 			POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(0);
 			symbol.playSymbol();
 			
@@ -66,8 +68,10 @@ public class POPStringPlusSymbol extends POPOperationSymbol {
 			POPBlank blank = (POPBlank) contents.getChildren().get(0);
 			leftValue += blank.getText();
 		}
-				
-		if(contents.getChildren().get(2) instanceof POPOperationSymbol) {
+
+		if(contents.getChildren().get(2) instanceof POPLineSymbol) {
+			rightValue += System.lineSeparator();
+		} else if(contents.getChildren().get(2) instanceof POPOperationSymbol) {
 			POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(2);
 			symbol.playSymbol();
 			

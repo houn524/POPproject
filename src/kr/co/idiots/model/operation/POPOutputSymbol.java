@@ -53,7 +53,7 @@ public class POPOutputSymbol extends POPOperationSymbol {
 	
 	@Override
 	public void playSymbol() throws NullPointerException, IndexOutOfBoundsException {
-		if(contents.getChildren().get(0) instanceof POPOperationSymbol) {
+		if(contents.getChildren().get(0) instanceof POPOperationSymbol && !(contents.getChildren().get(0) instanceof POPLineSymbol)) {
 			POPOperationSymbol symbol = (POPOperationSymbol) contents.getChildren().get(0);
 			symbol.playSymbol();
 			strValue = symbol.executeSymbol().toString();//Calculator.eval(strValue);
@@ -97,6 +97,8 @@ public class POPOutputSymbol extends POPOperationSymbol {
 //				POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
 //				POPSolvingLayoutController.scriptArea.stop();
 //			}
+		} else if(contents.getChildren().get(0) instanceof POPLineSymbol) {
+			strValue = System.lineSeparator();
 		} else if(contents.getChildren().get(0) instanceof POPBlank) {
 			POPBlank blank = (POPBlank) contents.getChildren().get(0);
 			strValue = blank.getText();

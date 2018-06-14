@@ -1,5 +1,8 @@
 package kr.co.idiots;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -43,6 +46,60 @@ public class POPDatabaseConnector {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+	}
+
+	public void saveImageByUserIdAndProblemNumber(String user_id, int problem_number, File file) {
+		PreparedStatement st = null;
+
+		String sql = "select flowchart_id from solving where user_id=? and problem_number=?;";
+		int flowchart_id;
+
+		int autoincrement = 0;
+
+		try {
+			st = connection.prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
+			st.setString(1, user_id);
+			st.setInt(2, problem_number);
+			ResultSet rs = st.executeQuery();
+
+			if(rs.next()) {
+				flowchart_id = rs.getInt(1);
+				saveImage(flowchart_id, file);
+			}
+
+			rs.close();
+			st.close();
+		} catch (SQLException se1) {
+			se1.printStackTrace();
+		}
+	}
+
+	public void saveImage(int id, File file) {
+		PreparedStatement st = null;
+		String sql = "";
+		boolean result = false;
+
+		try {
+//            st = connection.prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
+//            st.setInt(1, id);
+//            ResultSet rs = st.executeQuery();
+			FileInputStream fin = null;
+			if(id > -1) {
+				fin = new FileInputStream(file);
+				sql = "update flowchart set image=? where id=?;";
+				st = connection.prepareStatement(sql);
+				st.setBinaryStream(1, fin, (int) file.length());
+				st.setInt(2, id);
+
+
+			}
+
+			st.executeUpdate();
+			fin.close();
+			st.close();
+		} catch (SQLException | IOException se1) {
+			se1.printStackTrace();
+		}
 	}
 	
 	public void saveFlowchartByUserIdAndProblemNumber(String user_id, int problem_number, String content) {

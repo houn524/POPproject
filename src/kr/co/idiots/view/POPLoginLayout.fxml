@@ -53,12 +53,12 @@
                   </PasswordField>
                   <HBox alignment="CENTER_RIGHT" spacing="20.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
                      <children>
-                        <Button id="green" fx:id="btnJoin" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" stylesheets="@../../../../../css/buttonStyle.css" text="회원가입" textAlignment="CENTER">
+                        <Button id="green" fx:id="btnJoin" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" stylesheets="@../../../../../../css/buttonStyle.css" text="회원가입" textAlignment="CENTER">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Button>
-                        <Button id="green" fx:id="btnLogin" mnemonicParsing="false" stylesheets="@../../../../../css/buttonStyle.css" text="로그인" textAlignment="CENTER">
+                        <Button id="green" fx:id="btnLogin" mnemonicParsing="false" stylesheets="@../../../../../../css/buttonStyle.css" text="로그인" textAlignment="CENTER">
                            <font>
                               <Font size="15.0" />
                            </font>

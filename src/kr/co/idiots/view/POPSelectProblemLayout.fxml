@@ -15,7 +15,7 @@
    <center>
       <AnchorPane BorderPane.alignment="CENTER">
          <children>
-            <TableView fx:id="tableView" prefHeight="540.0" style="-fx-effect: innershadow( gaussian, rgba( 0, 0, 0, 0.5 ), 10, 0, 2, 2 );" stylesheets="@../../../../../css/tableViewStyle.css" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="10.0">
+            <TableView fx:id="tableView" prefHeight="540.0" style="-fx-effect: innershadow( gaussian, rgba( 0, 0, 0, 0.5 ), 10, 0, 2, 2 );" stylesheets="@../../../../../../css/tableViewStyle.css" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="10.0">
               <columns>
                 <TableColumn fx:id="numberColumn" editable="false" prefWidth="113.599853515625" resizable="false" sortable="false" text="번호" />
                 <TableColumn fx:id="titleColumn" editable="false" minWidth="0.0" prefWidth="800.0" resizable="false" sortable="false" text="제목" />
