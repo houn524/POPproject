@@ -8,8 +8,10 @@ import javafx.scene.input.TransferMode;
 import kr.co.idiots.POPNodeFactory;
 import kr.co.idiots.model.operation.POPEqualSymbol;
 import kr.co.idiots.model.operation.POPOperationSymbol;
+import kr.co.idiots.model.symbol.POPSymbolNode;
 import kr.co.idiots.util.DragManager;
 import kr.co.idiots.util.POPNodeDataFormat;
+import kr.co.idiots.util.PlatformHelper;
 import kr.co.idiots.util.TextUtils;
 import lombok.Getter;
 import lombok.Setter;
@@ -86,6 +88,7 @@ public class POPBlank extends TextField {
 				if(parentSymbol.getParentNode().isException()) {
 					parentSymbol.getParentNode().getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, black, 2, 0, 0, 1);");;
 					parentSymbol.getParentNode().setException(false);
+					parentSymbol.getParentNode().moveCenter();
 				}
 			}
 			

@@ -76,7 +76,7 @@ public class POPOutputSymbol extends POPOperationSymbol {
 			if(POPVariableManager.declaredArrs.containsKey(array.getName())) {
 				strValue = array.getValue();
 			} else {
-				this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
+				this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 2, 0, 0, 1);");
 				this.parentNode.setException(true);
 				throw new NullPointerException();
 			}
@@ -89,7 +89,7 @@ public class POPOutputSymbol extends POPOperationSymbol {
 			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
 				strValue = POPVariableManager.declaredVars.get(variable.getName());
 			} else {
-				this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
+				this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 2, 0, 0, 1);");
 				this.parentNode.setException(true);
 				throw new NullPointerException();
 			}

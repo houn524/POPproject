@@ -463,7 +463,7 @@ public class POPLoopNode extends POPSymbolNode implements SubNodeIF {
 			newBound = component.getBoundsInParent();
 			prevBound = inFlowLine.getPrevNode().getBoundsInParent();
 			
-			component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2) + 2);
+			component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (imgView.getFitWidth() / 2));
 		}
 	}
 	

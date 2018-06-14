@@ -40,6 +40,8 @@ public class POPSymbolNode extends POPNode {
 	protected DoubleProperty topY = new SimpleDoubleProperty(0);
 	protected DoubleProperty bottomCenterX = new SimpleDoubleProperty(0);
 	protected DoubleProperty bottomY = new SimpleDoubleProperty(0);
+
+	protected boolean isMovingCenter = false;
 	
 	private boolean isException = false;
 	
@@ -145,17 +147,21 @@ public class POPSymbolNode extends POPNode {
 		if(inFlowLine != null && (isAllocated || this instanceof POPDecisionEndNode || this instanceof POPLoopEndNode)) {
 			Bounds newBound = null;
 			Bounds prevBound = null;
-			int val = 0;
-			
-			if(!(this instanceof POPDecisionEndNode) && !(this instanceof POPLoopEndNode)) {
-				val = 2;
-			}
 			newBound = component.getBoundsInParent();
 			
 			prevBound = inFlowLine.getPrevNode().getBoundsInParent();
+
+			double val = 0;
+
+			if(imgView != null) {
+				val = imgView.getFitWidth();
+			} else {
+				val = newBound.getWidth();
+			}
 			
 			if(!component.layoutXProperty().isBound())
-				component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2) + val);
+				component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (val / 2));
+
 		}
 	}
 

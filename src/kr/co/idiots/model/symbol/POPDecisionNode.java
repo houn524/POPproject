@@ -437,15 +437,13 @@ public class POPDecisionNode extends POPSymbolNode implements SubNodeIF {
 	
 	@Override
 	public void moveCenter() {
-		if(inFlowLine != null && isAllocated) {
+		if(inFlowLine != null && isAllocated && !isException()) {
 			Bounds newBound = null;
 			Bounds prevBound = null;
-			
+
 			newBound = component.getBoundsInParent();
 			prevBound = inFlowLine.getPrevNode().getBoundsInParent();
-			
-			component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (newBound.getWidth() / 2) + 2);
-			
+			component.setLayoutX((prevBound.getMinX() + (prevBound.getWidth() / 2)) - (imgView.getFitWidth() / 2));
 		}
 	}
 	

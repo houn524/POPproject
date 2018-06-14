@@ -245,7 +245,7 @@ public class POPFlowLine extends Group {
 				Node node = null;
 				
 				node = (POPSymbolNode) DragManager.draggedNode;
-				insertNodeThread((POPSymbolNode) node, 2);
+				insertNode((POPSymbolNode) node, 2);
 				
 				DragManager.dragMoving = false;
 				DragManager.draggedNode = null;
@@ -381,7 +381,7 @@ public class POPFlowLine extends Group {
     	}
     	
     	if(decisionNode == null && loopNode == null) {
-    		node.getComponent().setLayoutX(line.getStartX() - (node.getComponent().getBoundsInLocal().getWidth() / 2) + val);
+    		node.getComponent().setLayoutX(line.getStartX() - (node.getImgView().getFitWidth() / 2));//.getComponent().getBoundsInLocal().getWidth() / 2) + val);
     	}
     		
     	

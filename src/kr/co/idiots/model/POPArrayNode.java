@@ -85,7 +85,7 @@ public class POPArrayNode extends POPVariableNode {
 				return POPVariableManager.declaredArrs.get(name).get(Integer.parseInt(indexBlank.getEditor().getText())).toString();
 			}
 		} catch(IndexOutOfBoundsException e) {
-			parentSymbol.getParentNode().getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
+			parentSymbol.getParentNode().getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 2, 0, 0, 1);");
 			parentSymbol.getParentNode().setException(true);
 			IndexOutOfBoundsException exception = new IndexOutOfBoundsException("배열 인덱스가 존재하지 않습니다.");
 			throw exception;

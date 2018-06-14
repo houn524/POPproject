@@ -373,14 +373,14 @@ public class POPOperationSymbol extends StackPane {
 			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
 				leftValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
 			} else if(!(this instanceof POPEqualSymbol)) {
-				this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
+				this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0, 0, 1);");
 				this.parentNode.setException(true);
 				throw new NullPointerException();
 			}
 		} else {
 			POPBlank blank = (POPBlank) contents.getChildren().get(0);
 			if(blank.getText().isEmpty()) {
-				this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
+				this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0, 0, 1);");
 				this.parentNode.setException(true);
 				throw new NullPointerException("빈 칸");
 			}
@@ -406,14 +406,14 @@ public class POPOperationSymbol extends StackPane {
 			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
 				rightValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
 			} else {
-				this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
+				this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0, 0, 1);");
 				this.parentNode.setException(true);
 				throw new NullPointerException();
 			}
 		}  else {
 			POPBlank blank = (POPBlank) contents.getChildren().get(2);
 			if(blank.getText().isEmpty()) {
-				this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
+				this.parentNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0, 0, 1);");
 				this.parentNode.setException(true);
 				throw new NullPointerException("빈 칸");
 			}

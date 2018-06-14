@@ -49,7 +49,7 @@ public abstract class POPNode extends StackPane implements Serializable, Cloneab
 			imgView = new ImageView(img);
 			
 			initWidth = imgView.getBoundsInLocal().getWidth();
-			
+			imgView.setFitWidth(initWidth);
 			component.getChildren().add(imgView);
 			StackPane.setAlignment(imgView, Pos.CENTER);
 			component.setMaxHeight(imgView.getBoundsInLocal().getHeight());

@@ -2,44 +2,97 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.POPSelectProblemLayoutController">
+<BorderPane prefHeight="600.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.POPSelectProblemLayoutController">
+   <center>
+      <AnchorPane BorderPane.alignment="CENTER">
+         <children>
+            <TableView fx:id="tableView" prefHeight="540.0" style="-fx-effect: innershadow( gaussian, rgba( 0, 0, 0, 0.5 ), 10, 0, 2, 2 );" stylesheets="@../../../../../../css/tableViewStyle.css" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="10.0">
+              <columns>
+                <TableColumn fx:id="numberColumn" editable="false" prefWidth="113.599853515625" resizable="false" sortable="false" text="번호" />
+                <TableColumn fx:id="titleColumn" editable="false" minWidth="0.0" prefWidth="800.0" resizable="false" sortable="false" text="제목" />
+                  <TableColumn fx:id="solvedColumn" prefWidth="130.0" resizable="false" text="정답 여부" />
+              </columns>
+            </TableView>
+         </children>
+      </AnchorPane>
+   </center>
    <left>
-      <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" vgap="50.0" BorderPane.alignment="CENTER">
+      <FlowPane alignment="TOP_CENTER" columnHalignment="CENTER" orientation="VERTICAL" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <padding>
             <Insets top="50.0" />
          </padding>
          <children>
-            <Label style="-fx-border-color: black; -fx-border-style: hidden hidden solid hidden;" text="초급">
-               <font>
-                  <Font name="BM HANNA" size="30.0" />
-               </font>
-            </Label>
-            <Label layoutX="89.0" layoutY="60.0" style="-fx-border-color: black; -fx-border-style: hidden hidden solid hidden;" text="중급">
-               <font>
-                  <Font name="BM HANNA" size="30.0" />
-               </font>
-            </Label>
-            <Label layoutX="89.0" layoutY="88.0" style="-fx-border-color: black; -fx-border-style: hidden hidden solid hidden;" text="고급">
-               <font>
-                  <Font name="BM HANNA" size="30.0" />
-               </font>
-            </Label>
+            <HBox alignment="CENTER_LEFT" prefHeight="70.0" prefWidth="200.0">
+               <children>
+                  <Label text="문제 선택">
+                     <font>
+                        <Font name="NanumGothic" size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="20.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </HBox>
+            <Line endX="80.0" startX="-80.0" stroke="#847c7ca3" />
+            <HBox fx:id="easyBox" alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" style="-fx-background-insets: 0 20 0 20;">
+               <children>
+                  <Label text="초급">
+                     <font>
+                        <Font name="NanumGothic" size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+               <FlowPane.margin>
+                  <Insets />
+               </FlowPane.margin>
+            </HBox>
+            <Line endX="80.0" layoutX="110.0" layoutY="131.0" startX="-80.0" stroke="#847c7ca3" />
+            <HBox fx:id="mediumBox" alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" style="-fx-background-insets: 0 20 0 20;">
+               <children>
+                  <Label text="중급">
+                     <font>
+                        <Font name="NanumGothic" size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <Line endX="80.0" layoutX="110.0" layoutY="203.0" startX="-80.0" stroke="#847c7ca3" />
+            <HBox fx:id="hardBox" alignment="CENTER_LEFT" prefHeight="50.0" prefWidth="200.0" style="-fx-background-insets: 0 20 0 20;">
+               <children>
+                  <Label text="고급">
+                     <font>
+                        <Font name="NanumGothic" size="18.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="30.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <Line endX="80.0" layoutX="110.0" layoutY="275.0" startX="-80.0" stroke="#000000a3" />
          </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
       </FlowPane>
    </left>
-   <center>
-      <AnchorPane BorderPane.alignment="CENTER">
-         <children>
-            <FlowPane fx:id="flowPane" orientation="VERTICAL" style="-fx-border-color: black;" vgap="50.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-               </padding></FlowPane>
-         </children>
-      </AnchorPane>
-   </center>
 </BorderPane>

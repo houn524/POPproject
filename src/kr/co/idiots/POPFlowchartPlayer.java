@@ -89,6 +89,7 @@ public class POPFlowchartPlayer {
 			POPOperationSymbol leftSymbol = (POPOperationSymbol) symbol.getContents().getChildren().get(2);
 			saveOperationSymbol(content, leftSymbol);
 		} else if(symbol.getContents().getChildren().get(2) instanceof POPArrayNode) {
+			System.out.println("배열");
 			POPArrayNode array = (POPArrayNode) symbol.getContents().getChildren().get(2);
 			content.append("Arr('").append(array.getName()).append("', ");
 			if(array.getContents().getChildren().get(1) instanceof POPOperationSymbol) {
@@ -114,8 +115,9 @@ public class POPFlowchartPlayer {
 	
 	public StringBuilder saveFlowchart(POPStartNode startNode) {
 		sigCount = 10;
-		
-		return saveFlowchartSymbol(startNode, new String(new char[sigCount]).replace("\0", ":"));
+		StringBuilder res = saveFlowchartSymbol(startNode, new String(new char[sigCount]).replace("\0", ":"));
+		System.out.println(res);
+		return res;
 	}
 	
 	public StringBuilder saveFlowchartSymbol(POPSymbolNode node, String sig) {
@@ -124,6 +126,7 @@ public class POPFlowchartPlayer {
 			if(node instanceof POPStartNode) {
 				content.append("Start");
 			} else if(node instanceof POPProcessNode) {
+				System.out.println("처리");
 				content.append(sig).append("Process(");
 				
 				saveOperationSymbol(content, node.getRootSymbol());
@@ -229,7 +232,7 @@ public class POPFlowchartPlayer {
 						loopCount++;
 						if(loopCount >= MAX_LOOP_COUNT) {
 							isLoop = false;
-							loopNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 10, 0.5, 1, 1);");
+							loopNode.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, red, 2, 0, 0, 1);");
 							loopNode.setException(true);
 							POPPopupManager.showAlertPopup("실행 오류", "순서도를 실행할 수 없습니다.", "무한 루프", AlertType.ERROR);
 							break;
