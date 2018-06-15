@@ -30,13 +30,18 @@ public class RootLayoutController {
 	
 	@FXML
 	private Label lbSolving;
+
+	@FXML
+	private Label lbBoard;
 	
 	@FXML
 	private BorderPane rootPane;
 	
 	@FXML
 	private Button btnLogout;
-	
+
+	private POPWritePostLayoutController writePostController;
+	private POPBoardLayoutController boardLayoutController;
 	private POPSelectProblemLayoutController selectProblemLayoutController;
 	private POPSolvingLayoutController solvingLayoutController;
 	private POPCreateVariableLayoutController createVariableController;
@@ -79,6 +84,22 @@ public class RootLayoutController {
 		lbSolving.setOnMouseClicked(event -> {
 			showPOPSelectProblemLayout();
 		});
+
+		lbBoard.setOnMouseEntered(event -> {
+			Bloom bloom = new Bloom();
+			bloom.setThreshold(0.1);
+			lbBoard.setEffect(bloom);
+		});
+
+		lbBoard.setOnMouseExited(event -> {
+			Bloom bloom = new Bloom();
+			bloom.setThreshold(0.2);
+			lbBoard.setEffect(bloom);
+		});
+
+		lbBoard.setOnMouseClicked(event -> {
+			showPOPBoardLayout();
+		});
 		
 		btnLogout.setOnAction(event -> {
 			POPLoggedInMember.getInstance().setMember(null);
@@ -86,7 +107,43 @@ public class RootLayoutController {
 		});
 		
 	}
-	
+
+	public void showPOPBoardLayout() {
+		try {
+			boardLayoutController = new POPBoardLayoutController(mainApp);
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/POPBoardLayout.fxml"));
+			loader.setControllerFactory(c -> {
+				return boardLayoutController;
+			});
+			AnchorPane popBoardPane = (AnchorPane)loader.load();
+
+			rootLayout.setCenter(popBoardPane);
+
+			boardLayoutController.setRootController(this);
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void showPOPWritePostLayout() {
+		try {
+			writePostController = new POPWritePostLayoutController(mainApp);
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/POPWritePostLayout.fxml"));
+			loader.setControllerFactory(c -> {
+				return writePostController;
+			});
+			AnchorPane popWritePostPane = (AnchorPane)loader.load();
+
+			rootLayout.setCenter(popWritePostPane);
+
+			writePostController.setRootController(this);
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+
 	public void showPOPHomeLayout() {
 		try {
 			FXMLLoader loader = new FXMLLoader();

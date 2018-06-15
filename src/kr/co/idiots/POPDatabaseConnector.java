@@ -3,15 +3,11 @@ package kr.co.idiots;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 
 import kr.co.idiots.model.POPLoggedInMember;
+import kr.co.idiots.model.POPPost;
 import kr.co.idiots.model.POPProblem;
 import lombok.Getter;
 import lombok.Setter;
@@ -46,6 +42,29 @@ public class POPDatabaseConnector {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+	}
+
+	public void insertPost(POPPost post) {
+		PreparedStatement st = null;
+		String sql = "";
+		boolean result = false;
+
+		try {
+			sql = "insert into post(title, content, author, date, flowchart_id, problem_number)" +
+					" values(?, ?, ?, ?, ?, ?);";
+            st = connection.prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
+            st.setString(1, post.getTitle());
+            st.setString(2, post.getContent());
+            st.setString(3, post.getAuthor());
+            st.setString(4, post.getDate());
+            st.setNull(5, Types.INTEGER);
+//            st.setInt(5, post.getFlowchartId());
+            st.setInt(6, post.getProblemNumber());
+            st.executeUpdate();
+			st.close();
+		} catch (SQLException se1) {
+			se1.printStackTrace();
+		}
 	}
 
 	public void saveImageByUserIdAndProblemNumber(String user_id, int problem_number, File file) {
@@ -252,6 +271,56 @@ public class POPDatabaseConnector {
         }
 		
 		return list;
+	}
+
+	public ArrayList<POPPost> loadPosts() {
+		PreparedStatement st = null;
+		String sql = "select * from post;";
+
+		ArrayList<POPPost> list = new ArrayList<>();
+
+		boolean result = false;
+		int commentCount = 0;
+		try {
+			st = connection.prepareStatement(sql);
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				commentCount = countComment(rs.getInt("number"));
+				POPPost post = new POPPost(rs.getInt("number"), rs.getString("title"), rs.getString("content"),
+						rs.getString("author"), commentCount, rs.getString("date"), rs.getInt("flowchart_id"), rs.getInt("problem_number"));
+				list.add(post);
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException se1) {
+			se1.printStackTrace();
+		}
+
+		return list;
+	}
+
+	public int countComment(int post_number) {
+		PreparedStatement st = null;
+		String sql = "select * from comment where post_number=?;";
+
+		int result = 0;
+
+		try {
+			st = connection.prepareStatement(sql);
+			st.setInt(1, post_number);
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				rs.last();
+				result = rs.getRow();
+				rs.beforeFirst();
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException se1) {
+			se1.printStackTrace();
+		}
+
+		return result;
 	}
 	
 	public boolean checkSolved(String id, int number) {

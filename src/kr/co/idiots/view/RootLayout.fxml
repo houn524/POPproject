@@ -44,7 +44,7 @@
                            </font>
                         </Label>
                         <Line endX="-100.0" layoutX="242.0" layoutY="45.0" startX="-100.0" startY="20.0" />
-                        <Label alignment="CENTER" contentDisplay="CENTER" layoutX="270.0" layoutY="42.0" text="문제 공유" textAlignment="CENTER">
+                        <Label fx:id="lbBoard" alignment="CENTER" contentDisplay="CENTER" layoutX="270.0" layoutY="42.0" text="문제 공유" textAlignment="CENTER">
                            <font>
                               <Font name="NanumGothic" size="20.0" />
                            </font>

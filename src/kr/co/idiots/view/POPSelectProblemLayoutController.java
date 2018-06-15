@@ -65,7 +65,11 @@ public class POPSelectProblemLayoutController {
 		numberColumn.setCellValueFactory(cellData -> cellData.getValue().numberProperty().asObject());
 		titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
 		solvedColumn.setCellValueFactory(new PropertyValueFactory<>("checkImage"));
-		
+
+		numberColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.1));
+		titleColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.8));
+		solvedColumn.prefWidthProperty().bind(tableView.widthProperty().multiply(0.1));
+
 		tableView.setRowFactory(tv -> {
 			TableRow<POPProblem> row = new TableRow<>();
 			row.setOnMouseEntered(event -> {
