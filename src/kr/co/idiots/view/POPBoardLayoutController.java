@@ -6,11 +6,14 @@ import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import kr.co.idiots.MainApp;
 import kr.co.idiots.model.POPPost;
+import kr.co.idiots.model.POPProblem;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -63,6 +66,29 @@ public class POPBoardLayoutController {
                     }
                 });
             }
+        });
+
+        tableView.setRowFactory(tv -> {
+            TableRow<POPPost> row = new TableRow<>();
+            row.setOnMouseEntered(event -> {
+//                if(!row.isEmpty()) {
+//                    mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND);
+//                    row.setStyle("-fx-text-background-color: #37a5e5;"
+//                            + "-fx-effect:  dropshadow( gaussian, rgba( 0, 0, 0, 0.5 ), 10, 0, 2, 2 );");
+//                }
+            });
+
+            row.setOnMouseExited(event -> {
+//                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT);
+//                row.setStyle("");
+            });
+
+            row.setOnMouseClicked(event -> {
+                POPPost clickedRow = row.getItem();
+                System.out.println(clickedRow.getTitle());
+                mainApp.getRootController().showPOPPostLayout(clickedRow);
+            });
+            return row;
         });
 
         tableView.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);

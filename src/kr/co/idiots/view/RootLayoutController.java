@@ -8,12 +8,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Bloom;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import kr.co.idiots.MainApp;
 import kr.co.idiots.model.POPLoggedInMember;
 import kr.co.idiots.model.POPNodeType;
+import kr.co.idiots.model.POPPost;
 import kr.co.idiots.model.POPProblem;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,12 +42,18 @@ public class RootLayoutController {
 	@FXML
 	private Button btnLogout;
 
+	private POPPostLayoutController postController;
+	private POPSelectImageLayoutController selectImageController;
 	private POPWritePostLayoutController writePostController;
 	private POPBoardLayoutController boardLayoutController;
 	private POPSelectProblemLayoutController selectProblemLayoutController;
 	private POPSolvingLayoutController solvingLayoutController;
 	private POPCreateVariableLayoutController createVariableController;
 	private POPLoadingLayoutController loadingController;
+
+	private Stage selectImageStage;
+
+	private ImageView selectedImageView;
 	
 	public RootLayoutController(MainApp mainApp) {
 		this.mainApp = mainApp;
@@ -106,6 +114,45 @@ public class RootLayoutController {
 			mainApp.showLoginLayout();
 		});
 		
+	}
+
+	public void showPOPSelectImageLayout() {
+		try {
+			selectImageController = new POPSelectImageLayoutController(mainApp);
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/POPSelectImageLayout.fxml"));
+			loader.setControllerFactory(c -> {
+				return selectImageController;
+			});
+			AnchorPane popSelectImagePane = (AnchorPane)loader.load();
+			selectImageStage = new Stage();
+
+			selectImageStage.setScene(new Scene(popSelectImagePane));
+			selectImageStage.show();
+//			rootLayout.setCenter(popSelectImagePane);
+
+			selectImageController.setRootController(this);
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void showPOPPostLayout(POPPost post) {
+		try {
+			postController = new POPPostLayoutController(mainApp, post);
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/POPPostLayout.fxml"));
+			loader.setControllerFactory(c -> {
+				return postController;
+			});
+			AnchorPane popPostPane = (AnchorPane)loader.load();
+
+			rootLayout.setCenter(popPostPane);
+
+			postController.setRootController(this);
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public void showPOPBoardLayout() {

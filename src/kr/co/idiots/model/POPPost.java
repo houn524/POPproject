@@ -4,7 +4,12 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.scene.image.Image;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 public class POPPost {
 
     private final IntegerProperty number;
@@ -16,10 +21,12 @@ public class POPPost {
     private final IntegerProperty flowchartId;
     private final IntegerProperty problemNumber;
 
-    public POPPost() { this(null, null, null, null, null, null, null, null); }
+    private Image image;
+
+    public POPPost() { this(null, null, null, null, null, null, null, null, null); }
 
     public POPPost(Integer number, String title, String content, String author, Integer commentCount,
-                   String date, Integer flowchartId, Integer problemNumber) {
+                   String date, Integer flowchartId, Integer problemNumber, Image _image) {
         this.number = new SimpleIntegerProperty(number);
         this.title = new SimpleStringProperty(title);
         this.content = new SimpleStringProperty(content);
@@ -28,6 +35,8 @@ public class POPPost {
         this.date = new SimpleStringProperty(date);
         this.flowchartId = new SimpleIntegerProperty(flowchartId);
         this.problemNumber = new SimpleIntegerProperty(problemNumber);
+
+        this.image = _image;
     }
 
     public int getNumber() {

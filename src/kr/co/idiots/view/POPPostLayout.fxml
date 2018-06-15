@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1280.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.POPPostLayoutController">
+   <children>
+      <ScrollPane prefHeight="200.0" prefWidth="200.0" style="-fx-background: white;" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" style="-fx-background-color: white;">
+               <children>
+                  <VBox prefHeight="200.0" prefWidth="100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label fx:id="lbTitle" text="제목">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Label fx:id="lbProblem" text="문제">
+                           <VBox.margin>
+                              <Insets bottom="30.0" left="30.0" right="30.0" />
+                           </VBox.margin>
+                        </Label>
+                        <Line endX="1000.0" startX="-100.0" stroke="#0000001f">
+                           <VBox.margin>
+                              <Insets left="30.0" right="30.0" />
+                           </VBox.margin>
+                        </Line>
+                        <VBox fx:id="vBox" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="1100.0" style="-fx-border-color: black;">
+                           <children>
+                              <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="1098.0" style="-fx-background-color: lightgrey;">
+                                 <children>
+                                    <Label fx:id="lbAuthor" text="작성자">
+                                       <HBox.margin>
+                                          <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                    <Label fx:id="lbDate" text="작성일">
+                                       <HBox.margin>
+                                          <Insets left="30.0" />
+                                       </HBox.margin>
+                                    </Label>
+                                 </children>
+                                 <cursor>
+                                    <Cursor fx:constant="DEFAULT" />
+                                 </cursor>
+                              </HBox>
+                              <Text fx:id="content" strokeType="OUTSIDE" strokeWidth="0.0" text="내용" wrappingWidth="1000.0">
+                                 <VBox.margin>
+                                    <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                                 </VBox.margin>
+                              </Text>
+                           </children>
+                           <VBox.margin>
+                              <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+                           </VBox.margin>
+                        </VBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>

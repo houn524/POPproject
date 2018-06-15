@@ -3,9 +3,12 @@ package kr.co.idiots;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
+import javafx.scene.image.Image;
+import jdk.internal.util.xml.impl.Input;
 import kr.co.idiots.model.POPLoggedInMember;
 import kr.co.idiots.model.POPPost;
 import kr.co.idiots.model.POPProblem;
@@ -44,6 +47,49 @@ public class POPDatabaseConnector {
         }
 	}
 
+	public String loadProblemTitle(int number) {
+		PreparedStatement st = null;
+		String sql = "select title from problem where number=?;";
+		String result = "";
+		try {
+			st = connection.prepareStatement(sql);
+			st.setInt(1, number);
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				result = rs.getString("title");
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException se1) {
+			se1.printStackTrace();
+		}
+		return result;
+	}
+
+	public boolean checkProblemNumber(int number) {
+		PreparedStatement st = null;
+		String sql = "select * from problem where number=?;";
+
+		boolean result = false;
+
+		try {
+			st = connection.prepareStatement(sql);
+			st.setInt(1, number);
+			ResultSet rs = st.executeQuery();
+			if(!rs.next()) {
+				result = false;
+			} else {
+				result = true;
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException se1) {
+			se1.printStackTrace();
+		}
+
+		return result;
+	}
+
 	public void insertPost(POPPost post) {
 		PreparedStatement st = null;
 		String sql = "";
@@ -57,8 +103,12 @@ public class POPDatabaseConnector {
             st.setString(2, post.getContent());
             st.setString(3, post.getAuthor());
             st.setString(4, post.getDate());
-            st.setNull(5, Types.INTEGER);
-//            st.setInt(5, post.getFlowchartId());
+//            st.setNull(5, Types.INTEGER);
+			if(post.getFlowchartId() == 0) {
+				st.setNull(5, Types.INTEGER);
+			} else {
+				st.setInt(5, post.getFlowchartId());
+			}
             st.setInt(6, post.getProblemNumber());
             st.executeUpdate();
 			st.close();
@@ -273,6 +323,78 @@ public class POPDatabaseConnector {
 		return list;
 	}
 
+	public ArrayList<Integer> loadFlowchartIds(String user_id) {
+		ArrayList<Integer> list = new ArrayList<>();
+		PreparedStatement st = null;
+		String sql = "select flowchart_id from solving where user_id=? and solved=true;";
+		try {
+			st = connection.prepareStatement(sql);
+			st.setString(1, user_id);
+			ResultSet rs = st.executeQuery();
+
+			while(rs.next()) {
+				list.add(rs.getInt("flowchart_id"));
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException se1) {
+			se1.printStackTrace();
+		}
+		return list;
+	}
+
+	public ArrayList<Image> loadImages(String user_id) {
+		ArrayList<Image> list = new ArrayList<>();
+		PreparedStatement st = null;
+		String sql = "select flowchart_id from solving where user_id=? and solved=true;";
+		try {
+			st = connection.prepareStatement(sql);
+			st.setString(1, user_id);
+			ResultSet rs = st.executeQuery();
+
+			while(rs.next()) {
+				Image image = null;
+				image = loadImage(rs.getInt("flowchart_id"));
+				if(image != null) {
+
+					list.add(image);
+				}
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException se1) {
+			se1.printStackTrace();
+		}
+		return list;
+	}
+
+	public Image loadImage(int flowchart_id) {
+		PreparedStatement st = null;
+		InputStream is = null;
+		Image image = null;
+		String sql = "select image from flowchart where id=?;";
+
+		boolean result = false;
+
+		try {
+			st = connection.prepareStatement(sql);
+			st.setInt(1, flowchart_id);
+			ResultSet rs = st.executeQuery();
+
+			if(rs.next()) {
+				is = rs.getBinaryStream("image");
+				if(is != null)
+					image = new Image(is);
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException se1) {
+			se1.printStackTrace();
+		}
+
+		return image;
+	}
+
 	public ArrayList<POPPost> loadPosts() {
 		PreparedStatement st = null;
 		String sql = "select * from post;";
@@ -285,9 +407,13 @@ public class POPDatabaseConnector {
 			st = connection.prepareStatement(sql);
 			ResultSet rs = st.executeQuery();
 			while(rs.next()) {
+				InputStream is;
+				Image image = null;
+				image = loadImage(rs.getInt("flowchart_id"));
+
 				commentCount = countComment(rs.getInt("number"));
 				POPPost post = new POPPost(rs.getInt("number"), rs.getString("title"), rs.getString("content"),
-						rs.getString("author"), commentCount, rs.getString("date"), rs.getInt("flowchart_id"), rs.getInt("problem_number"));
+						rs.getString("author"), commentCount, rs.getString("date"), rs.getInt("flowchart_id"), rs.getInt("problem_number"), image);
 				list.add(post);
 			}
 			rs.close();
