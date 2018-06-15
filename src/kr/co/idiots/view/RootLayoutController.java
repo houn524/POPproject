@@ -43,7 +43,7 @@ public class RootLayoutController {
 	private Button btnLogout;
 
 	private POPPostLayoutController postController;
-	private POPSelectImageLayoutController selectImageController;
+	private POPPreviewImageLayoutController previewImageController;
 	private POPWritePostLayoutController writePostController;
 	private POPBoardLayoutController boardLayoutController;
 	private POPSelectProblemLayoutController selectProblemLayoutController;
@@ -116,13 +116,13 @@ public class RootLayoutController {
 		
 	}
 
-	public void showPOPSelectImageLayout() {
+	public void showPOPPreviewImageLayout(int flowchartId) {
 		try {
-			selectImageController = new POPSelectImageLayoutController(mainApp);
+			previewImageController = new POPPreviewImageLayoutController(mainApp, flowchartId);
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("view/POPSelectImageLayout.fxml"));
+			loader.setLocation(MainApp.class.getResource("view/POPPreviewImageLayout.fxml"));
 			loader.setControllerFactory(c -> {
-				return selectImageController;
+				return previewImageController;
 			});
 			AnchorPane popSelectImagePane = (AnchorPane)loader.load();
 			selectImageStage = new Stage();
@@ -131,7 +131,7 @@ public class RootLayoutController {
 			selectImageStage.show();
 //			rootLayout.setCenter(popSelectImagePane);
 
-			selectImageController.setRootController(this);
+			previewImageController.setRootController(this);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

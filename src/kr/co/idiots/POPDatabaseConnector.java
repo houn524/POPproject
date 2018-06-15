@@ -117,6 +117,20 @@ public class POPDatabaseConnector {
 		}
 	}
 
+	public void deletePost(int postNumber) {
+		PreparedStatement st = null;
+		String sql = "";
+		try {
+			sql = "delete from post where number=?;";
+			st = connection.prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
+			st.setInt(1, postNumber);
+			st.executeUpdate();
+			st.close();
+		} catch (SQLException se1) {
+			se1.printStackTrace();
+		}
+	}
+
 	public void saveImageByUserIdAndProblemNumber(String user_id, int problem_number, File file) {
 		PreparedStatement st = null;
 
@@ -321,6 +335,27 @@ public class POPDatabaseConnector {
         }
 		
 		return list;
+	}
+
+	public int loadFlowchartId(String user_id, int problem_number) {
+		PreparedStatement st = null;
+		String sql = "select flowchart_id from solving where user_id=? and problem_number=?;";
+		int result = 0;
+		try {
+			st = connection.prepareStatement(sql);
+			st.setString(1, user_id);
+			st.setInt(2, problem_number);
+			ResultSet rs = st.executeQuery();
+
+			if(rs.next()) {
+				result = rs.getInt("flowchart_id");
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException se1) {
+			se1.printStackTrace();
+		}
+		return result;
 	}
 
 	public ArrayList<Integer> loadFlowchartIds(String user_id) {

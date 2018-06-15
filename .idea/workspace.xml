@@ -2,16 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="246327eb-e978-4eb2-84cb-7320804e5181" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPCommentCard.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPPostLayout.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPPostLayoutController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPSelectImageLayout.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPSelectImageLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPPreviewImageLayoutController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/POPDatabaseConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/POPDatabaseConnector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/POPPost.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/POPPost.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPBoardLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPBoardLayoutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPPostLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPPostLayoutController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPSelectImageLayout.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPPreviewImageLayout.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPSelectImageLayoutController.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPWritePostLayout.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPWritePostLayout.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPWritePostLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPWritePostLayoutController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/RootLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/RootLayoutController.java" afterDir="false" />
@@ -25,7 +21,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.48985508">
+    <splitter split-orientation="horizontal" split-proportion="0.44541064">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="POPPostLayout.fxml" pinned="false" current-in-tab="false">
@@ -50,31 +46,29 @@
           <file leaf-file-name="RootLayoutController.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/RootLayoutController.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="128">
-                  <caret line="157" column="34" selection-start-line="157" selection-start-column="16" selection-end-line="157" selection-end-column="34" />
+                <state relative-caret-position="71">
+                  <caret line="126" selection-start-line="126" selection-end-line="126" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="POPSelectImageLayout.fxml" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPSelectImageLayout.fxml">
+          <file leaf-file-name="POPPreviewImageLayout.fxml" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPPreviewImageLayout.fxml">
               <provider editor-type-id="JavaFX-Scene-Builder" />
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="133">
-                  <caret line="7" selection-start-line="7" selection-end-line="7" />
+                <state relative-caret-position="114">
+                  <caret line="6" selection-start-line="6" selection-end-line="6" />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="POPSelectImageLayoutController.java" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPSelectImageLayoutController.java">
+          <file leaf-file-name="POPPreviewImageLayoutController.java" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPPreviewImageLayoutController.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="349">
-                  <caret line="52" column="34" lean-forward="true" selection-start-line="52" selection-start-column="34" selection-end-line="52" selection-end-column="34" />
+                <state relative-caret-position="743">
+                  <caret line="50" column="29" lean-forward="true" selection-start-line="50" selection-start-column="29" selection-end-line="50" selection-end-column="29" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#378#379#0" expanded="true" />
-                    <element signature="e#415#416#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -89,11 +83,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="POPWritePostLayoutController.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="POPWritePostLayoutController.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPWritePostLayoutController.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="285">
-                  <caret line="43" column="21" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="21" />
+                <state relative-caret-position="81">
+                  <caret line="89" selection-start-line="89" selection-end-line="89" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -135,8 +129,8 @@
           <file leaf-file-name="POPPostLayoutController.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPPostLayoutController.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="421">
-                  <caret line="43" column="37" selection-start-line="43" selection-start-column="37" selection-end-line="43" selection-end-column="37" />
+                <state relative-caret-position="624">
+                  <caret line="63" column="68" selection-start-line="63" selection-start-column="68" selection-end-line="63" selection-end-column="68" />
                   <folding>
                     <element signature="imports" expanded="true" />
                   </folding>
@@ -159,8 +153,8 @@
           <file leaf-file-name="POPDatabaseConnector.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/POPDatabaseConnector.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="451">
-                  <caret line="65" selection-start-line="65" selection-end-line="65" />
+                <state relative-caret-position="301">
+                  <caret line="130" column="9" lean-forward="true" selection-start-line="130" selection-start-column="9" selection-end-line="130" selection-end-column="9" />
                 </state>
               </provider>
             </entry>
@@ -194,8 +188,10 @@
     <findStrings>
       <find>addarray</find>
       <find>insertpo</find>
-      <find>loadImage</find>
       <find>check</find>
+      <find>loadflowchartId</find>
+      <find>loadImage</find>
+      <find>insertPo</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -225,11 +221,12 @@
         <option value="$PROJECT_DIR$/src/kr/co/idiots/view/POPBoardLayoutController.java" />
         <option value="$PROJECT_DIR$/src/kr/co/idiots/model/POPPost.java" />
         <option value="$PROJECT_DIR$/src/kr/co/idiots/view/POPSelectImageLayout.fxml" />
-        <option value="$PROJECT_DIR$/src/kr/co/idiots/view/RootLayoutController.java" />
         <option value="$PROJECT_DIR$/src/kr/co/idiots/view/POPSelectImageLayoutController.java" />
+        <option value="$PROJECT_DIR$/src/kr/co/idiots/view/RootLayoutController.java" />
+        <option value="$PROJECT_DIR$/src/kr/co/idiots/view/POPWritePostLayoutController.java" />
+        <option value="$PROJECT_DIR$/src/kr/co/idiots/view/POPPreviewImageLayoutController.java" />
         <option value="$PROJECT_DIR$/src/kr/co/idiots/POPDatabaseConnector.java" />
         <option value="$PROJECT_DIR$/src/kr/co/idiots/view/POPPostLayoutController.java" />
-        <option value="$PROJECT_DIR$/src/kr/co/idiots/view/POPWritePostLayoutController.java" />
       </list>
     </option>
   </component>
@@ -416,11 +413,12 @@
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.2183258" />
+      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.19457014" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19140625" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32918552" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
@@ -442,7 +440,6 @@
       <window_info id="Image Layers" order="2" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="UI Designer" order="2" />
-      <window_info anchor="bottom" id="Find" order="1" />
       <window_info anchor="right" id="Theme Preview" order="3" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
@@ -774,11 +771,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPSelectImageLayout.fxml">
+    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPPreviewImageLayout.fxml">
       <provider editor-type-id="JavaFX-Scene-Builder" />
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="133">
-          <caret line="7" selection-start-line="7" selection-end-line="7" />
+        <state relative-caret-position="114">
+          <caret line="6" selection-start-line="6" selection-end-line="6" />
         </state>
       </provider>
     </entry>
@@ -799,42 +796,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPSelectImageLayoutController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="349">
-          <caret line="52" column="34" lean-forward="true" selection-start-line="52" selection-start-column="34" selection-end-line="52" selection-end-column="34" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#378#379#0" expanded="true" />
-            <element signature="e#415#416#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/RootLayoutController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="128">
-          <caret line="157" column="34" selection-start-line="157" selection-start-column="16" selection-end-line="157" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/POPDatabaseConnector.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="451">
-          <caret line="65" selection-start-line="65" selection-end-line="65" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPPostLayoutController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="421">
-          <caret line="43" column="37" selection-start-line="43" selection-start-column="37" selection-end-line="43" selection-end-column="37" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/runtime/jdk1.8.0_144/javafx-src.zip!/com/sun/glass/ui/win/WinApplication.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -849,10 +810,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/RootLayoutController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="71">
+          <caret line="126" selection-start-line="126" selection-end-line="126" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPWritePostLayoutController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="43" column="21" selection-start-line="43" selection-start-column="21" selection-end-line="43" selection-end-column="21" />
+        <state relative-caret-position="81">
+          <caret line="89" selection-start-line="89" selection-end-line="89" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPPreviewImageLayoutController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="743">
+          <caret line="50" column="29" lean-forward="true" selection-start-line="50" selection-start-column="29" selection-end-line="50" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/POPDatabaseConnector.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="301">
+          <caret line="130" column="9" lean-forward="true" selection-start-line="130" selection-start-column="9" selection-end-line="130" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPPostLayoutController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="624">
+          <caret line="63" column="68" selection-start-line="63" selection-start-column="68" selection-end-line="63" selection-end-column="68" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

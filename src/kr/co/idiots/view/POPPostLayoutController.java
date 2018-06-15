@@ -2,12 +2,14 @@ package kr.co.idiots.view;
 
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import kr.co.idiots.MainApp;
+import kr.co.idiots.model.POPLoggedInMember;
 import kr.co.idiots.model.POPPost;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,6 +26,8 @@ public class POPPostLayoutController {
 
     @FXML private VBox vBox;
 
+    @FXML private Button btnDelete;
+
     private POPPost post;
 
     private MainApp mainApp;
@@ -33,8 +37,6 @@ public class POPPostLayoutController {
     public POPPostLayoutController(MainApp mainApp, POPPost post) {
         this.mainApp = mainApp;
         this.post = post;
-
-
     }
 
     @FXML private void initialize() {
@@ -53,6 +55,15 @@ public class POPPostLayoutController {
             box.setPadding(new Insets(30, 30, 30, 30));
 
             vBox.getChildren().add(box);
+        }
+
+        if(post.getAuthor().equals(POPLoggedInMember.getInstance().getMember().getId())) {
+            btnDelete.setVisible(true);
+
+            btnDelete.setOnAction(event -> {
+                mainApp.getConnector().deletePost(post.getNumber());
+                rootController.showPOPBoardLayout();
+            });
         }
     }
 }
