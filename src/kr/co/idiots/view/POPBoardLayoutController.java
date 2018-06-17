@@ -37,6 +37,7 @@ public class POPBoardLayoutController {
     public POPBoardLayoutController(MainApp mainApp) { this.mainApp = mainApp; }
 
     @FXML private  void initialize() {
+
         titleColumn.setCellValueFactory(cellData -> cellData.getValue().titleProperty());
         authorColumn.setCellValueFactory(cellData -> cellData.getValue().authorProperty());
         commentCountColumn.setCellValueFactory(cellData -> cellData.getValue().commentCountProperty().asObject());
@@ -85,7 +86,6 @@ public class POPBoardLayoutController {
 
             row.setOnMouseClicked(event -> {
                 POPPost clickedRow = row.getItem();
-                System.out.println(clickedRow.getTitle());
                 mainApp.getRootController().showPOPPostLayout(clickedRow);
             });
             return row;
@@ -96,5 +96,7 @@ public class POPBoardLayoutController {
         btnPost.setOnAction(event -> {
             rootController.showPOPWritePostLayout();
         });
+
+
     }
 }

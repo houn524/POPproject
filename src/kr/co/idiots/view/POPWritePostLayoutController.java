@@ -78,7 +78,7 @@ public class POPWritePostLayoutController {
             else
                 flowchartId = 0;
 
-            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             POPPost post = new POPPost(0, txtTitle.getText(), txtContent.getText(), POPLoggedInMember.getInstance().getMember().getId(),
                     flowchartId, dateFormat.format(new java.util.Date()), flowchartId, Integer.parseInt(comboBox.getValue().split(" : ")[0]), null);
             mainApp.getConnector().insertPost(post);

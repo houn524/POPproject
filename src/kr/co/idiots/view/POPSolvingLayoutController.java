@@ -750,7 +750,6 @@ public class POPSolvingLayoutController {
 	}
 	
 	public String loadOperationSymbol(POPOperationSymbol rootSymbol, int index, String content) {
-		System.out.println(content);
 		String type = content.split("\\(")[0];
 		content = content.split("\\(", 2)[1];
 		

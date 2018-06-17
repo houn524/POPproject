@@ -159,7 +159,9 @@ public class RootLayoutController {
 		try {
 			boardLayoutController = new POPBoardLayoutController(mainApp);
 			FXMLLoader loader = new FXMLLoader();
+
 			loader.setLocation(MainApp.class.getResource("view/POPBoardLayout.fxml"));
+
 			loader.setControllerFactory(c -> {
 				return boardLayoutController;
 			});
@@ -168,6 +170,7 @@ public class RootLayoutController {
 			rootLayout.setCenter(popBoardPane);
 
 			boardLayoutController.setRootController(this);
+
 		} catch(IOException e) {
 			e.printStackTrace();
 		}

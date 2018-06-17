@@ -16,7 +16,6 @@ public class POPCaptureHelper {
 //        FileChooser fileChooser = new FileChooser();
         File file = null;
         try {
-            System.out.println(POPCaptureHelper.class.getResource("").getPath());
             file = File.createTempFile("temp_", ".png", new File(POPCaptureHelper.class.getResource("").getPath()));
         } catch (IOException e) {
             e.printStackTrace();

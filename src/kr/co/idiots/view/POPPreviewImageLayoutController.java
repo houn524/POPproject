@@ -38,8 +38,7 @@ public class POPPreviewImageLayoutController {
     @FXML private void initialize() {
         Image image = mainApp.getConnector().loadImage(flowchartId);
         if(image == null) {
-            System.out.println(flowchartId);
-            System.out.println("null");
+            return;
         }
         imgView.setImage(mainApp.getConnector().loadImage(flowchartId));
         imgView.setFitWidth(imgView.getImage().getWidth() / 2);

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import javafx.scene.image.Image;
 import jdk.internal.util.xml.impl.Input;
+import kr.co.idiots.model.POPComment;
 import kr.co.idiots.model.POPLoggedInMember;
 import kr.co.idiots.model.POPPost;
 import kr.co.idiots.model.POPProblem;
@@ -22,29 +23,33 @@ public class POPDatabaseConnector {
 	private Connection connection;
 	
 	public POPDatabaseConnector() {
+		connect();
+	}
+
+	public void connect() {
 		connection = null;
-        Statement st = null;
-        try {
+		Statement st = null;
+		try {
 //            Class.forName("com.mysql.jdbc.Driver");
-            connection = DriverManager.getConnection("jdbc:mysql://popmysqlinstance.cbmkycbel6rd.ap-northeast-2.rds.amazonaws.com:3306/popdb" , "houn524", "tmdgns12");
-            st = connection.createStatement();
- 
-            String sql;
-            sql = "show databases;";
- 
-            ResultSet rs = st.executeQuery(sql);
- 
-            while (rs.next()) {
-                System.out.println(rs.getString("Database"));
-            }
- 
-            rs.close();
-            st.close();
-        } catch (SQLException se1) {
-            se1.printStackTrace();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+			connection = DriverManager.getConnection("jdbc:mysql://popmysqlinstance.cbmkycbel6rd.ap-northeast-2.rds.amazonaws.com:3306/popdb" , "houn524", "tmdgns12");
+			st = connection.createStatement();
+
+			String sql;
+			sql = "show databases;";
+
+			ResultSet rs = st.executeQuery(sql);
+
+			while (rs.next()) {
+				System.out.println(rs.getString("Database"));
+			}
+
+			rs.close();
+			st.close();
+		} catch (SQLException se1) {
+			se1.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	public String loadProblemTitle(int number) {
@@ -117,6 +122,31 @@ public class POPDatabaseConnector {
 		}
 	}
 
+	public void insertComment(POPComment comment) {
+		PreparedStatement st = null;
+		String sql = "";
+		boolean result = false;
+
+		try {
+			sql = "insert into comment(content, author, date, flowchart_id, post_number)" +
+					" values(?, ?, ?, ?, ?);";
+			st = connection.prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
+			st.setString(1, comment.getContent());
+			st.setString(2, comment.getAuthor());
+			st.setString(3, comment.getDate());
+			if(comment.getFlowchartId() == 0) {
+				st.setNull(4, Types.INTEGER);
+			} else {
+				st.setInt(4, comment.getFlowchartId());
+			}
+			st.setInt(5, comment.getPostNumber());
+			st.executeUpdate();
+			st.close();
+		} catch (SQLException se1) {
+			se1.printStackTrace();
+		}
+	}
+
 	public void deletePost(int postNumber) {
 		PreparedStatement st = null;
 		String sql = "";
@@ -124,6 +154,20 @@ public class POPDatabaseConnector {
 			sql = "delete from post where number=?;";
 			st = connection.prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
 			st.setInt(1, postNumber);
+			st.executeUpdate();
+			st.close();
+		} catch (SQLException se1) {
+			se1.printStackTrace();
+		}
+	}
+
+	public void deleteComment(int commentNumber) {
+		PreparedStatement st = null;
+		String sql = "";
+		try {
+			sql = "delete from comment where number=?;";
+			st = connection.prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
+			st.setInt(1, commentNumber);
 			st.executeUpdate();
 			st.close();
 		} catch (SQLException se1) {
@@ -304,8 +348,6 @@ public class POPDatabaseConnector {
         } catch (SQLException se1) {
             se1.printStackTrace();
         }
-		
-		System.out.println(content);
 		return content;
 	}
 	
@@ -325,7 +367,6 @@ public class POPDatabaseConnector {
             	boolean solved = checkSolved(POPLoggedInMember.getInstance().getMember().getId(), rs.getInt("number"));
             	POPProblem problem = new POPProblem(rs.getInt("number"), rs.getString("title"), rs.getString("content"), rs.getString("input_example"), rs.getString("output_example"), 
             			rs.getString("input_case"), rs.getString("output_case"), rs.getString("difficulty"), solved);
-            	System.out.println(problem.getTitle());
             	list.add(problem);
             }
             rs.close();
@@ -335,6 +376,30 @@ public class POPDatabaseConnector {
         }
 		
 		return list;
+	}
+
+	public POPProblem loadProblemByNumber(int number) {
+		PreparedStatement st = null;
+		String sql = "select * from problem where number=?;";
+
+		POPProblem result = null;
+
+		try {
+			st = connection.prepareStatement(sql);
+			st.setInt(1, number);
+			ResultSet rs = st.executeQuery();
+			if(rs.next()) {
+				boolean solved = checkSolved(POPLoggedInMember.getInstance().getMember().getId(), rs.getInt("number"));
+				result = new POPProblem(rs.getInt("number"), rs.getString("title"), rs.getString("content"), rs.getString("input_example"), rs.getString("output_example"),
+						rs.getString("input_case"), rs.getString("output_case"), rs.getString("difficulty"), solved);
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException se1) {
+			se1.printStackTrace();
+		}
+
+		return result;
 	}
 
 	public int loadFlowchartId(String user_id, int problem_number) {
@@ -432,13 +497,15 @@ public class POPDatabaseConnector {
 
 	public ArrayList<POPPost> loadPosts() {
 		PreparedStatement st = null;
-		String sql = "select * from post;";
+		String sql = "select * from post order by date desc;";
 
 		ArrayList<POPPost> list = new ArrayList<>();
 
 		boolean result = false;
 		int commentCount = 0;
 		try {
+			if(connection == null)
+				connect();
 			st = connection.prepareStatement(sql);
 			ResultSet rs = st.executeQuery();
 			while(rs.next()) {
@@ -450,6 +517,38 @@ public class POPDatabaseConnector {
 				POPPost post = new POPPost(rs.getInt("number"), rs.getString("title"), rs.getString("content"),
 						rs.getString("author"), commentCount, rs.getString("date"), rs.getInt("flowchart_id"), rs.getInt("problem_number"), image);
 				list.add(post);
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException se1) {
+			se1.printStackTrace();
+		}
+		return list;
+	}
+
+	public ArrayList<POPComment> loadComments(int postNumber) {
+		PreparedStatement st = null;
+		String sql = "select * from comment where post_number=?";
+
+		ArrayList<POPComment> list = new ArrayList<>();
+
+		try {
+			if(connection == null)
+				connect();
+			st = connection.prepareStatement(sql);
+			st.setInt(1, postNumber);
+			ResultSet rs = st.executeQuery();
+			while(rs.next()) {
+				POPComment comment = new POPComment(
+						rs.getInt("number"),
+						rs.getString("content"),
+						rs.getString("author"),
+						rs.getString("date"),
+						rs.getInt("flowchart_id"),
+						rs.getInt("post_number")
+				);
+
+				list.add(comment);
 			}
 			rs.close();
 			st.close();
@@ -470,7 +569,7 @@ public class POPDatabaseConnector {
 			st = connection.prepareStatement(sql);
 			st.setInt(1, post_number);
 			ResultSet rs = st.executeQuery();
-			while(rs.next()) {
+			if(rs.next()) {
 				rs.last();
 				result = rs.getRow();
 				rs.beforeFirst();
@@ -522,7 +621,6 @@ public class POPDatabaseConnector {
             st.setInt(3, number);
             
             st.executeUpdate();
-            System.out.println("set");
             st.close();
         } catch (SQLException se1) {
             se1.printStackTrace();

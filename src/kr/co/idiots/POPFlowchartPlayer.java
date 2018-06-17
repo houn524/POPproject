@@ -120,7 +120,6 @@ public class POPFlowchartPlayer {
 	public StringBuilder saveFlowchart(POPStartNode startNode) {
 		sigCount = 10;
 		StringBuilder res = saveFlowchartSymbol(startNode, new String(new char[sigCount]).replace("\0", ":"));
-		System.out.println(res);
 		return res;
 	}
 	
@@ -130,7 +129,6 @@ public class POPFlowchartPlayer {
 			if(node instanceof POPStartNode) {
 				content.append("Start");
 			} else if(node instanceof POPProcessNode) {
-				System.out.println("처리");
 				content.append(sig).append("Process(");
 				
 				saveOperationSymbol(content, node.getRootSymbol());
