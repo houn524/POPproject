@@ -304,7 +304,6 @@ public class POPFlowchartPlayer {
 				}
 			}
 		} else if(rootSymbol.getContents().getChildren().get(0) instanceof POPVariableNode) {
-			
 			POPVariableManager.declaredVars.put(rootSymbol.getLeftCode(), rootSymbol.getRightValue());
 		}
 		

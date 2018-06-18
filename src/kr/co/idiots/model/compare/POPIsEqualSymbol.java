@@ -43,7 +43,7 @@ public class POPIsEqualSymbol extends POPOperationSymbol {
 	@Override
 	public Object executeSymbol() throws NumberFormatException {
 //		try {
-			if(Integer.parseInt(leftValue) == Integer.parseInt(rightValue))
+			if(leftValue.equals(rightValue))
 				return "true";
 			else
 				return "false";

@@ -676,8 +676,8 @@ public class POPSolvingLayoutController {
 //		progressMax.set(resContent.length());
 		
 		String[] symbolNode = content.toString().split(sig);
-		
 		for(String str : symbolNode) {
+			
 			if(str.equals("Start") || str.equals("DecisionStart") || str.equals("LoopStart")) {
 				resContent = resContent.substring(str.length() + sig.length());
 			} else if(str.equals("Stop") || str.equals("DecisionEnd") || str.equals("LoopEnd")) {
@@ -795,6 +795,7 @@ public class POPSolvingLayoutController {
 				POPOperationSymbol symbol2 = (POPOperationSymbol) POPNodeFactory.createNode(type2, null, null);
 				array.getIndexBlank().insertNode(symbol2);
 				content = loadOperationSymbol(symbol2, 0, content);
+				
 			}
 			content = content.split("\\)", 2)[1];
 
@@ -805,7 +806,12 @@ public class POPSolvingLayoutController {
 			content = content.split("\\('", 2)[1];
 			String varName = content.split("'\\)")[0];
 			content = content.split("'\\)", 2)[1];
-			POPVariableNode variable = (POPVariableNode) POPNodeFactory.createNode("IntegerVariable", varName, "IntegerVariable");
+			POPVariableNode variable = null;
+			if(varName.contains("의 크기")) {
+				variable = new POPVariableNode(scriptArea, varName, POPNodeType.ArraySize);
+			} else {
+				variable = (POPVariableNode) POPNodeFactory.createNode("IntegerVariable", varName, "IntegerVariable");
+			}
 			((POPBlank) symbol.getContents().getChildren().get(0)).insertNode(variable);
 
 			if(!POPVariableManager.createdVars.contains(variable.getName())) {
@@ -870,7 +876,12 @@ public class POPSolvingLayoutController {
 			content = content.split("\\('", 2)[1];
 			String varName = content.split("'\\)")[0];
 			content = content.split("'\\)", 2)[1].substring(1);
-			POPVariableNode variable = (POPVariableNode) POPNodeFactory.createNode("IntegerVariable", varName, "IntegerVariable");
+			POPVariableNode variable = null;
+			if(varName.contains("의 크기")) {
+				variable = new POPVariableNode(scriptArea, varName, POPNodeType.ArraySize);
+			} else {
+				variable = (POPVariableNode) POPNodeFactory.createNode("IntegerVariable", varName, "IntegerVariable");
+			}
 			((POPBlank) symbol.getContents().getChildren().get(2)).insertNode(variable);
 			
 			if(!POPVariableManager.createdVars.contains(variable.getName())) {
@@ -881,7 +892,7 @@ public class POPSolvingLayoutController {
 			((POPBlank) symbol.getContents().getChildren().get(2)).insertNode(lineSymbol);
 			content = content.split("\\)", 2)[1].substring(1);
 		} else {
-			loadOperationSymbol(symbol, 2, content);
+			content = loadOperationSymbol(symbol, 2, content).substring(1);
 		}
 		
 		return content;

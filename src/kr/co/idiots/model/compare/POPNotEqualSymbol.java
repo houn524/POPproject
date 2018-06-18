@@ -37,7 +37,7 @@ public class POPNotEqualSymbol extends POPOperationSymbol {
 	
 	@Override
 	public Object executeSymbol() {
-		if(Integer.parseInt(leftValue) != Integer.parseInt(rightValue))
+		if(!leftValue.equals(rightValue))
 			return "true";
 		else
 			return "false";

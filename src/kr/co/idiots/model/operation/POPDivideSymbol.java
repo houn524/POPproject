@@ -38,6 +38,6 @@ public class POPDivideSymbol extends POPOperationSymbol {
 	
 	@Override
 	public Object executeSymbol() {
-		return Integer.parseInt(leftValue) / Integer.parseInt(rightValue);
+		return ((Integer) (Integer.parseInt(leftValue) / Integer.parseInt(rightValue))).toString();
 	}
 }

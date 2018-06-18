@@ -37,6 +37,7 @@ public class POPRemainderSymbol extends POPOperationSymbol {
 	
 	@Override
 	public Object executeSymbol() {
-		return Integer.parseInt(leftValue) % Integer.parseInt(rightValue);
+		String res = ((Integer)(Integer.parseInt(leftValue) % Integer.parseInt(rightValue))).toString();
+		return res;
 	}
 }
