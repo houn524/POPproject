@@ -3,10 +3,7 @@ package kr.co.idiots.view;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -43,6 +40,8 @@ public class POPPostLayoutController {
     @FXML private Button btnPreview;
     @FXML private CheckBox checkFlowchart;
     @FXML private Button btnSaveComment;
+
+    @FXML private ScrollPane scrollPane;
 
     private POPPost post;
 
@@ -121,6 +120,9 @@ public class POPPostLayoutController {
             checkFlowchart.setVisible(!checkFlowchart.isVisible());
             checkFlowchart.setSelected(false);
             btnSaveComment.setVisible(!btnSaveComment.isVisible());
+
+            if(commentContent.isVisible())
+                scrollPane.setVvalue(1);
         });
 
         btnPreview.setOnAction(event -> {

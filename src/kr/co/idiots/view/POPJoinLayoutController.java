@@ -1,15 +1,18 @@
 package kr.co.idiots.view;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
 import kr.co.idiots.MainApp;
 import kr.co.idiots.POPDatabaseConnector;
 import kr.co.idiots.util.POPPopupManager;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.awt.im.InputContext;
+import java.util.regex.Pattern;
 
 @Getter
 @Setter
@@ -20,9 +23,14 @@ public class POPJoinLayoutController {
 	@FXML private PasswordField txtPwConfirm;
 	
 	@FXML private Button btnJoin;
+
+	@FXML private Label lbError;
 	
 	private MainApp mainApp;
 	private POPLoginLayoutController loginController;
+
+	private boolean flag1 = false;
+	private boolean flag2 = false;
 	
 	public POPJoinLayoutController(MainApp mainApp, POPLoginLayoutController loginController) {
 		this.mainApp = mainApp;
@@ -31,7 +39,53 @@ public class POPJoinLayoutController {
 	
 	@FXML
 	private void initialize() {
-		
+
+		txtPw.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				Character.Subset[] subset = null;
+				InputContext.getInstance().setCharacterSubsets(subset);
+			}
+		});
+
+		txtPw.setTextFormatter(new TextFormatter<String>(change -> {
+			Pattern pattern = Pattern.compile("[a-zA-Z0-9\\-\\+]*");
+			if(pattern.matcher(change.getText()).matches() && !flag1) {
+				lbError.setVisible(false);
+				return change;
+			} else if(!flag1){
+				lbError.setVisible(true);
+				flag1 = true;
+			} else if(flag1) {
+				flag1 = false;
+			}
+
+			return null;
+		}));
+
+		txtPwConfirm.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+				Character.Subset[] subset = null;
+				InputContext.getInstance().setCharacterSubsets(subset);
+			}
+		});
+
+		txtPwConfirm.setTextFormatter(new TextFormatter<String>(change -> {
+			Pattern pattern = Pattern.compile("[a-zA-Z0-9\\-\\+]*");
+			if(pattern.matcher(change.getText()).matches() && !flag2) {
+				lbError.setVisible(false);
+				return change;
+			} else if(!flag2){
+				lbError.setVisible(true);
+				flag2 = true;
+			} else if(flag2) {
+				flag2 = false;
+			}
+
+			return null;
+		}));
+
 		btnJoin.setOnAction(event -> {
 			if(checkJoin()) {
 				mainApp.getConnector().insertMember(txtId.getText(), txtPw.getText());

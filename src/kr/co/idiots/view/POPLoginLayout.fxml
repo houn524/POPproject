@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -37,8 +38,9 @@
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="50.0" vgrow="SOMETIMES" />
-                <RowConstraints minHeight="10.0" prefHeight="70.0" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="41.0" minHeight="10.0" prefHeight="41.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" valignment="CENTER" vgrow="SOMETIMES" />
+                <RowConstraints maxHeight="57.0" minHeight="10.0" prefHeight="47.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
                   <TextField fx:id="emailField" promptText="아이디">
@@ -51,7 +53,7 @@
                         <Font name="NanumGothic" size="14.0" />
                      </font>
                   </PasswordField>
-                  <HBox alignment="CENTER_RIGHT" spacing="20.0" GridPane.halignment="RIGHT" GridPane.rowIndex="2">
+                  <HBox alignment="CENTER_RIGHT" spacing="20.0" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                      <children>
                         <Button id="green" fx:id="btnJoin" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" stylesheets="@../../../../../../css/buttonStyle.css" text="회원가입" textAlignment="CENTER">
                            <font>
@@ -65,6 +67,7 @@
                         </Button>
                      </children>
                   </HBox>
+                  <Label fx:id="lbError" text="영어로 입력해주세요." textFill="RED" visible="false" GridPane.rowIndex="2" />
                </children>
             </GridPane>
          </children>
