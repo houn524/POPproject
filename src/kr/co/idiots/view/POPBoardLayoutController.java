@@ -1,6 +1,7 @@
 package kr.co.idiots.view;
 
 import com.sun.javafx.scene.control.skin.TableHeaderRow;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -13,7 +14,6 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import kr.co.idiots.MainApp;
 import kr.co.idiots.model.POPPost;
-import kr.co.idiots.model.POPProblem;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -72,20 +72,22 @@ public class POPBoardLayoutController {
         tableView.setRowFactory(tv -> {
             TableRow<POPPost> row = new TableRow<>();
             row.setOnMouseEntered(event -> {
-//                if(!row.isEmpty()) {
-//                    mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND);
-//                    row.setStyle("-fx-text-background-color: #37a5e5;"
+                if(!row.isEmpty()) {
+                    mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND);
+                    row.setStyle("-fx-text-background-color: #37a5e5;");
 //                            + "-fx-effect:  dropshadow( gaussian, rgba( 0, 0, 0, 0.5 ), 10, 0, 2, 2 );");
-//                }
+                }
             });
 
             row.setOnMouseExited(event -> {
-//                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT);
-//                row.setStyle("");
+                mainApp.getPrimaryStage().getScene().setCursor(Cursor.DEFAULT);
+                row.setStyle("");
             });
 
             row.setOnMouseClicked(event -> {
                 POPPost clickedRow = row.getItem();
+                if(clickedRow == null)
+                	return;
                 mainApp.getRootController().showPOPPostLayout(clickedRow);
             });
             return row;

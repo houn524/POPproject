@@ -1,9 +1,20 @@
 package kr.co.idiots.view;
 
+import java.io.InputStream;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.Cursor;
-import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -15,11 +26,6 @@ import kr.co.idiots.model.POPPost;
 import kr.co.idiots.model.POPProblem;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 @Getter
 @Setter
@@ -78,9 +84,10 @@ public class POPPostLayoutController {
 
         updateComments();
 
-        if(post.getImage() != null) {
+        if(post.getInputStream() != null) {
             HBox box = new HBox();
-            ImageView imgView = new ImageView(post.getImage());
+            
+            ImageView imgView = new ImageView(new Image(post.getInputStream()));
 
             box.getChildren().add(imgView);
 
@@ -137,11 +144,13 @@ public class POPPostLayoutController {
         });
 
         btnSaveComment.setOnAction(event -> {
+        	InputStream is = null;
             if(checkFlowchart.isSelected()) {
                 commentFlowchartId = mainApp.getConnector().loadFlowchartId(
                         POPLoggedInMember.getInstance().getMember().getId(),
                         post.getProblemNumber()
                 );
+                is = mainApp.getConnector().loadInputStream(commentFlowchartId);
             } else {
                 commentFlowchartId = 0;
             }
@@ -152,8 +161,8 @@ public class POPPostLayoutController {
                     commentContent.getText(),
                     POPLoggedInMember.getInstance().getMember().getId(),
                     dateFormat.format(new java.util.Date()),
-                    commentFlowchartId,
-                    post.getNumber()
+                    post.getNumber(),
+                    is
             );
             mainApp.getConnector().insertComment(comment);
 

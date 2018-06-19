@@ -1,10 +1,11 @@
 package kr.co.idiots.model;
 
+import java.io.InputStream;
+
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.image.Image;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,25 +19,21 @@ public class POPPost {
     private final StringProperty author;
     private final IntegerProperty commentCount;
     private final StringProperty date;
-    private final IntegerProperty flowchartId;
     private final IntegerProperty problemNumber;
-
-    private Image image;
-
-    public POPPost() { this(null, null, null, null, null, null, null, null, null); }
+    private InputStream inputStream;
+    
+    public POPPost() { this(null, null, null, null, null, null, null, null); }
 
     public POPPost(Integer number, String title, String content, String author, Integer commentCount,
-                   String date, Integer flowchartId, Integer problemNumber, Image _image) {
+                   String date, Integer problemNumber, InputStream inputStream) {
         this.number = new SimpleIntegerProperty(number);
         this.title = new SimpleStringProperty(title);
         this.content = new SimpleStringProperty(content);
         this.author = new SimpleStringProperty(author);
         this.commentCount = new SimpleIntegerProperty(commentCount);
         this.date = new SimpleStringProperty(date);
-        this.flowchartId = new SimpleIntegerProperty(flowchartId);
         this.problemNumber = new SimpleIntegerProperty(problemNumber);
-
-        this.image = _image;
+        this.inputStream = inputStream;
     }
 
     public int getNumber() {
@@ -109,18 +106,6 @@ public class POPPost {
 
     public void setDate(String date) {
         this.date.set(date);
-    }
-
-    public int getFlowchartId() {
-        return flowchartId.get();
-    }
-
-    public IntegerProperty flowchartIdProperty() {
-        return flowchartId;
-    }
-
-    public void setFlowchartId(int flowchartId) {
-        this.flowchartId.set(flowchartId);
     }
 
     public int getProblemNumber() {

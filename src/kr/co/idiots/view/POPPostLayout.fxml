@@ -44,16 +44,19 @@
                            <children>
                               <HBox alignment="CENTER_LEFT" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="1098.0" style="-fx-background-color: lightgrey;">
                                  <children>
-                                    <Label fx:id="lbAuthor" text="작성자">
-                                       <HBox.margin>
-                                          <Insets bottom="20.0" left="30.0" right="30.0" top="20.0" />
-                                       </HBox.margin>
-                                    </Label>
-                                    <Label fx:id="lbDate" text="작성일">
-                                       <HBox.margin>
-                                          <Insets left="30.0" />
-                                       </HBox.margin>
-                                    </Label>
+                                    <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="60.0" prefWidth="1098.0">
+                                       <children>
+                                          <HBox alignment="CENTER_LEFT" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="0.0">
+                                             <children>
+                                                <Label fx:id="lbAuthor" text="작성자" />
+                                                <Label fx:id="lbDate" text="작성일" />
+                                             </children>
+                                             <opaqueInsets>
+                                                <Insets />
+                                             </opaqueInsets>
+                                          </HBox>
+                                       </children>
+                                    </AnchorPane>
                                  </children>
                                  <cursor>
                                     <Cursor fx:constant="DEFAULT" />

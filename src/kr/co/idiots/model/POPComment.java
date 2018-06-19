@@ -1,8 +1,7 @@
 package kr.co.idiots.model;
 
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.StringProperty;
+import java.io.InputStream;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -14,19 +13,19 @@ public class POPComment {
     private final String content;
     private final String author;
     private final String date;
-    private final int flowchartId;
     private final int postNumber;
+    private InputStream inputStream;
 
     public POPComment() {
-        this(0, null, null, null, 0, 0);
+        this(0, null, null, null, 0, null);
     }
 
-    public POPComment(Integer number, String content, String author, String date, Integer flowchartId, Integer postNumber) {
+    public POPComment(Integer number, String content, String author, String date, Integer postNumber, InputStream inputStream) {
         this.number = number;
         this.content = content;
         this.author = author;
         this.date = date;
-        this.flowchartId = flowchartId == null ? 0 : flowchartId;
         this.postNumber = postNumber;
+        this.inputStream = inputStream;
     }
 }

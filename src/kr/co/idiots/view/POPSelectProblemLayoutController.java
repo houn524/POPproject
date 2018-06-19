@@ -72,8 +72,8 @@ public class POPSelectProblemLayoutController {
 			row.setOnMouseEntered(event -> {
 				if(!row.isEmpty()) {
 					mainApp.getPrimaryStage().getScene().setCursor(Cursor.HAND);
-					row.setStyle("-fx-text-background-color: #37a5e5;"
-							+ "-fx-effect:  dropshadow( gaussian, rgba( 0, 0, 0, 0.5 ), 10, 0, 2, 2 );");
+					row.setStyle("-fx-text-background-color: #37a5e5;");
+//							+ "-fx-effect:  dropshadow( gaussian, rgba( 0, 0, 0, 0.5 ), 10, 0, 2, 2 );");
 				}
 					
 			});
@@ -85,6 +85,8 @@ public class POPSelectProblemLayoutController {
 			
 			row.setOnMouseClicked(event -> {
 				POPProblem clickedRow = row.getItem();
+				if(clickedRow == null)
+					return;
 				mainApp.getRootController().showPOPMainLayout(clickedRow);
 			});
 			return row;

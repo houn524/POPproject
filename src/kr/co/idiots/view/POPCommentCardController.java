@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -39,9 +40,9 @@ public class POPCommentCardController {
         lbDate.setText(comment.getDate());
         txtContent.setText(comment.getContent());
 
-        if(comment.getFlowchartId() != 0) {
+        if(comment.getInputStream() != null) {
             HBox box = new HBox();
-            ImageView imgView = new ImageView(mainApp.getConnector().loadImage(comment.getFlowchartId()));
+            ImageView imgView = new ImageView(new Image(comment.getInputStream()));
             box.getChildren().add(imgView);
             box.setPadding(new Insets(30, 30, 30, 30));
 

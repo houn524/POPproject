@@ -4,11 +4,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Types;
 import java.util.ArrayList;
 
 import javafx.scene.image.Image;
-import jdk.internal.util.xml.impl.Input;
 import kr.co.idiots.model.POPComment;
 import kr.co.idiots.model.POPLoggedInMember;
 import kr.co.idiots.model.POPPost;
@@ -56,7 +61,7 @@ public class POPDatabaseConnector {
 		String sql = "select title from problem where number=?;";
 		String result = "";
 		try {
-			st = connection.prepareStatement(sql);
+			st = getConnection().prepareStatement(sql);
 			st.setInt(1, number);
 			ResultSet rs = st.executeQuery();
 			if(rs.next()) {
@@ -77,7 +82,7 @@ public class POPDatabaseConnector {
 		boolean result = false;
 
 		try {
-			st = connection.prepareStatement(sql);
+			st = getConnection().prepareStatement(sql);
 			st.setInt(1, number);
 			ResultSet rs = st.executeQuery();
 			if(!rs.next()) {
@@ -98,19 +103,19 @@ public class POPDatabaseConnector {
 		PreparedStatement st = null;
 		String sql = "";
 		try {
-			sql = "insert into post(title, content, author, date, flowchart_id, problem_number)" +
+			sql = "insert into post(title, content, author, date, problem_number, image)" +
 					" values(?, ?, ?, ?, ?, ?);";
-            st = connection.prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
+            st = getConnection().prepareStatement(sql);
             st.setString(1, post.getTitle());
             st.setString(2, post.getContent());
             st.setString(3, post.getAuthor());
             st.setString(4, post.getDate());
-			if(post.getFlowchartId() == 0) {
-				st.setNull(5, Types.INTEGER);
+            st.setInt(5, post.getProblemNumber());
+            if(post.getInputStream() == null) {
+				st.setNull(6, Types.BINARY);
 			} else {
-				st.setInt(5, post.getFlowchartId());
+				st.setBinaryStream(6, post.getInputStream());
 			}
-            st.setInt(6, post.getProblemNumber());
             st.executeUpdate();
 			st.close();
 		} catch (SQLException se1) {
@@ -122,18 +127,18 @@ public class POPDatabaseConnector {
 		PreparedStatement st = null;
 		String sql = "";
 		try {
-			sql = "insert into comment(content, author, date, flowchart_id, post_number)" +
+			sql = "insert into comment(content, author, date, post_number, image)" +
 					" values(?, ?, ?, ?, ?);";
-			st = connection.prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
+			st = getConnection().prepareStatement(sql);
 			st.setString(1, comment.getContent());
 			st.setString(2, comment.getAuthor());
 			st.setString(3, comment.getDate());
-			if(comment.getFlowchartId() == 0) {
-				st.setNull(4, Types.INTEGER);
+			st.setInt(4, comment.getPostNumber());
+			if(comment.getInputStream() != null) {
+				st.setBinaryStream(5, comment.getInputStream());
 			} else {
-				st.setInt(4, comment.getFlowchartId());
+				st.setNull(5, Types.BINARY);
 			}
-			st.setInt(5, comment.getPostNumber());
 			st.executeUpdate();
 			st.close();
 		} catch (SQLException se1) {
@@ -146,7 +151,7 @@ public class POPDatabaseConnector {
 		String sql = "";
 		try {
 			sql = "delete from post where number=?;";
-			st = connection.prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
+			st = getConnection().prepareStatement(sql);
 			st.setInt(1, postNumber);
 			st.executeUpdate();
 			st.close();
@@ -160,7 +165,7 @@ public class POPDatabaseConnector {
 		String sql = "";
 		try {
 			sql = "delete from comment where number=?;";
-			st = connection.prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
+			st = getConnection().prepareStatement(sql);
 			st.setInt(1, commentNumber);
 			st.executeUpdate();
 			st.close();
@@ -176,7 +181,7 @@ public class POPDatabaseConnector {
 		int flowchart_id;
 
 		try {
-			st = connection.prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
+			st = getConnection().prepareStatement(sql);
 			st.setString(1, user_id);
 			st.setInt(2, problem_number);
 			ResultSet rs = st.executeQuery();
@@ -203,7 +208,7 @@ public class POPDatabaseConnector {
 			if(id > -1) {
 				fin = new FileInputStream(file);
 				sql = "update flowchart set image=? where id=?;";
-				st = connection.prepareStatement(sql);
+				st = getConnection().prepareStatement(sql);
 				st.setBinaryStream(1, fin, (int) file.length());
 				st.setInt(2, id);
 
@@ -226,7 +231,7 @@ public class POPDatabaseConnector {
 		
 		int autoincrement = 0;
 		try {
-            st = connection.prepareStatement(sql);
+            st = getConnection().prepareStatement(sql);
             st.setString(1, user_id);
             st.setInt(2, problem_number);
             ResultSet rs = st.executeQuery();
@@ -236,14 +241,14 @@ public class POPDatabaseConnector {
             	saveFlowchart(flowchart_id, content);
             } else {
             	saveFlowchart(-1, content);
-            	st = connection.prepareStatement("select auto_increment from information_schema.TABLES where TABLE_SCHEMA='popdb' and TABLE_NAME='flowchart';");
+            	st = getConnection().prepareStatement("select auto_increment from information_schema.TABLES where TABLE_SCHEMA='popdb' and TABLE_NAME='flowchart';");
             	rs = st.executeQuery();
             	if(rs.next()) 
             		autoincrement = rs.getInt(1) - 1;
             	
             	sql = "insert into solving(user_id, problem_number, flowchart_id) values(?, ?, ?);";
             	
-            	st = connection.prepareStatement(sql);
+            	st = getConnection().prepareStatement(sql);
             	st.setString(1, user_id);
             	st.setInt(2, problem_number);
             	st.setInt(3, autoincrement);
@@ -264,12 +269,12 @@ public class POPDatabaseConnector {
 		try {
             if(id > -1) {
             	sql = "update flowchart set content=? where id=?;";
-            	st = connection.prepareStatement(sql);
+            	st = getConnection().prepareStatement(sql);
                 st.setString(1, content);
                 st.setInt(2, id);
             } else {
             	sql = "insert into flowchart(content) values(?)";
-            	st = connection.prepareStatement(sql);
+            	st = getConnection().prepareStatement(sql);
                 st.setString(1, content);
             }
             
@@ -287,7 +292,7 @@ public class POPDatabaseConnector {
 		String sql = "select flowchart_id from solving where user_id=? and problem_number=?;";
 		String content = "";
 		try {
-            st = connection.prepareStatement(sql);
+            st = getConnection().prepareStatement(sql);
             st.setString(1, user_id);
             st.setInt(2, problem_number);
             ResultSet rs = st.executeQuery();
@@ -311,7 +316,7 @@ public class POPDatabaseConnector {
 		String content = "";
 		String sql = "select content from flowchart where id=?;";
 		try {
-            st = connection.prepareStatement(sql);
+            st = getConnection().prepareStatement(sql);
             st.setInt(1, id);
             ResultSet rs = st.executeQuery();
             
@@ -332,7 +337,7 @@ public class POPDatabaseConnector {
 		
 		ArrayList<POPProblem> list = new ArrayList<>();
 		try {
-            st = connection.prepareStatement(sql);
+            st = getConnection().prepareStatement(sql);
             st.setString(1, difficulty);
             ResultSet rs = st.executeQuery();
             while(rs.next()) {
@@ -357,7 +362,7 @@ public class POPDatabaseConnector {
 		POPProblem result = null;
 
 		try {
-			st = connection.prepareStatement(sql);
+			st = getConnection().prepareStatement(sql);
 			st.setInt(1, number);
 			ResultSet rs = st.executeQuery();
 			if(rs.next()) {
@@ -379,7 +384,7 @@ public class POPDatabaseConnector {
 		String sql = "select flowchart_id from solving where user_id=? and problem_number=?;";
 		int result = 0;
 		try {
-			st = connection.prepareStatement(sql);
+			st = getConnection().prepareStatement(sql);
 			st.setString(1, user_id);
 			st.setInt(2, problem_number);
 			ResultSet rs = st.executeQuery();
@@ -400,7 +405,7 @@ public class POPDatabaseConnector {
 		PreparedStatement st = null;
 		String sql = "select flowchart_id from solving where user_id=? and solved=true;";
 		try {
-			st = connection.prepareStatement(sql);
+			st = getConnection().prepareStatement(sql);
 			st.setString(1, user_id);
 			ResultSet rs = st.executeQuery();
 
@@ -420,7 +425,7 @@ public class POPDatabaseConnector {
 		PreparedStatement st = null;
 		String sql = "select flowchart_id from solving where user_id=? and solved=true;";
 		try {
-			st = connection.prepareStatement(sql);
+			st = getConnection().prepareStatement(sql);
 			st.setString(1, user_id);
 			ResultSet rs = st.executeQuery();
 
@@ -446,7 +451,7 @@ public class POPDatabaseConnector {
 		Image image = null;
 		String sql = "select image from flowchart where id=?;";
 		try {
-			st = connection.prepareStatement(sql);
+			st = getConnection().prepareStatement(sql);
 			st.setInt(1, flowchart_id);
 			ResultSet rs = st.executeQuery();
 
@@ -463,6 +468,27 @@ public class POPDatabaseConnector {
 
 		return image;
 	}
+	
+	public InputStream loadInputStream(int flowchart_id) {
+		PreparedStatement st = null;
+		InputStream is = null;
+		String sql = "select image from flowchart where id=?;";
+		try {
+			st = getConnection().prepareStatement(sql);
+			st.setInt(1, flowchart_id);
+			ResultSet rs = st.executeQuery();
+
+			if(rs.next()) {
+				is = rs.getBinaryStream("image");
+			}
+			rs.close();
+			st.close();
+		} catch (SQLException se1) {
+			se1.printStackTrace();
+		}
+
+		return is;
+	}
 
 	public ArrayList<POPPost> loadPosts() {
 		PreparedStatement st = null;
@@ -471,17 +497,15 @@ public class POPDatabaseConnector {
 		ArrayList<POPPost> list = new ArrayList<>();
 		int commentCount = 0;
 		try {
-			if(connection == null)
-				connect();
-			st = connection.prepareStatement(sql);
+			st = getConnection().prepareStatement(sql);
 			ResultSet rs = st.executeQuery();
 			while(rs.next()) {
-				Image image = null;
-				image = loadImage(rs.getInt("flowchart_id"));
+				InputStream is = null;
+				is = rs.getBinaryStream("image");
 
 				commentCount = countComment(rs.getInt("number"));
 				POPPost post = new POPPost(rs.getInt("number"), rs.getString("title"), rs.getString("content"),
-						rs.getString("author"), commentCount, rs.getString("date"), rs.getInt("flowchart_id"), rs.getInt("problem_number"), image);
+						rs.getString("author"), commentCount, rs.getString("date"), rs.getInt("problem_number"), is);
 				list.add(post);
 			}
 			rs.close();
@@ -499,9 +523,9 @@ public class POPDatabaseConnector {
 		ArrayList<POPComment> list = new ArrayList<>();
 
 		try {
-			if(connection == null)
+			if(getConnection() == null)
 				connect();
-			st = connection.prepareStatement(sql);
+			st = getConnection().prepareStatement(sql);
 			st.setInt(1, postNumber);
 			ResultSet rs = st.executeQuery();
 			while(rs.next()) {
@@ -510,8 +534,8 @@ public class POPDatabaseConnector {
 						rs.getString("content"),
 						rs.getString("author"),
 						rs.getString("date"),
-						rs.getInt("flowchart_id"),
-						rs.getInt("post_number")
+						rs.getInt("post_number"),
+						rs.getBinaryStream("image")
 				);
 
 				list.add(comment);
@@ -532,7 +556,7 @@ public class POPDatabaseConnector {
 		int result = 0;
 
 		try {
-			st = connection.prepareStatement(sql);
+			st = getConnection().prepareStatement(sql);
 			st.setInt(1, post_number);
 			ResultSet rs = st.executeQuery();
 			if(rs.next()) {
@@ -556,7 +580,7 @@ public class POPDatabaseConnector {
 		boolean result = false;
 		
 		try {
-            st = connection.prepareStatement(sql);
+            st = getConnection().prepareStatement(sql);
             st.setString(1, id);
             st.setInt(2, number);
             ResultSet rs = st.executeQuery();
@@ -579,7 +603,7 @@ public class POPDatabaseConnector {
 		String sql = "update solving set solved=? where user_id=? and problem_number=?";
 		try {
             
-        	st = connection.prepareStatement(sql);
+        	st = getConnection().prepareStatement(sql);
             st.setBoolean(1, solved);
             st.setString(2, id);
             st.setInt(3, number);
@@ -598,7 +622,7 @@ public class POPDatabaseConnector {
 		boolean result = false;
 		
 		try {
-            st = connection.prepareStatement(sql);
+            st = getConnection().prepareStatement(sql);
             st.setString(1, id);
             ResultSet rs = st.executeQuery();
             if(rs.next()) {
@@ -620,7 +644,7 @@ public class POPDatabaseConnector {
 		String sql = "insert into member values(?, password(?));";
 
 		try {
-            st = connection.prepareStatement(sql);
+            st = getConnection().prepareStatement(sql);
             st.setString(1, id);
             st.setString(2, pw);
             st.executeUpdate();
@@ -640,7 +664,7 @@ public class POPDatabaseConnector {
 		boolean result = false;
 		
 		try {
-            st = connection.prepareStatement(sql);
+            st = getConnection().prepareStatement(sql);
             st.setString(1, id);
             
             ResultSet rs = st.executeQuery();
@@ -649,7 +673,7 @@ public class POPDatabaseConnector {
             } else { 
             	actualPw = rs.getString("pw");
             	sql = "select password(?)";
-            	st = connection.prepareStatement(sql);
+            	st = getConnection().prepareStatement(sql);
             	st.setString(1, pw);
             	rs = st.executeQuery();
             	if(rs.next()) {
@@ -671,5 +695,16 @@ public class POPDatabaseConnector {
         }
 		
 		return result;
+	}
+	
+	public Connection getConnection() {
+		try {
+			if(connection == null || connection.isClosed()) {
+				connect();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return connection;
 	}
 }

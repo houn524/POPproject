@@ -1,5 +1,6 @@
 package kr.co.idiots.view;
 
+import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -71,14 +72,16 @@ public class POPWritePostLayoutController {
             }
         });
         btnWrite.setOnAction(event -> {
-            if(checkBox.isSelected())
-                flowchartId = mainApp.getConnector().loadFlowchartId(POPLoggedInMember.getInstance().getMember().getId(), Integer.parseInt(comboBox.getValue().split(" : ")[0]));
-            else
+        	InputStream is = null;
+            if(checkBox.isSelected()) {
+            	flowchartId = mainApp.getConnector().loadFlowchartId(POPLoggedInMember.getInstance().getMember().getId(), Integer.parseInt(comboBox.getValue().split(" : ")[0]));
+            	is = mainApp.getConnector().loadInputStream(flowchartId);
+            } else
                 flowchartId = 0;
 
             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             POPPost post = new POPPost(0, txtTitle.getText(), txtContent.getText(), POPLoggedInMember.getInstance().getMember().getId(),
-                    flowchartId, dateFormat.format(new java.util.Date()), flowchartId, Integer.parseInt(comboBox.getValue().split(" : ")[0]), null);
+                    flowchartId, dateFormat.format(new java.util.Date()), Integer.parseInt(comboBox.getValue().split(" : ")[0]), is);
             mainApp.getConnector().insertPost(post);
             rootController.showPOPBoardLayout();
         });
