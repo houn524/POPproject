@@ -13,9 +13,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<AnchorPane prefHeight="600.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.POPWritePostLayoutController">
+<AnchorPane prefHeight="600.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.POPWritePostLayoutController">
    <children>
-      <Button id="green" fx:id="btnWrite" mnemonicParsing="false" stylesheets="@../../../../../../css/buttonStyle.css" text="글쓰기" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="30.0" />
+      <Button id="green" fx:id="btnWrite" mnemonicParsing="false" stylesheets="@../../../../Css/buttonStyle.css" text="글쓰기" AnchorPane.bottomAnchor="10.0" AnchorPane.rightAnchor="30.0" />
       <GridPane prefHeight="510.0" prefWidth="1220.0" AnchorPane.bottomAnchor="60.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="100.0" AnchorPane.topAnchor="30.0">
         <columnConstraints>
           <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="605.2000122070312" minWidth="10.0" prefWidth="105.20002746582031" />
@@ -48,7 +48,7 @@
                </GridPane.margin></Label>
             <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="46.0" prefWidth="1061.0" GridPane.columnIndex="2" GridPane.rowIndex="3" GridPane.valignment="TOP">
                <children>
-                  <Button id="green" fx:id="btnSelect" mnemonicParsing="false" stylesheets="@../../../../../../css/buttonStyle.css" text="순서도 보기">
+                  <Button id="green" fx:id="btnSelect" mnemonicParsing="false" stylesheets="@../../../../Css/buttonStyle.css" text="순서도 보기">
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>

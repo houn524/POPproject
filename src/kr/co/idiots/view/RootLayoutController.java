@@ -8,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.effect.Bloom;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -42,6 +43,7 @@ public class RootLayoutController {
 	@FXML
 	private Button btnLogout;
 
+	private POPHomeLayoutController homeController;
 	private POPPostLayoutController postController;
 	private POPPreviewImageLayoutController previewImageController;
 	private POPWritePostLayoutController writePostController;
@@ -126,7 +128,8 @@ public class RootLayoutController {
 			});
 			AnchorPane popSelectImagePane = (AnchorPane)loader.load();
 			selectImageStage = new Stage();
-
+			selectImageStage.setTitle("순서도 보기");
+			selectImageStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/favicon.png")));
 			selectImageStage.setScene(new Scene(popSelectImagePane));
 			selectImageStage.show();
 
@@ -195,8 +198,12 @@ public class RootLayoutController {
 
 	public void showPOPHomeLayout() {
 		try {
+			homeController = new POPHomeLayoutController();
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(MainApp.class.getResource("view/POPHomeLayout.fxml"));
+			loader.setControllerFactory(c -> {
+				return homeController;
+			});
 			BorderPane popHomeLayout = (BorderPane)loader.load();
 			
 			rootLayout.setCenter(popHomeLayout);

@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1280.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.POPLoginLayoutController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="1280.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.POPLoginLayoutController">
    <children>
       <ImageView fitHeight="557.0" fitWidth="655.0" layoutX="559.0" layoutY="58.0" pickOnBounds="true" preserveRatio="true" AnchorPane.leftAnchor="500.0" AnchorPane.topAnchor="58.0">
          <image>
@@ -55,12 +55,12 @@
                   </PasswordField>
                   <HBox alignment="CENTER_RIGHT" spacing="20.0" GridPane.halignment="RIGHT" GridPane.rowIndex="3">
                      <children>
-                        <Button id="green" fx:id="btnJoin" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" stylesheets="@../../../../../../css/buttonStyle.css" text="회원가입" textAlignment="CENTER">
+                        <Button id="green" fx:id="btnJoin" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" stylesheets="@../../../../Css/buttonStyle.css" text="회원가입" textAlignment="CENTER">
                            <font>
                               <Font size="15.0" />
                            </font>
                         </Button>
-                        <Button id="green" fx:id="btnLogin" mnemonicParsing="false" stylesheets="@../../../../../../css/buttonStyle.css" text="로그인" textAlignment="CENTER">
+                        <Button id="green" fx:id="btnLogin" mnemonicParsing="false" stylesheets="@../../../../Css/buttonStyle.css" text="로그인" textAlignment="CENTER">
                            <font>
                               <Font size="15.0" />
                            </font>

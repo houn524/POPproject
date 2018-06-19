@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
@@ -96,6 +97,8 @@ public class POPLoginLayoutController {
 					AnchorPane joinPane = (AnchorPane)loader.load();
 					
 					joinStage = new Stage();
+					joinStage.setTitle("회원 가입");
+					joinStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/favicon.png")));
 					joinStage.setScene(new Scene(joinPane));
 					
 					joinStage.show();

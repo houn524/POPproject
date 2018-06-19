@@ -22,7 +22,7 @@
                   <Insets left="30.0" />
                </HBox.margin>
             </Label>
-            <Button id="green" fx:id="btnDelete" alignment="CENTER_RIGHT" mnemonicParsing="false" stylesheets="@../../../../../../css/buttonStyle.css" text="삭제">
+            <Button id="green" fx:id="btnDelete" alignment="CENTER_RIGHT" mnemonicParsing="false" stylesheets="@../../../../Css/buttonStyle.css" text="삭제">
                <HBox.margin>
                   <Insets left="700.0" />
                </HBox.margin>

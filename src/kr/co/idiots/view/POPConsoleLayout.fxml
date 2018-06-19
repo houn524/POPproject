@@ -6,7 +6,7 @@
 
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="kr.co.idiots.view.POPConsoleLayoutController">
    <children>
-      <Button fx:id="btnCheck" mnemonicParsing="false" text="정답 확인" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
+      <Button id="green" fx:id="btnCheck" mnemonicParsing="false" stylesheets="@../../../../Css/buttonStyle.css" text="정답 확인" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
       <TextArea fx:id="txtOutput" editable="false" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="45.0" />
    </children>
 </AnchorPane>

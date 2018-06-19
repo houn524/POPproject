@@ -1,25 +1,26 @@
 package kr.co.idiots.view;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
+import javafx.scene.control.Button;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import kr.co.idiots.MainApp;
 import kr.co.idiots.model.POPLoggedInMember;
 import kr.co.idiots.model.POPPost;
 import kr.co.idiots.model.POPProblem;
-import kr.co.idiots.util.POPPopupManager;
-import kr.co.idiots.util.TypeChecker;
 import lombok.Getter;
 import lombok.Setter;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 @Getter
 @Setter
@@ -80,7 +81,6 @@ public class POPWritePostLayoutController {
                     flowchartId, dateFormat.format(new java.util.Date()), flowchartId, Integer.parseInt(comboBox.getValue().split(" : ")[0]), null);
             mainApp.getConnector().insertPost(post);
             rootController.showPOPBoardLayout();
-//            }
         });
 
         btnSelect.setOnAction(event -> {

@@ -1,103 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="POPproject:jar" />
+    </artifacts-to-build>
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="246327eb-e978-4eb2-84cb-7320804e5181" name="Default" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/POPproject_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/META-INF/MANIFEST.MF" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/BM-HANNA.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Roboto-Regular.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/TmonMonsori.ttf.ttf" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Check2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Compare2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Decision2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Decision3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Decision4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Divide2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Document2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Document3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Document4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Equal2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/IntegerVariable2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/LessThan2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/LessThanEqual2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Loop2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Loop3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Minus2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Multiply2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/NotEqual2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Operation2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Plus2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Process2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Process3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Process4.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Remainder2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Start1.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Start2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Start3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Stop2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/Stop3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/images/StringOperation2.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/CodeGenerator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/MainApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/POPDatabaseConnector.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/POPDatabaseConnector.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/POPFlowchartPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/POPFlowchartPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/POPNodeFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/POPNodeFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/POPBlank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/POPBlank.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/POPCheckImage.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/POPFlowLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/POPFlowLine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/POPFlowLineIF.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/POPIndexBlank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/POPIndexBlank.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/POPNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/POPNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/POPScriptArea.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/POPScriptArea.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/POPSideArrowFlowLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/POPSideArrowFlowLine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/POPVariableNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/POPVariableNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/Person.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/compare/POPIsEqualSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/compare/POPIsEqualSymbol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/operation/POPDivideSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/operation/POPDivideSymbol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/operation/POPMultiplySymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/operation/POPMultiplySymbol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/operation/POPOperationSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/operation/POPOperationSymbol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/operation/POPOutputSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/operation/POPOutputSymbol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/operation/POPPlusSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/operation/POPPlusSymbol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/operation/POPStringPlusSymbol.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/operation/POPStringPlusSymbol.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/symbol/POPDecisionEndNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/symbol/POPDecisionEndNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/symbol/POPDecisionNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/symbol/POPDecisionNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/symbol/POPDecisionStartNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/symbol/POPDecisionStartNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/symbol/POPLoopEndNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/symbol/POPLoopEndNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/symbol/POPLoopNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/symbol/POPLoopNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/symbol/POPLoopStartNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/symbol/POPLoopStartNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/symbol/POPProcessNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/symbol/POPProcessNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/model/symbol/POPSymbolNode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/model/symbol/POPSymbolNode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/util/Calculator.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/util/ClipboardUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/util/ClipboardUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/util/DateUtil.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/util/DragManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/util/DragManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/util/HanKeyToEngKey.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/util/POPCaptureHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/util/POPCaptureHelper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/util/POPClassLoader.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/util/POPNodeDataFormat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/util/POPNodeDataFormat.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/util/ResizeHelper.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPCommentCard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPCommentCard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPCreateArrayLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPCreateArrayLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPCreateVariableLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPCreateVariableLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPErrorPopupLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPErrorPopupLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPHomeLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPHomeLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPLoginLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPLoginLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPPostLayout.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPPostLayout.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPPreviewImageLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPPreviewImageLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPProblemCard.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPProblemCard.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPProblemCardController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPProcessSymbol.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPSelectProblemLayout2.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPSelectProblemLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPSelectProblemLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPSolvingLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPSolvingLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPTestLayout.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/POPWritePostLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/POPWritePostLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/PersonEditDialog.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/PersonEditDialogController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/PersonOverview.fxml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/PersonOverviewController.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/RootLayoutController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/kr/co/idiots/view/RootLayoutController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/kr/co/idiots/view/stage_frame_complete.png" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/target/classes/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -112,7 +24,7 @@
       <file leaf-file-name="POPPostLayoutController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPPostLayoutController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1838">
+            <state relative-caret-position="114">
               <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
             </state>
           </provider>
@@ -139,7 +51,7 @@
       <file leaf-file-name="POPSelectProblemLayoutController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPSelectProblemLayoutController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1648">
+            <state relative-caret-position="133">
               <caret line="25" selection-start-line="25" selection-end-line="25" />
             </state>
           </provider>
@@ -148,12 +60,8 @@
       <file leaf-file-name="POPSolvingLayoutController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPSolvingLayoutController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="14915">
+            <state relative-caret-position="15200">
               <caret line="875" selection-start-line="875" selection-end-line="875" />
-              <folding>
-                <element signature="e#30991#30992#0" expanded="true" />
-                <element signature="e#31020#31021#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -161,7 +69,7 @@
       <file leaf-file-name="POPWritePostLayoutController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPWritePostLayoutController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="542">
+            <state relative-caret-position="1007">
               <caret line="72" selection-start-line="72" selection-end-line="72" />
             </state>
           </provider>
@@ -171,11 +79,7 @@
         <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/RootLayoutController.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="817">
-              <caret line="63" column="25" lean-forward="true" selection-start-line="63" selection-start-column="25" selection-end-line="63" selection-end-column="25" />
-              <folding>
-                <element signature="e#8012#8013#0" expanded="true" />
-                <element signature="e#8070#8071#0" expanded="true" />
-              </folding>
+              <caret line="63" column="25" selection-start-line="63" selection-start-column="25" selection-end-line="63" selection-end-column="25" />
             </state>
           </provider>
         </entry>
@@ -183,8 +87,8 @@
       <file leaf-file-name="POPScriptArea.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/model/POPScriptArea.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="443">
-              <caret line="269" column="8" lean-forward="true" selection-start-line="269" selection-start-column="8" selection-end-line="269" selection-end-column="8" />
+            <state relative-caret-position="74">
+              <caret line="222" column="31" selection-start-line="222" selection-start-column="31" selection-end-line="222" selection-end-column="31" />
             </state>
           </provider>
         </entry>
@@ -201,11 +105,8 @@
       <file leaf-file-name="POPLoginLayoutController.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPLoginLayoutController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="879">
+            <state relative-caret-position="2375">
               <caret line="125" selection-start-line="125" selection-end-line="125" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -301,17 +202,18 @@
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1271" />
-    <option name="width" value="2578" />
-    <option name="height" value="2119" />
+    <option name="x" value="1912" />
+    <option name="width" value="1937" />
+    <option name="height" value="2118" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
+      <pane id="PackagesPane" />
       <pane id="AndroidView" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -347,14 +249,6 @@
               <item name="POPproject" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="idiots" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="symbol" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="POPproject" type="b2602c69:ProjectViewProjectNode" />
-              <item name="POPproject" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="idiots" type="462c0819:PsiDirectoryNode" />
               <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -368,7 +262,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -377,7 +270,7 @@
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="popproject" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/src/kr/co/idiots" />
-    <property name="project.structure.last.edited" value="Libraries" />
+    <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
@@ -475,8 +368,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1532" y="0" width="1548" height="1696" extended-state="0" />
-    <editor active="true" />
+    <frame x="1530" y="0" width="1549" height="1694" extended-state="0" />
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -486,43 +378,24 @@
       <window_info anchor="right" id="Capture Analysis" order="3" />
       <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="right" id="Maven Projects" order="3" />
-      <window_info anchor="bottom" id="Version Control" order="7" weight="0.32996207" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.3312263" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info id="Capture Tool" order="2" />
-      <window_info id="Designer" order="2" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.22946545" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32869786" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info id="UI Designer" order="2" />
-      <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info id="Favorites" order="2" side_tool="true" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
-      <window_info anchor="right" id="Palette" order="3" />
-      <window_info id="Designer" order="2" />
-      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
-      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
-      <window_info anchor="bottom" id="Terminal" order="7" />
-      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
-      <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3314358" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.3314358" />
-      <window_info id="Image Layers" order="2" />
+      <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
+      <window_info id="Designer" order="2" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1713355" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info id="UI Designer" order="2" />
-      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="right" id="Theme Preview" order="3" />
-      <window_info anchor="right" id="Palette&#9;" order="3" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Event Log" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="right" id="Maven Projects" order="3" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.171875" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32869786" />
     </layout>
   </component>
   <component name="VcsContentAnnotationSettings">
@@ -534,13 +407,6 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/kr/co/idiots/model/POPScriptArea.java</url>
-          <line>249</line>
-          <properties />
-        </line-breakpoint>
-      </breakpoints>
       <option name="time" value="1" />
     </breakpoint-manager>
   </component>
@@ -587,13 +453,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/util/Calculator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="475">
-          <caret line="28" column="1" lean-forward="true" selection-start-line="28" selection-start-column="1" selection-end-line="28" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/util/Calculator.java" />
     <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/model/POPVariableNode.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="627">
@@ -601,13 +461,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/util/DateUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="171">
-          <caret line="11" column="18" selection-start-line="11" selection-start-column="18" selection-end-line="11" selection-end-column="18" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/util/DateUtil.java" />
     <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/util/ClipboardUtil.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="437">
@@ -615,13 +469,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/util/HanKeyToEngKey.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="69" column="19" selection-start-line="69" selection-start-column="19" selection-end-line="69" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/util/HanKeyToEngKey.java" />
     <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/util/DragManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="209">
@@ -643,13 +491,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/util/POPClassLoader.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="9" column="20" lean-forward="true" selection-start-line="9" selection-start-column="20" selection-end-line="9" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/util/POPClassLoader.java" />
     <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/util/POPCaptureHelper.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="133">
@@ -657,13 +499,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/util/ResizeHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="684">
-          <caret line="44" column="28" selection-start-line="44" selection-start-column="28" selection-end-line="44" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/util/ResizeHelper.java" />
     <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/util/POPPopupManager.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="76">
@@ -685,13 +521,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/CodeGenerator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="146" column="40" selection-start-line="146" selection-start-column="40" selection-end-line="146" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/CodeGenerator.java" />
     <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/util/POPNodeDataFormat.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="152">
@@ -824,39 +654,20 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPLoginLayoutController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="879">
+        <state relative-caret-position="2375">
           <caret line="125" selection-start-line="125" selection-end-line="125" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPPostLayoutController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1838">
+        <state relative-caret-position="114">
           <caret line="25" column="13" selection-start-line="25" selection-start-column="13" selection-end-line="25" selection-end-column="13" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPProblemCard.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#1088#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPProblemCardController.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#1137#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPProblemCard.java" />
+    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPProblemCardController.java" />
     <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPPreviewImageLayoutController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="627">
@@ -864,10 +675,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPProcessSymbol.fxml">
-      <provider editor-type-id="JavaFX-Scene-Builder" />
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPProcessSymbol.fxml" />
     <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPProblemDetailLayoutController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="114">
@@ -877,47 +685,37 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPSelectProblemLayoutController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1648">
+        <state relative-caret-position="133">
           <caret line="25" selection-start-line="25" selection-end-line="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPSolvingLayoutController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="14915">
+        <state relative-caret-position="15200">
           <caret line="875" selection-start-line="875" selection-end-line="875" />
-          <folding>
-            <element signature="e#30991#30992#0" expanded="true" />
-            <element signature="e#31020#31021#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/POPWritePostLayoutController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="542">
+        <state relative-caret-position="1007">
           <caret line="72" selection-start-line="72" selection-end-line="72" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/stage_frame_complete.png">
-      <provider selected="true" editor-type-id="images" />
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/stage_frame_complete.png" />
     <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/view/RootLayoutController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="817">
-          <caret line="63" column="25" lean-forward="true" selection-start-line="63" selection-start-column="25" selection-end-line="63" selection-end-column="25" />
-          <folding>
-            <element signature="e#8012#8013#0" expanded="true" />
-            <element signature="e#8070#8071#0" expanded="true" />
-          </folding>
+          <caret line="63" column="25" selection-start-line="63" selection-start-column="25" selection-end-line="63" selection-end-column="25" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/kr/co/idiots/model/POPScriptArea.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="443">
-          <caret line="269" column="8" lean-forward="true" selection-start-line="269" selection-start-column="8" selection-end-line="269" selection-end-column="8" />
+        <state relative-caret-position="74">
+          <caret line="222" column="31" selection-start-line="222" selection-start-column="31" selection-end-line="222" selection-end-column="31" />
         </state>
       </provider>
     </entry>
@@ -927,10 +725,12 @@
       <state key="ArtifactsStructureConfigurable.UI">
         <settings>
           <artifact-editor />
+          <last-edited>POPproject:jar</last-edited>
           <splitter-proportions>
             <option name="proportions">
               <list>
                 <option value="0.2" />
+                <option value="0.5" />
               </list>
             </option>
           </splitter-proportions>

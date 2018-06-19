@@ -1,0 +1,12 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="POPproject:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/POPproject_jar</output-path>
+    <root id="archive" name="POPproject.jar">
+      <element id="module-output" name="POPproject" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/runtime/jdk1.8.0_144/lib/tools.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/runtime/mysql-connector-java-8.0.11/mysql-connector-java-8.0.11.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/runtime/jdk1.8.0_144/jre/lib/ext/jfxrt.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/runtime/lombok/lombok.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>

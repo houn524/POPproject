@@ -1,19 +1,14 @@
 package kr.co.idiots;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javafx.application.Application;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.text.Font;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import kr.co.idiots.view.POPLoginLayoutController;
 import kr.co.idiots.view.RootLayoutController;
@@ -46,13 +41,9 @@ public class MainApp extends Application {
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("PoP");
+		this.primaryStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/favicon.png")));
 		
-		try {
-			Font.loadFont(new FileInputStream(new File("src/Fonts/NanumGothic.ttf")), 14);
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Font.loadFont(getClass().getResourceAsStream("/Fonts/NanumGothic.ttf"), 14);
 		
 		showLoginLayout();
 		primaryStage.show();

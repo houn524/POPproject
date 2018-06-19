@@ -28,6 +28,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.scene.input.ClipboardContent;
@@ -35,7 +36,6 @@ import javafx.scene.input.DataFormat;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -58,7 +58,15 @@ import kr.co.idiots.model.compare.POPIsEqualSymbol;
 import kr.co.idiots.model.compare.POPLessThanEqualSymbol;
 import kr.co.idiots.model.compare.POPLessThanSymbol;
 import kr.co.idiots.model.compare.POPNotEqualSymbol;
-import kr.co.idiots.model.operation.*;
+import kr.co.idiots.model.operation.POPDivideSymbol;
+import kr.co.idiots.model.operation.POPEqualSymbol;
+import kr.co.idiots.model.operation.POPLineSymbol;
+import kr.co.idiots.model.operation.POPMinusSymbol;
+import kr.co.idiots.model.operation.POPMultiplySymbol;
+import kr.co.idiots.model.operation.POPOperationSymbol;
+import kr.co.idiots.model.operation.POPPlusSymbol;
+import kr.co.idiots.model.operation.POPRemainderSymbol;
+import kr.co.idiots.model.operation.POPStringPlusSymbol;
 import kr.co.idiots.model.symbol.POPDecisionEndNode;
 import kr.co.idiots.model.symbol.POPDecisionNode;
 import kr.co.idiots.model.symbol.POPDocumentNode;
@@ -734,6 +742,8 @@ public class POPSolvingLayoutController {
 				AnchorPane consolePane = (AnchorPane)loader.load();
 				
 				consoleStage = new Stage();
+				consoleStage.setTitle("결과");
+				consoleStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/favicon.png")));
 				consoleStage.setScene(new Scene(consolePane));
 				try {
 					output = scriptArea.play(0);
@@ -768,6 +778,8 @@ public class POPSolvingLayoutController {
 				AnchorPane problemDetailPane = (AnchorPane)loader.load();
 				
 				problemDetailStage = new Stage();
+				problemDetailStage.setTitle("문제 자세히 보기");
+				problemDetailStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/favicon.png")));
 				problemDetailStage.setScene(new Scene(problemDetailPane));
 				problemDetailStage.show();
 				
@@ -789,6 +801,8 @@ public class POPSolvingLayoutController {
 			AnchorPane createVariablePopup = (AnchorPane)loader.load();
 			
 			popup = new Stage();
+			popup.setTitle("변수 생성");
+			popup.getIcons().add(new Image(getClass().getResourceAsStream("/images/favicon.png")));
 			popup.setScene(new Scene(createVariablePopup));
 			popup.show();
 			
@@ -806,6 +820,8 @@ public class POPSolvingLayoutController {
 			AnchorPane createArrayPopup = (AnchorPane)loader.load();
 			
 			popup = new Stage();
+			popup.setTitle("배열 생성");
+			popup.getIcons().add(new Image(getClass().getResourceAsStream("/images/favicon.png")));
 			popup.setScene(new Scene(createArrayPopup));
 			popup.show();
 			
