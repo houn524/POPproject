@@ -36,8 +36,6 @@ public class POPBlank extends TextField {
 
 			@Override
 			public void changed(ObservableValue arg0, Object oldValue, Object newValue) {
-				// TODO Auto-generated method stub
-				
 				if(getText().isEmpty())
 					setPrefWidth(0);
 				else
@@ -172,15 +170,9 @@ public class POPBlank extends TextField {
 			return;
 		}
 			
-			
 		int index = parentSymbol.getContents().getChildren().indexOf(this);
-		
 		parentSymbol.remove(this);
-		
 		parentSymbol.add(index, node);
-		
-		
-		
 		node.initialize(parentSymbol.getParentNode());
 	}
 }

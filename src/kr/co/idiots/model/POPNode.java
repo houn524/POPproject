@@ -21,7 +21,6 @@ public abstract class POPNode extends StackPane implements Serializable, Cloneab
 	
 	protected POPNodeType type;
 	protected ImageView imgView;
-//	protected POPDataInput dataInput;
 	protected POPOperationSymbol operationSymbol;
 	protected POPOperationSymbol rootSymbol;
 	protected Label label;
@@ -53,10 +52,7 @@ public abstract class POPNode extends StackPane implements Serializable, Cloneab
 			component.getChildren().add(imgView);
 			StackPane.setAlignment(imgView, Pos.CENTER);
 			component.setMaxHeight(imgView.getBoundsInLocal().getHeight());
-			
-			
 		}
-		
 	}
 	
 	public void moveCenter() {

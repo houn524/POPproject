@@ -17,7 +17,6 @@ private ImageView imgView;
 	
 	public POPMultiplySymbol() {
 		super();
-		// TODO Auto-generated constructor stub
 		symbol = " * ";
 		
 		this.type = POPNodeType.Multiply;

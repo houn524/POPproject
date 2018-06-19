@@ -6,8 +6,6 @@ import java.util.regex.Pattern;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -23,7 +21,6 @@ import javafx.stage.Stage;
 import kr.co.idiots.MainApp;
 import kr.co.idiots.model.POPLoggedInMember;
 import kr.co.idiots.model.POPMember;
-import kr.co.idiots.util.HanKeyToEngKey;
 import kr.co.idiots.util.POPPopupManager;
 import lombok.Getter;
 import lombok.Setter;
@@ -52,14 +49,6 @@ public class POPLoginLayoutController {
 	
 	@FXML
 	private void initialize() {
-//		pwField.textProperty().addListener(new ChangeListener<String>() {
-//			@Override
-//			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-//				HanKeyToEngKey hanKeyToEngKey = HanKeyToEngKey.getInstance();
-//				pwField.setText(hanKeyToEngKey.getHanKeyToEngKey(newValue));
-//			}
-//		});
-
 		pwField.focusedProperty().addListener(new ChangeListener<Boolean>() {
 			@Override
 			public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
@@ -134,39 +123,4 @@ public class POPLoginLayoutController {
 	        }
 	    });
 	}
-	
-//	public boolean verifyMember(String id, String pw) {
-////		String inputId = emailField.getText();
-////		String inputPw = pwField.getText();
-//		
-//		PreparedStatement st = null;
-//		
-//		String sql = "select * from member where id=?";
-//		
-//		boolean result = false;
-//		
-//		try {
-//            st = mainApp.getConnector().getConnection().prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
-//            st.setString(1, id);
-//            
-//            ResultSet rs = st.executeQuery();
-// 
-//            if(!rs.next()) {
-//            	result = false;
-//            } else if(pw.equals(rs.getString("pw"))) {
-//            	result = true;
-//            } else {
-//            	result = false;
-//            }
-// 
-//            rs.close();
-//            st.close();
-//            
-//            
-//        } catch (SQLException se1) {
-//            se1.printStackTrace();
-//        }
-//		
-//		return result;
-//	}
 }

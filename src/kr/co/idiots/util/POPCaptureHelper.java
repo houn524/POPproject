@@ -13,7 +13,6 @@ import java.io.IOException;
 public class POPCaptureHelper {
 
     public static File doSave(Stage stage, Node node) {
-//        FileChooser fileChooser = new FileChooser();
         File file = null;
         try {
             file = File.createTempFile("temp_", ".png", new File(POPCaptureHelper.class.getResource("").getPath()));

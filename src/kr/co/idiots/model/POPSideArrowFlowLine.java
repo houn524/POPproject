@@ -11,9 +11,7 @@ import kr.co.idiots.model.symbol.POPSymbolNode;
 public class POPSideArrowFlowLine extends Group {
 	
 	private Line line;
-	
-	private POPSymbolNode nextNode;
-	
+
 	private static final double arrowLength = 10;
     private static final double arrowWidth = 7;
 	
@@ -38,14 +36,6 @@ public class POPSideArrowFlowLine extends Group {
 				double ex = getEndX();
 				double ey = getEndY();
 				
-				if(nextNode != null) {
-					Bounds nextNodeBound = nextNode.getBoundsInParent();
-					ex = nextNodeBound.getMinX() + (nextNodeBound.getWidth() / 2);//getEndX();
-		            ey = nextNodeBound.getMinY();//getEndY();
-		            line.setEndX(ex);
-		            line.setEndY(ey);
-				}
-				
 	            double sx = getStartX();
 	            double sy = getStartY();
 	            
@@ -55,7 +45,6 @@ public class POPSideArrowFlowLine extends Group {
 	            arrow2.setEndY(ey);
 
 	            if (ex == sx && ey == sy) {
-	                // arrow parts of length 0
 	                arrow1.setStartX(ex);
 	                arrow1.setStartY(ey);
 	                arrow2.setStartX(ex);
@@ -64,11 +53,9 @@ public class POPSideArrowFlowLine extends Group {
 	                double factor = arrowLength / Math.hypot(sx-ex, sy-ey);
 	                double factorO = arrowWidth / Math.hypot(sx-ex, sy-ey);
 
-	                // part in direction of main line
 	                double dx = (sx - ex) * factor;
 	                double dy = (sy - ey) * factor;
 	                
-	                // part ortogonal to main line
 	                double ox = (sx - ex) * factorO;
 	                double oy = (sy - ey) * factorO;
 

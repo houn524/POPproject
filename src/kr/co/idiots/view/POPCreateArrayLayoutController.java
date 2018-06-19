@@ -21,8 +21,6 @@ public class POPCreateArrayLayoutController {
 	
 	@FXML
 	public void createVariable() {
-		POPNodeType type = POPNodeType.IntegerVariable;
-		
 		controller.addArray(textField.getText());
 	}
 }

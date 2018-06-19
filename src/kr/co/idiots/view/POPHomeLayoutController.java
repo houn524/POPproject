@@ -35,14 +35,9 @@ public class POPHomeLayoutController {
 
     private ArrayList<ImageView> imgViewList;
 
-//    @FXML private HBox imgContainer;
-//    @FXML private Pane clipPane;
     @FXML private Pagination pagination;
 
     @FXML private void initialize() {
-//        clipPane.setMaxSize(IMG_WIDTH, IMG_HEIGHT);
-//        clipPane.setClip(new Rectangle(IMG_WIDTH, IMG_HEIGHT));
-
         imgViewList = new ArrayList<>();
 
         for(int i = 0; i < NUM_OF_IMGS; i++) {
@@ -51,57 +46,18 @@ public class POPHomeLayoutController {
             ImageView imgView = new ImageView(img);
 
             imgViewList.add(imgView);
-//            imgContainer.getChildren().add(imgView);
         }
 
         pagination.getStyleClass().add(Pagination.STYLE_CLASS_BULLET);
         pagination.setPageFactory(new Callback<Integer, Node>() {
-
             @Override
             public Node call(Integer pageIndex) {
-//                if(pageIndex >= 9)
-//                    return null;
                 return createPage(pageIndex);
             }
         });
-
-//        startAnimation(imgContainer);
     }
 
     private ImageView createPage(int pageIndex) {
         return imgViewList.get(pageIndex);
-    }
-
-    //start animation
-    private void startAnimation(final HBox hbox) {
-        //error occured on (ActionEvent t) line
-        //slide action
-        EventHandler<ActionEvent> slideAction = (ActionEvent t) -> {
-            TranslateTransition trans = new TranslateTransition(Duration.seconds(1.5), hbox);
-            trans.setByX(-IMG_WIDTH);
-            trans.setInterpolator(Interpolator.EASE_BOTH);
-            trans.play();
-        };
-        //eventHandler
-        EventHandler<ActionEvent> resetAction = (ActionEvent t) -> {
-            TranslateTransition trans = new TranslateTransition(Duration.seconds(1), hbox);
-            trans.setByX((NUM_OF_IMGS - 1) * IMG_WIDTH);
-            trans.setInterpolator(Interpolator.EASE_BOTH);
-            trans.play();
-        };
-
-        List<KeyFrame> keyFrames = new ArrayList<>();
-        for (int i = 1; i <= NUM_OF_IMGS; i++) {
-            if (i == NUM_OF_IMGS) {
-                keyFrames.add(new KeyFrame(Duration.seconds(i * SLIDE_FREQ), resetAction));
-            } else {
-                keyFrames.add(new KeyFrame(Duration.seconds(i * SLIDE_FREQ), slideAction));
-            }
-        }
-//add timeLine
-        Timeline anim = new Timeline(keyFrames.toArray(new KeyFrame[NUM_OF_IMGS]));
-
-        anim.setCycleCount(Timeline.INDEFINITE);
-        anim.playFromStart();
     }
 }

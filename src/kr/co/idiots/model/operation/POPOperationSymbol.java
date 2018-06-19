@@ -96,7 +96,6 @@ public class POPOperationSymbol extends StackPane {
 		MenuItem deleteItem = new MenuItem("연산 기호 삭제");
 		POPOperationSymbol thisSymbol = this;
 		deleteItem.setOnAction(new EventHandler<ActionEvent>() {
-
 			@Override
 			public void handle(ActionEvent event) {
 				// TODO Auto-generated method stub
@@ -117,7 +116,6 @@ public class POPOperationSymbol extends StackPane {
 					POPSolvingLayoutController.scriptArea.getComponent().getChildren().remove(thisSymbol);
 				}
 			}
-			
 		});
 		
 		contextMenu = new ContextMenu();
@@ -422,24 +420,6 @@ public class POPOperationSymbol extends StackPane {
 		
 		
 		if(symbol.equals(" = ")) {
-//			if(!POPVariableManager.declaredVars.containsKey(leftCode)) {
-//				POPVariableNode variable = (POPVariableNode) contents.getChildren().get(0);
-//				String type = "";
-//				switch(variable.getType()) {
-//				case IntegerVariable :
-//					type = "int ";
-//					break;
-//				case DoubleVariable :
-//					type = "double ";
-//					break;
-//				case StringVariable :
-//					type = "String ";
-//					break;
-//				}
-//				strCode = type + strCode;
-//			}
-			
-			
 			leftValue = leftCode;
 			strValue = leftValue + strValue;
 			

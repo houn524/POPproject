@@ -42,16 +42,9 @@ public class POPIsEqualSymbol extends POPOperationSymbol {
 	
 	@Override
 	public Object executeSymbol() throws NumberFormatException {
-//		try {
-			if(leftValue.equals(rightValue))
-				return "true";
-			else
-				return "false";
-//		} catch(NumberFormatException e) {
-//			POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
-//			POPSolvingLayoutController.scriptArea.stop();
-//			return null;
-//		}
-		
+		if(leftValue.equals(rightValue))
+			return "true";
+		else
+			return "false";
 	}
 }

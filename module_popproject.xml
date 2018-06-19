@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_popproject" default="compile.module.popproject">
+  <dirname property="module.popproject.basedir" file="${ant.file.module_popproject}"/>
+  
+  <property name="module.jdk.home.popproject" value="${jdk.home.1.8}"/>
+  <property name="module.jdk.bin.popproject" value="${jdk.bin.1.8}"/>
+  <property name="module.jdk.classpath.popproject" value="jdk.classpath.1.8"/>
+  
+  <property name="compiler.args.popproject" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="popproject.output.dir" value="${module.popproject.basedir}/target/classes"/>
+  <property name="popproject.testoutput.dir" value="${module.popproject.basedir}/target/classes"/>
+  
+  <path id="popproject.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="popproject.module.production.classpath">
+    <pathelement location="${basedir}/runtime/jdk1.8.0_144/jre/lib/ext/jfxrt.jar"/>
+    <pathelement location="${basedir}/runtime/lombok/lombok.jar"/>
+    <path refid="${module.jdk.classpath.popproject}"/>
+    <pathelement location="${basedir}/runtime/jdk1.8.0_144/lib/tools.jar"/>
+    <pathelement location="${basedir}/runtime/mysql-connector-java-8.0.11.zip"/>
+    <pathelement location="${basedir}/runtime/mysql-connector-java-8.0.11/mysql-connector-java-8.0.11.jar"/>
+    <path refid="library.lombok.classpath"/>
+  </path>
+  
+  <path id="popproject.runtime.production.module.classpath">
+    <pathelement location="${popproject.output.dir}"/>
+    <pathelement location="${basedir}/runtime/jdk1.8.0_144/jre/lib/ext/jfxrt.jar"/>
+    <pathelement location="${basedir}/runtime/lombok/lombok.jar"/>
+    <pathelement location="${basedir}/runtime/jdk1.8.0_144/lib/tools.jar"/>
+    <pathelement location="${basedir}/runtime/mysql-connector-java-8.0.11.zip"/>
+    <pathelement location="${basedir}/runtime/mysql-connector-java-8.0.11/mysql-connector-java-8.0.11.jar"/>
+    <path refid="library.lombok.classpath"/>
+  </path>
+  
+  <path id="popproject.module.classpath">
+    <pathelement location="${popproject.output.dir}"/>
+    <pathelement location="${basedir}/runtime/jdk1.8.0_144/jre/lib/ext/jfxrt.jar"/>
+    <pathelement location="${basedir}/runtime/lombok/lombok.jar"/>
+    <path refid="${module.jdk.classpath.popproject}"/>
+    <pathelement location="${basedir}/runtime/jdk1.8.0_144/lib/tools.jar"/>
+    <pathelement location="${basedir}/runtime/mysql-connector-java-8.0.11.zip"/>
+    <pathelement location="${basedir}/runtime/mysql-connector-java-8.0.11/mysql-connector-java-8.0.11.jar"/>
+    <path refid="library.lombok.classpath"/>
+  </path>
+  
+  <path id="popproject.runtime.module.classpath">
+    <pathelement location="${popproject.output.dir}"/>
+    <pathelement location="${basedir}/runtime/jdk1.8.0_144/jre/lib/ext/jfxrt.jar"/>
+    <pathelement location="${basedir}/runtime/lombok/lombok.jar"/>
+    <pathelement location="${basedir}/runtime/jdk1.8.0_144/lib/tools.jar"/>
+    <pathelement location="${basedir}/runtime/mysql-connector-java-8.0.11.zip"/>
+    <pathelement location="${basedir}/runtime/mysql-connector-java-8.0.11/mysql-connector-java-8.0.11.jar"/>
+    <path refid="library.lombok.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.popproject">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.popproject">
+    <patternset refid="excluded.from.module.popproject"/>
+  </patternset>
+  
+  <path id="popproject.module.sourcepath">
+    <dirset dir="${module.popproject.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.popproject" depends="compile.module.popproject.production,compile.module.popproject.tests" description="Compile module POPproject"/>
+  
+  <target name="compile.module.popproject.production" depends="register.custom.compilers" description="Compile module POPproject; production classes">
+    <mkdir dir="${popproject.output.dir}"/>
+    <javac2 destdir="${popproject.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.popproject}/javac">
+      <compilerarg line="${compiler.args.popproject}"/>
+      <bootclasspath refid="popproject.module.bootclasspath"/>
+      <classpath refid="popproject.module.production.classpath"/>
+      <src refid="popproject.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.popproject"/>
+    </javac2>
+    
+    <copy todir="${popproject.output.dir}">
+      <fileset dir="${module.popproject.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.popproject.tests" depends="register.custom.compilers,compile.module.popproject.production" description="compile module POPproject; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.popproject" description="cleanup module">
+    <delete dir="${popproject.output.dir}"/>
+    <delete dir="${popproject.testoutput.dir}"/>
+  </target>
+</project>

@@ -36,7 +36,6 @@ public class POPCommentCard {
             });
             rootBox = (VBox)loader.load();
 
-//            previewImageController.setRootController(this);
         } catch(IOException e) {
             e.printStackTrace();
         }

@@ -132,15 +132,6 @@ public class POPFlowchartPlayer {
 				content.append(sig).append("Process(");
 				
 				saveOperationSymbol(content, node.getRootSymbol());
-//				if(node.getRootSymbol().getContents().getChildren().get(i) instanceof POPBlank) {
-//					content.append("Blank('").append(((POPBlank) node.getRootSymbol().getContents().getChildren().get(0)).getText()).append("')");
-//				} else if(node.getRootSymbol().getContents().getChildren().get(i) instanceof POPOperationSymbol) {
-//					POPOperationSymbol symbol = (POPOperationSymbol) node.getRootSymbol().getContents().getChildren().get(0);
-//					saveOperationSymbol(content, symbol);
-//				} else if(node.getRootSymbol().getContents().getChildren().get(i) instanceof POPVariableNode) {
-//					POPVariableNode variable = (POPVariableNode) node.getRootSymbol().getContents().getChildren().get(0);
-//					content.append(variable.getType().toString()).append("('").append(variable.getName()).append("')");
-//				}
 				content.append(")");
 			} else if(node instanceof POPDocumentNode) {
 				content.append(sig).append("Document(");
@@ -186,9 +177,6 @@ public class POPFlowchartPlayer {
 			
 			node = node.getOutFlowLine().getNextNode();
 		}
-		
-//		POPSolvingLayoutController.mainApp.getConnector().saveFlowchart(content.toString());
-		
 		return content;
 	}
 	
@@ -200,7 +188,6 @@ public class POPFlowchartPlayer {
 				if(node.getImgView() != null)
 					node.getImgView().setStyle("-fx-effect: dropshadow(three-pass-box, black, 2, 0, 0, 1);");;
 				if(node instanceof POPStartNode) {
-//					saveFlowchart((POPStartNode) node);
 					output = new StringBuilder();
 				} else if(node instanceof POPProcessNode) {
 					playProcessNode((POPProcessNode) node);
@@ -265,9 +252,7 @@ public class POPFlowchartPlayer {
 		
 		POPOperationSymbol rootSymbol = node.getRootSymbol();
 		rootSymbol.getValueString();
-		
-		int index = 0;
-		
+
 		if(rootSymbol.getContents().getChildren().get(0) instanceof POPArrayNode) {
 			
 			POPArrayNode array = (POPArrayNode) rootSymbol.getContents().getChildren().get(0);
@@ -319,7 +304,7 @@ public class POPFlowchartPlayer {
 	}
 	
 	private boolean playDecisionNode(POPSymbolNode node) throws NullPointerException {
-		POPOperationSymbol rootSymbol = (POPOperationSymbol) node.getRootSymbol();//.getContents().getChildren().get(0);
+		POPOperationSymbol rootSymbol = (POPOperationSymbol) node.getRootSymbol();
 		rootSymbol.playSymbol();
 		boolean result = false;
 		

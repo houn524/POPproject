@@ -31,8 +31,6 @@ public class POPNodeFactory {
 	}
 	
 	public static POPNode createPOPNode(String strType) {
-		POPNodeType type = Enum.valueOf(POPNodeType.class, strType);
-		
 		String packType = "";
 		String className = "";
 		
@@ -47,7 +45,6 @@ public class POPNodeFactory {
 			node = (POPNode) Class.forName("kr.co.idiots.model." + packType + "." + className).getDeclaredConstructor(POPScriptArea.class).newInstance(POPSolvingLayoutController.scriptArea);
 		} catch (IllegalAccessException | InstantiationException | ClassNotFoundException | 
 				IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

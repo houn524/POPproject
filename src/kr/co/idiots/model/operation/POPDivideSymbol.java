@@ -17,7 +17,6 @@ public class POPDivideSymbol extends POPOperationSymbol {
 	
 	public POPDivideSymbol() {
 		super();
-		// TODO Auto-generated constructor stub
 		symbol = " / ";
 		
 		this.type = POPNodeType.Divide;

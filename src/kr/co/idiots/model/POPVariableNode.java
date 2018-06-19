@@ -42,15 +42,6 @@ public class POPVariableNode extends POPNode {
 	protected boolean isInitVariable = false;
 	protected Label lbDefault;
 	
-//	public POPVariableNode(POPScriptArea scriptArea, String name, POPNodeType type, boolean isInitVariable) {
-//		this(scriptArea, name, type);
-//		
-//		this.isInitVariable = isInitVariable;
-//		
-//		if(isInitVariable)
-//			imgView.setStyle("-fx-effect: dropshadow(three-pass-box, blue, 3, 0.5, 1, 1);");
-//	}
-	
 	public POPVariableNode(POPScriptArea scriptArea, String name, POPNodeType type) {
 		super(scriptArea, type);
 		// TODO Auto-generated constructor stub
@@ -65,10 +56,6 @@ public class POPVariableNode extends POPNode {
 		StackPane.setAlignment(contents, Pos.CENTER);
 		contents.setAlignment(Pos.CENTER);
 		
-		
-		Bounds lbBound  = lbName.getBoundsInParent();
-		Bounds compBound = component.getBoundsInParent();
-		Bounds imgBound = imgView.getBoundsInParent();
 		lbName.setTextAlignment(TextAlignment.CENTER);
 		
 		imgView.setFitWidth(TextUtils.computeTextWidth(lbName.getFont(), lbName.getText(), 0.0D) + 20);

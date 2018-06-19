@@ -44,13 +44,4 @@ public class POPPreviewImageLayoutController {
         imgView.setFitWidth(imgView.getImage().getWidth() / 2);
         imgView.setFitHeight(imgView.getImage().getHeight() / 2);
     }
-
-    private void unselectAll() {
-        Iterator<HBox> it = imgViewList.iterator();
-        while(it.hasNext()) {
-            HBox box = it.next();
-            box.setStyle("");
-        }
-    }
-
 }

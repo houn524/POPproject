@@ -70,9 +70,6 @@ public class POPWritePostLayoutController {
             }
         });
         btnWrite.setOnAction(event -> {
-//            if(!mainApp.getConnector().checkProblemNumber(Integer.parseInt(txtProbleNumber.getText()))) {
-//                POPPopupManager.showAlertPopup("게시글 작성 오류", "게시글 작성 오류", "존재하지 않는 문제번호입니다.", Alert.AlertType.ERROR);
-//            } else {
             if(checkBox.isSelected())
                 flowchartId = mainApp.getConnector().loadFlowchartId(POPLoggedInMember.getInstance().getMember().getId(), Integer.parseInt(comboBox.getValue().split(" : ")[0]));
             else

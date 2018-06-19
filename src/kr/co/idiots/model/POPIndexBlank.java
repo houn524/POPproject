@@ -41,8 +41,6 @@ public class POPIndexBlank extends ComboBox {
 		this.getEditor().textProperty().addListener(new ChangeListener<Object>() {
 			@Override
 			public void changed(ObservableValue arg0, Object oldValue, Object newValue) {
-				// TODO Auto-generated method stub
-				
 				if(getEditor().getText().isEmpty())
 					setPrefWidth(0);
 				else
@@ -159,16 +157,10 @@ public class POPIndexBlank extends ComboBox {
 		if(!parentNode.isInitialized()) {
 			return;
 		}
-			
-			
 		int index = parentNode.getContents().getChildren().indexOf(this);
-		
 		parentNode.getContents().getChildren().remove(this);
-		
 		parentNode.getContents().getChildren().add(index, node);
-		
 		parentNode.resizeContents();
-		
 		node.initialize(parentNode);
 	}
 }

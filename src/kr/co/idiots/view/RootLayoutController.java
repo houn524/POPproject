@@ -129,7 +129,6 @@ public class RootLayoutController {
 
 			selectImageStage.setScene(new Scene(popSelectImagePane));
 			selectImageStage.show();
-//			rootLayout.setCenter(popSelectImagePane);
 
 			previewImageController.setRootController(this);
 		} catch(IOException e) {
@@ -201,16 +200,6 @@ public class RootLayoutController {
 			BorderPane popHomeLayout = (BorderPane)loader.load();
 			
 			rootLayout.setCenter(popHomeLayout);
-			
-			//loader.getController();
-			
-//			loader.setController(solvingLayoutController);
-			
-//			solvingLayoutController.setRootController(this);
-//			solvingLayoutController.setMainApp(mainApp);
-			
-			
-//			solvingLayoutController.setMainApp(mainApp);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
@@ -234,9 +223,6 @@ public class RootLayoutController {
 		}
 	}
 	
-	/*
-	상위 레이아웃 안에 메인화면(기호들을 배치할 수 있는 페이지)을 보여준다.
-	 */
 	public void showPOPMainLayout(POPProblem problem) {
 		try {
 			solvingLayoutController = new POPSolvingLayoutController(mainApp, problem);
@@ -248,65 +234,12 @@ public class RootLayoutController {
 			});
 			AnchorPane popMainLayout = (AnchorPane)loader.load();
 			
-			
-//			String content = mainApp.getConnector().loadFlowchart(1);
-//			
-//			solvingLayoutController.loadFlowchart(content);
-			
-//			solvingLayoutController.showScriptArea();
 			rootLayout.setCenter(popMainLayout);
-			
-			//loader.getController();
-			
-//			loader.setController(solvingLayoutController);
-			
-//			solvingLayoutController.setMainApp(mainApp);
-			
-			
-//			solvingLayoutController.setMainApp(mainApp);
 		} catch(IOException e) {
 			e.printStackTrace();
 		}
 	}
-	
-//	public void showPOPLoadingLayout() {
-//		try {
-//			if(loadingController == null)
-//				loadingController = new POPLoadingLayoutController();
-//			
-//				
-//			FXMLLoader loader = new FXMLLoader();
-//			loader.setLocation(MainApp.class.getResource("view/POPLoadingLayout.fxml"));
-//			loader.setControllerFactory(c -> {
-//				return loadingController;
-//			});
-//			BorderPane loadingPane = (BorderPane)loader.load();
-//			
-//			rootLayout.setCenter(loadingController.getRootPane());
-//			
-//		} catch(IOException e) {
-//			e.printStackTrace();
-//		}
-//	}
-	
-	public void showCreateVariablePopup() {
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("view/POPCreateVariableLayout.fxml"));
-			AnchorPane createVariablePopup = (AnchorPane)loader.load();
-			
-			popup = new Stage();
-			popup.setScene(new Scene(createVariablePopup));
-			popup.show();
-			
-			createVariableController = new POPCreateVariableLayoutController();
-			createVariableController.setRootController(this);
-			loader.setController(createVariableController);
-		} catch(IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
+
 	public void createVariable(String name, POPNodeType type) {
 		solvingLayoutController.addVariable(name, type, "");
 	}

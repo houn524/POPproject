@@ -28,7 +28,6 @@ public class POPErrorPopupLayoutController {
     }
 	
 	private MainApp mainApp;
-	//private POPSolvingLayoutController solvingController;
 	private RootLayoutController rootController;
 	
 	public POPErrorPopupLayoutController() {

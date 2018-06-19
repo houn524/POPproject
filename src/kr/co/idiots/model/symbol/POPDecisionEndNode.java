@@ -22,7 +22,6 @@ public class POPDecisionEndNode extends POPSymbolNode {
 		this.sideNode = sideNode;
 		this.decisionNode = decisionNode;
 		setOnBoundChangeListener();
-		// TODO Auto-generated constructor stub
 	}
 	
 	public POPDecisionEndNode createSideFlowLine() {
@@ -63,7 +62,6 @@ public class POPDecisionEndNode extends POPSymbolNode {
 				// TODO Auto-generated method stub
 				
 				if(inFlowLine != null) {
-//					inFlowLine.setEndX(newBound.getMinX());
 					inFlowLine.setEndY(newBound.getMinY());
 				}
 			}

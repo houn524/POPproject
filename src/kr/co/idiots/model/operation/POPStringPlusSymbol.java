@@ -60,10 +60,6 @@ public class POPStringPlusSymbol extends POPOperationSymbol {
 			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
 				leftValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
 			} 
-//			else {
-//				POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
-//				POPSolvingLayoutController.scriptArea.stop();
-//			}
 		} else {
 			POPBlank blank = (POPBlank) contents.getChildren().get(0);
 			leftValue += blank.getText();
@@ -81,10 +77,6 @@ public class POPStringPlusSymbol extends POPOperationSymbol {
 			if(POPVariableManager.declaredVars.containsKey(variable.getName())) {
 				rightValue = POPVariableManager.declaredVars.get(variable.getName()).toString();
 			} 
-//			else {
-//				POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
-//				POPSolvingLayoutController.scriptArea.stop();
-//			}
 		} else {
 			POPBlank blank = (POPBlank) contents.getChildren().get(2);
 			rightValue += blank.getText();

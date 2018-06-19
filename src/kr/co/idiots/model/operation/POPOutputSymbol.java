@@ -67,12 +67,6 @@ public class POPOutputSymbol extends POPOperationSymbol {
 			
 			int index = 0;
 			
-//			if(array.getIndexBlank().getValue().equals("마지막")) {
-//				index = POPVariableManager.declaredArrs.get(array.getName()).size() - 1;
-//			} else {
-//				index = Integer.parseInt(array.getIndexBlank().getEditor().getText());
-//			}
-			
 			if(POPVariableManager.declaredArrs.containsKey(array.getName())) {
 				strValue = array.getValue();
 			} else {
@@ -81,8 +75,6 @@ public class POPOutputSymbol extends POPOperationSymbol {
 				throw new NullPointerException();
 			}
 			
-//				strValue = POPVariableManager.declaredArrs.get(array.getName()).get(index).toString();
-//			}
 		} else if(contents.getChildren().get(0) instanceof POPVariableNode) {
 			POPVariableNode variable = (POPVariableNode) contents.getChildren().get(0);
 			
@@ -93,10 +85,6 @@ public class POPOutputSymbol extends POPOperationSymbol {
 				this.parentNode.setException(true);
 				throw new NullPointerException();
 			}
-//			else {
-//				POPSolvingLayoutController.showErrorPopup("변수 초기화 필요");
-//				POPSolvingLayoutController.scriptArea.stop();
-//			}
 		} else if(contents.getChildren().get(0) instanceof POPLineSymbol) {
 			strValue = System.lineSeparator();
 		} else if(contents.getChildren().get(0) instanceof POPBlank) {

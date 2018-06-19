@@ -16,8 +16,7 @@ public class POPLoopEndNode extends POPSymbolNode {
 	
 	public POPLoopEndNode(POPScriptArea scriptArea) {
 		super(scriptArea, POPNodeType.LoopSub);
-		// TODO Auto-generated constructor stub
-		
+
 		setOnBoundChangeListener();
 	}
 
@@ -27,7 +26,6 @@ public class POPLoopEndNode extends POPSymbolNode {
 
 			@Override
 			public void changed(ObservableValue<? extends Bounds> arg0, Bounds oldBound, Bounds newBound) {
-				// TODO Auto-generated method stub
 				if(imgView != null && newBound.getHeight() > imgView.getBoundsInLocal().getHeight())
 					return;
 			}

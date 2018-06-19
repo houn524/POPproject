@@ -17,7 +17,6 @@ public class POPPlusSymbol extends POPOperationSymbol {
 	
 	public POPPlusSymbol() {
 		super();
-		// TODO Auto-generated constructor stub
 		symbol = " + ";
 		
 		this.type = POPNodeType.Plus;

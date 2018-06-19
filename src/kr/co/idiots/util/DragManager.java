@@ -8,16 +8,12 @@ import kr.co.idiots.model.POPVariableNode;
 
 public class DragManager {
 	public static Node draggedNode;
-	public static POPVariableNode draggedVariableNode;
 	public static boolean dragMoving = false;
 	public static boolean isAllocatedNode = false;
-	public static boolean isInitializing = false;
 	public static boolean isSynchronized = false;
-	public static boolean isDecisionSync = false;
 	public static AnchorPane dragRootPane;
 	public static TabPane tabPane;
-	public static Dragboard dragBoard = null;
-	
+
 	public static double lastCenterXOfStartNode;
 	public static boolean isAdjustPosSync = true;
 }

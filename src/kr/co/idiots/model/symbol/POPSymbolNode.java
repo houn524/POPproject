@@ -45,28 +45,11 @@ public class POPSymbolNode extends POPNode {
 	
 	private boolean isException = false;
 	
-	public DoubleProperty topCenterXProperty() {
-    	return topCenterX;
-    }
-    
-    public DoubleProperty topYProperty() {
-    	return topY;
-    }
-    
-    public DoubleProperty bottomCenterXProperty() {
-    	return bottomCenterX;
-    }
-    
-    public DoubleProperty bottomYProperty() {
-    	return bottomY;
-    }
-	
 	public POPSymbolNode(POPScriptArea scriptArea, POPNodeType type) {
 		super(scriptArea, type);
 		
 		if(type != POPNodeType.Start && type != POPNodeType.Stop && type != POPNodeType.DecisionSub)
 			setOnNodeDrag();
-		// TODO Auto-generated constructor stub
 	}
 	
 	public void initialize() {
@@ -133,9 +116,9 @@ public class POPSymbolNode extends POPNode {
 		Thread thread = new Thread() {
 			@Override
 			public void run() {
-				PlatformHelper.run(() -> {
-					outFlowLine.setVisible(true);
-				});
+			PlatformHelper.run(() -> {
+				outFlowLine.setVisible(true);
+			});
 			}
 		};
 		
@@ -167,14 +150,10 @@ public class POPSymbolNode extends POPNode {
 
 	protected void setOnBoundChangeListener() {
 		component.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
-
 			@Override
 			public void changed(ObservableValue<? extends Bounds> arg0, Bounds oldBound, Bounds newBound) {
-				// TODO Auto-generated method stub
-				
 				if(imgView != null && newBound.getHeight() > imgView.getBoundsInLocal().getHeight())
 					return;
-				
 			}
 		});
 	}

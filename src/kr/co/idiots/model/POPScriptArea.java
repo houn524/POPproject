@@ -17,7 +17,6 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.layout.AnchorPane;
-import kr.co.idiots.CodeGenerator;
 import kr.co.idiots.POPFlowchartPlayer;
 import kr.co.idiots.POPNodeFactory;
 import kr.co.idiots.SubNodeIF;
@@ -43,7 +42,6 @@ public class POPScriptArea {
 	private POPSymbolNode startNode;
 	private double centerXOfStartNode = 50;
 	private POPNode nodePointer;
-	private CodeGenerator generator;
 	private POPFlowchartPlayer flowchartPlayer;
 	private Group component;
 	private boolean isSynchronized = false;
@@ -65,8 +63,6 @@ public class POPScriptArea {
 		
 		flowchartPlayer = new POPFlowchartPlayer(solvingController);
 		
-		generator = new CodeGenerator();
-		
 		pane.scaleXProperty().bind(zoomScale);
 		pane.scaleYProperty().bind(zoomScale);
 		
@@ -74,7 +70,6 @@ public class POPScriptArea {
 
 			@Override
 			public void changed(ObservableValue<? extends Bounds> arg0, Bounds arg1, Bounds newBound) {
-				// TODO Auto-generated method stub
 				if(isSynchronized) {
 					return;
 				}
@@ -82,14 +77,11 @@ public class POPScriptArea {
 				if(newBound.getMinX() < 50) {
 					component.setTranslateX(component.getTranslateX() + 5);
 					centerXOfStartNode += 5;
-					
 				} else if(newBound.getMinX() >= 55){
 					component.setTranslateX(component.getTranslateX() - 5);
 					centerXOfStartNode -= 5;
 				}
-				
 			}
-			
 		});
 		
 		scrollPane.addEventFilter(ScrollEvent.SCROLL, new EventHandler<ScrollEvent>() {
@@ -103,19 +95,15 @@ public class POPScriptArea {
 					} else if(event.getDeltaY() < 0) {
 						zoomScale.set(zoomScale.get() - 0.1);
 					}
-					
 					event.consume();
 				}
-					
 			}
-
 		});
 		
 		
 		scrollPane.boundsInParentProperty().addListener(new ChangeListener<Bounds>() {
 			@Override
 			public void changed(ObservableValue<? extends Bounds> arg0, Bounds oldBound, Bounds newBound) {
-				// TODO Auto-generated method stub
 				pane.setPrefSize(scrollPane.getWidth() - 2, scrollPane.getHeight() - 2);
 			}
 		});
@@ -153,11 +141,8 @@ public class POPScriptArea {
 				if(!(DragManager.draggedNode instanceof POPDecisionNode) && !(DragManager.draggedNode instanceof POPLoopNode)) {
 					DragManager.isSynchronized = true;
 				}
-					
 				node = DragManager.draggedNode;
-				
 				if(DragManager.isAllocatedNode) {
-					
 					DragManager.isAllocatedNode = false;
 				}
 				
@@ -173,8 +158,7 @@ public class POPScriptArea {
 					((POPVariableNode) DragManager.draggedNode).setParentSymbol(null);
 					((POPVariableNode) DragManager.draggedNode).setParentArrayNode(null);
 				}
-				
-				
+
 				DragManager.dragMoving = false;
 				DragManager.draggedNode = null;
 				
@@ -195,19 +179,11 @@ public class POPScriptArea {
 			success = true;
 			event.setDropCompleted(success);
 			event.consume();
-			
-			
 		});
-		
 	}
 	
 	private void locateNode(DragEvent event, Node node) {
 		double x = -1, y = -1;
-		
-		if((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0 ||
-				(event.getX() - ((node.getBoundsInLocal().getHeight() * pane.getScaleY()) / 2)) / pane.getScaleY() < 0) {
-			
-		}
 		
 		if((event.getX() - ((node.getBoundsInLocal().getWidth() * pane.getScaleX()) / 2)) / pane.getScaleX() < 0) {
 			x = 0;
@@ -261,7 +237,7 @@ public class POPScriptArea {
 			
 			for(Node subNode : ((SubNodeIF) node).getSubNodes()) {
 				if(subNode instanceof SubNodeIF) {
-					add((POPSymbolNode) subNode);
+					add(subNode);
 				} else {
 					component.getChildren().add(subNode);
 				}
@@ -299,11 +275,6 @@ public class POPScriptArea {
 	public void setStartNode(POPSymbolNode startNode) {
 		this.startNode = startNode;
 		nodePointer = startNode;
-	}
-	
-	public String generate() throws IOException, NoSuchFieldException {
-		
-		return generator.generate(startNode);
 	}
 	
 	public String play(int index) throws NullPointerException, NumberFormatException, IndexOutOfBoundsException {

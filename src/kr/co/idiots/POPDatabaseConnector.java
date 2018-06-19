@@ -30,7 +30,6 @@ public class POPDatabaseConnector {
 		connection = null;
 		Statement st = null;
 		try {
-//            Class.forName("com.mysql.jdbc.Driver");
 			connection = DriverManager.getConnection("jdbc:mysql://popmysqlinstance.cbmkycbel6rd.ap-northeast-2.rds.amazonaws.com:3306/popdb" , "houn524", "tmdgns12");
 			st = connection.createStatement();
 
@@ -98,8 +97,6 @@ public class POPDatabaseConnector {
 	public void insertPost(POPPost post) {
 		PreparedStatement st = null;
 		String sql = "";
-		boolean result = false;
-
 		try {
 			sql = "insert into post(title, content, author, date, flowchart_id, problem_number)" +
 					" values(?, ?, ?, ?, ?, ?);";
@@ -108,7 +105,6 @@ public class POPDatabaseConnector {
             st.setString(2, post.getContent());
             st.setString(3, post.getAuthor());
             st.setString(4, post.getDate());
-//            st.setNull(5, Types.INTEGER);
 			if(post.getFlowchartId() == 0) {
 				st.setNull(5, Types.INTEGER);
 			} else {
@@ -125,8 +121,6 @@ public class POPDatabaseConnector {
 	public void insertComment(POPComment comment) {
 		PreparedStatement st = null;
 		String sql = "";
-		boolean result = false;
-
 		try {
 			sql = "insert into comment(content, author, date, flowchart_id, post_number)" +
 					" values(?, ?, ?, ?, ?);";
@@ -181,8 +175,6 @@ public class POPDatabaseConnector {
 		String sql = "select flowchart_id from solving where user_id=? and problem_number=?;";
 		int flowchart_id;
 
-		int autoincrement = 0;
-
 		try {
 			st = connection.prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
 			st.setString(1, user_id);
@@ -207,9 +199,6 @@ public class POPDatabaseConnector {
 		boolean result = false;
 
 		try {
-//            st = connection.prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
-//            st.setInt(1, id);
-//            ResultSet rs = st.executeQuery();
 			FileInputStream fin = null;
 			if(id > -1) {
 				fin = new FileInputStream(file);
@@ -236,11 +225,8 @@ public class POPDatabaseConnector {
 		int flowchart_id;
 		
 		int autoincrement = 0;
-		
-		boolean result = false;
-		
 		try {
-            st = connection.prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
+            st = connection.prepareStatement(sql);
             st.setString(1, user_id);
             st.setInt(2, problem_number);
             ResultSet rs = st.executeQuery();
@@ -275,13 +261,7 @@ public class POPDatabaseConnector {
 	public void saveFlowchart(int id, String content) {
 		PreparedStatement st = null;
 		String sql = "";
-		boolean result = false;
-		
 		try {
-//            st = connection.prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
-//            st.setInt(1, id);
-//            ResultSet rs = st.executeQuery();
-            
             if(id > -1) {
             	sql = "update flowchart set content=? where id=?;";
             	st = connection.prepareStatement(sql);
@@ -306,8 +286,6 @@ public class POPDatabaseConnector {
 		int flowchart_id;
 		String sql = "select flowchart_id from solving where user_id=? and problem_number=?;";
 		String content = "";
-		boolean result = false;
-		
 		try {
             st = connection.prepareStatement(sql);
             st.setString(1, user_id);
@@ -332,9 +310,6 @@ public class POPDatabaseConnector {
 		PreparedStatement st = null;
 		String content = "";
 		String sql = "select content from flowchart where id=?;";
-		
-		boolean result = false;
-		
 		try {
             st = connection.prepareStatement(sql);
             st.setInt(1, id);
@@ -356,9 +331,6 @@ public class POPDatabaseConnector {
 		String sql = "select * from problem where difficulty=?;";
 		
 		ArrayList<POPProblem> list = new ArrayList<>();
-		
-		boolean result = false;
-		
 		try {
             st = connection.prepareStatement(sql);
             st.setString(1, difficulty);
@@ -473,9 +445,6 @@ public class POPDatabaseConnector {
 		InputStream is = null;
 		Image image = null;
 		String sql = "select image from flowchart where id=?;";
-
-		boolean result = false;
-
 		try {
 			st = connection.prepareStatement(sql);
 			st.setInt(1, flowchart_id);
@@ -500,8 +469,6 @@ public class POPDatabaseConnector {
 		String sql = "select * from post order by date desc;";
 
 		ArrayList<POPPost> list = new ArrayList<>();
-
-		boolean result = false;
 		int commentCount = 0;
 		try {
 			if(connection == null)
@@ -509,7 +476,6 @@ public class POPDatabaseConnector {
 			st = connection.prepareStatement(sql);
 			ResultSet rs = st.executeQuery();
 			while(rs.next()) {
-				InputStream is;
 				Image image = null;
 				image = loadImage(rs.getInt("flowchart_id"));
 
@@ -611,8 +577,6 @@ public class POPDatabaseConnector {
 	public void setSolved(String id, int number, boolean solved) {
 		PreparedStatement st = null;
 		String sql = "update solving set solved=? where user_id=? and problem_number=?";
-		boolean result = false;
-		
 		try {
             
         	st = connection.prepareStatement(sql);
@@ -654,23 +618,11 @@ public class POPDatabaseConnector {
 	public void insertMember(String id, String pw) {
 		PreparedStatement st = null;
 		String sql = "insert into member values(?, password(?));";
-		String mp5 = "";
-		boolean result = false;
-		
+
 		try {
-//			MessageDigest md = MessageDigest.getInstance("MD5");
-//			md.update(pw.getBytes());
-//			byte byteData[] = md.digest();
-//			StringBuffer sb = new StringBuffer();
-//			for (int i = 0; i < byteData.length; i++) {
-//	            sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-//	        }
-//			mp5 = sb.toString();
-			
             st = connection.prepareStatement(sql);
             st.setString(1, id);
             st.setString(2, pw);
-//            System.out.println(mp5);
             st.executeUpdate();
             
             st.close();
@@ -680,9 +632,6 @@ public class POPDatabaseConnector {
 	}
 	
 	public boolean verifyMember(String id, String pw) {
-//		String inputId = emailField.getText();
-//		String inputPw = pwField.getText();
-		
 		PreparedStatement st = null;
 		
 		String sql = "select * from member where id=?";
@@ -691,7 +640,7 @@ public class POPDatabaseConnector {
 		boolean result = false;
 		
 		try {
-            st = connection.prepareStatement(sql);//mainApp.getConnector().getConnection().createStatement();
+            st = connection.prepareStatement(sql);
             st.setString(1, id);
             
             ResultSet rs = st.executeQuery();

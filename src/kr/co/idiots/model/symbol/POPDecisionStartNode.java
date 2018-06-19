@@ -8,7 +8,6 @@ public class POPDecisionStartNode extends POPSymbolNode {
 	
 	public POPDecisionStartNode(POPScriptArea scriptArea) {
 		super(scriptArea, POPNodeType.DecisionSub);
-		// TODO Auto-generated constructor stub
 		outFlowLine = new POPFlowLine();
 		outFlowLine.setRootNode(this);
 		outFlowLine.setPrevNode(this);

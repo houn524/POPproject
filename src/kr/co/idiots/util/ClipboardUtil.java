@@ -29,13 +29,4 @@ public class ClipboardUtil {
 		}
 		return cb;
 	}
-	
-	public static Image makeSnapShot(Node node) {
-		SnapshotParameters params = new SnapshotParameters();
-		Bounds b = node.getBoundsInParent();
-		double f = 0;
-		params.setViewport(new Rectangle2D(b.getMinX() - f, b.getMinY() - f, b.getWidth() + f + f, b.getHeight() + f + f));
-		WritableImage image = node.snapshot(params, null);
-		return image;
-	}
 }

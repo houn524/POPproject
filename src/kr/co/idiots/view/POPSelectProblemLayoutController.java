@@ -23,9 +23,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class POPSelectProblemLayoutController {
-//	@FXML
-//	private Pane cardPane;
-	
 	@FXML
 	private FlowPane flowPane;
 	
