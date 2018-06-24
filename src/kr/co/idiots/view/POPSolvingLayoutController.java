@@ -228,7 +228,7 @@ public class POPSolvingLayoutController {
 							mainApp.getConnector().saveImageByUserIdAndProblemNumber(
 									POPLoggedInMember.getInstance().getMember().getId(),
 									problem.getNumber(),
-									POPCaptureHelper.doSave(mainApp.getPrimaryStage(), scriptArea.getComponent())
+									new POPCaptureHelper().doSave(mainApp.getPrimaryStage(), scriptArea.getComponent())
 							);
 						});
 					}

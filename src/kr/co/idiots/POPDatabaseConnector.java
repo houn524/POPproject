@@ -1,8 +1,6 @@
 package kr.co.idiots;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -174,7 +172,7 @@ public class POPDatabaseConnector {
 		}
 	}
 
-	public void saveImageByUserIdAndProblemNumber(String user_id, int problem_number, File file) {
+	public void saveImageByUserIdAndProblemNumber(String user_id, int problem_number, InputStream is) {
 		PreparedStatement st = null;
 
 		String sql = "select flowchart_id from solving where user_id=? and problem_number=?;";
@@ -188,7 +186,7 @@ public class POPDatabaseConnector {
 
 			if(rs.next()) {
 				flowchart_id = rs.getInt(1);
-				saveImage(flowchart_id, file);
+				saveImage(flowchart_id, is);
 			}
 
 			rs.close();
@@ -198,7 +196,7 @@ public class POPDatabaseConnector {
 		}
 	}
 
-	public void saveImage(int id, File file) {
+	public void saveImage(int id, InputStream is) {
 		PreparedStatement st = null;
 		String sql = "";
 		boolean result = false;
@@ -206,19 +204,20 @@ public class POPDatabaseConnector {
 		try {
 			FileInputStream fin = null;
 			if(id > -1) {
-				fin = new FileInputStream(file);
+//				fin = new FileInputStream(file);
 				sql = "update flowchart set image=? where id=?;";
 				st = getConnection().prepareStatement(sql);
-				st.setBinaryStream(1, fin, (int) file.length());
+//				st.setBinaryStream(1, fin, (int) file.length());
+				st.setBlob(1, is);
 				st.setInt(2, id);
 
 
 			}
 
 			st.executeUpdate();
-			fin.close();
+//			fin.close();
 			st.close();
-		} catch (SQLException | IOException se1) {
+		} catch (SQLException se1) {
 			se1.printStackTrace();
 		}
 	}
